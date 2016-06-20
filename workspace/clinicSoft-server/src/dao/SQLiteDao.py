@@ -19,7 +19,7 @@ class SQLiteDao(object):
       Returns:
         cursor: cursor relacionado a una conexion a la base de datos para ejecutar transacciones
     """
-    self.conn = sqlite3.connect('clinicSoft.db')
+    self.conn = sqlite3.connect('clinicSoft.sqlite3')
 
   def get_cursor(self):
     """

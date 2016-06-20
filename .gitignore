@@ -9,7 +9,8 @@ node_modules/
 build/
 
 # comunes
-logs/
+*.log
+*.db
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -62,4 +63,4 @@ workspace/clinicSoft-desktop/css/
 workspace/clinicSoft-desktop/fonts/
 workspace/clinicSoft-desktop/index.html
 workspace/clinicSoft-desktop/js/
-clinicSoft.db
+

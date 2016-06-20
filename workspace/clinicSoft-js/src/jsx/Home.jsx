@@ -11,7 +11,7 @@ var Welcome = require('./Welcome.jsx');
 var Home = React.createClass({
   mixins: [NavigatorMixin()],
   getInitialState: function() {
-    console.log('# Home->getInitialState #');
+    //console.log('# Home->getInitialState #');
     return {
       componentKey: 'Home',
       mainComponent: undefined,
@@ -19,31 +19,31 @@ var Home = React.createClass({
     };
   },
   componentWillMount: function() {
-    console.log('# Home->componentWillMount #');
+    //console.log('# Home->componentWillMount #');
     this.subscribe(this.state.componentKey, this.navigatorApp);
   },
   componentDidMount: function() {
-    console.log('# Home->componentDidMount #');
+    //console.log('# Home->componentDidMount #');
   },
   componentWillReceiveProps: function(nextProps) {
-    console.log('# Home->componentWillReceiveProps #');
+    //console.log('# Home->componentWillReceiveProps #');
   },
   shouldComponentUpdate: function() {
-    console.log('# Home->shouldComponentUpdate #');
+    //console.log('# Home->shouldComponentUpdate #');
     return true
   },
   componentWillUpdate: function() {
-    console.log('# Home->componentWillUpdate #');
+    //console.log('# Home->componentWillUpdate #');
   },
   componentDidUpdate: function() {
-    console.log('# Home->componentDidUpdate #');
+    //console.log('# Home->componentDidUpdate #');
   },
   componentWillUnmount: function() {
-    console.log('# Home->componentWillUnmount #');
+    //console.log('# Home->componentWillUnmount #');
     this.unSubscribe(this.state.componentKey);
   },
   navigatorApp: function(viewName) {
-    console.log('# Home->goTo-> ' + viewName);
+    //console.log('# Home->goTo-> ' + viewName);
 
     switch (viewName) {
       case Constants.WELCOME_VIEW:
@@ -59,7 +59,7 @@ var Home = React.createClass({
     });
   },
   render: function() {
-    console.log('# Home->render #');
+    //console.log('# Home->render #');
     var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
     var valorContador = 'suma=' + this.state.contador;
 

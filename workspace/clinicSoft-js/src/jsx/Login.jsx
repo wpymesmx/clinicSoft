@@ -52,11 +52,11 @@ var Login = React.createClass({
     });
   },
   onClickEntrar: function(evt) {
-    console.log('usuario -> ' + this.state.usuario);
-    console.log('passwd -> ' + this.state.passwd);
+    //console.log('usuario -> ' + this.state.usuario);
+    //console.log('passwd -> ' + this.state.passwd);
     var self = this;
 
-    var success = function(response) {
+    var onSuccess = function(response) {
       console.log('# success  #');
       self.goToComponent(Constants.HOME_VIEW);
     };
@@ -66,7 +66,7 @@ var Login = React.createClass({
       'passwd': this.state.passwd
     };
 
-    loginService.login(params, this.onSuccess, this.onError, this.onFail);
+    loginService.login(params, onSuccess, this.onError, this.onFail);
   },
   render: function() {
     //console.log('# App->render #');

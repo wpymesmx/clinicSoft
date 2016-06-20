@@ -32,10 +32,9 @@ class LoginDao(SQLiteDao):
       self.set_row_factory(row_id_usuario)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT ID_USUARIO, USUARIO
+        SELECT USU_LOGIN
         FROM USUARIO
-        WHERE USUARIO = ?
-              AND PASSWD = ?
+        WHERE USU_CORREO = ? AND USU_CONTRASENA = ?
       ''', (user, passwd))
 
       dao_response = cursor.fetchone()

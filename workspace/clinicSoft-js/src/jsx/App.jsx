@@ -12,7 +12,7 @@ var Home = require('./Home.jsx');
 var App = React.createClass({
   mixins: [NavigatorMixin()],
   getInitialState: function() {
-    console.log('# App->getInitialState #');
+    //console.log('# App->getInitialState #');
     return {
       componentKey: 'App',
       mainComponent: undefined
@@ -43,7 +43,7 @@ var App = React.createClass({
     this.unSubscribe(this.state.componentKey);
   },
   navigatorApp: function(viewName) {
-    console.log('# App->goTo-> ' + viewName);
+    //console.log('# App->goTo-> ' + viewName);
 
     switch (viewName) {
       case Constants.LOGIN_VIEW:

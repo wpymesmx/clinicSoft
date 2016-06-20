@@ -56,3 +56,10 @@ local.properties
 
 ##MAC
 .DS_Store
+
+# especiales del proyecto
+workspace/clinicSoft-desktop/css/
+workspace/clinicSoft-desktop/fonts/
+workspace/clinicSoft-desktop/index.html
+workspace/clinicSoft-desktop/js/
+clinicSoft.db

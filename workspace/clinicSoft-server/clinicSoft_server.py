@@ -75,7 +75,7 @@ def do_after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
   #Establecer Access-Control-Max-Age a 1 en desarrollo para indicar que solo guarde cache el navegador por 1 segundo
   #y quitar esta opcion en produccion para que el navegador decida cuando limpiar cache
-  response.headers.add('Access-Control-Max-Age', '1')
+  #response.headers.add('Access-Control-Max-Age', '1')
 
   return response
 

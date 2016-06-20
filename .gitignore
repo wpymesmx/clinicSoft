@@ -9,8 +9,8 @@ node_modules/
 build/
 
 # comunes
-*.log
-*.db
+.log
+.db
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

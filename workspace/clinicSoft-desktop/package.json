@@ -1,0 +1,25 @@
+{
+  "name": "clinicSoft",
+  "version": "1.0.0",
+  "description": "Aplicacion descktop de clinica",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "",
+    "url": ""
+  },
+  "keywords": [
+    "ClinicSoft"
+  ],
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "electron-prebuilt": "^1.1.2"
+  }
+}

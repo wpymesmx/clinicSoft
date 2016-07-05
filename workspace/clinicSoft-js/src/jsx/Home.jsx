@@ -7,6 +7,7 @@ var NavigatorMixin = require('./mixins/NavigatorMixin.js');
 var Constants = require('./utils/Constants.js');
 //jsx components
 var Welcome = require('./Welcome.jsx');
+var Medicamento = require('./components/Medicamento.jsx');
 
 var Home = React.createClass({
   mixins: [NavigatorMixin()],
@@ -49,6 +50,10 @@ var Home = React.createClass({
       case Constants.WELCOME_VIEW:
         this.setState({ mainComponent: (<Welcome/>) });
         break;
+
+       case Constants.MEDICAMENTO_VIEW:
+        this.setState({ mainComponent: (<Medicamento/>) });
+        break;
       default:
         console.log('Home-> Vista no configurada' + viewName);
     }
@@ -60,14 +65,13 @@ var Home = React.createClass({
   },
   render: function() {
     //console.log('# Home->render #');
-    var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
+    var mainComponent = this.state.mainComponent == undefined ? (<Medicamento />) : this.state.mainComponent;
     var valorContador = 'suma=' + this.state.contador;
 
     return (
       <div style={{width: '100%', height: '100%'}}>
         <div>header</div>
-        <div>{mainComponent}</div>
-        <div><input type='button' value={valorContador} onClick={this.onClickContadorMasMas}/></div>
+            <div>{mainComponent}</div>
         <div>footer</div>
       </div>
     );

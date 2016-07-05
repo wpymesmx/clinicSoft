@@ -21,7 +21,7 @@ window.addEventListener('hashchange', function(evt) {
   console.log('newURL-> ' + evt.newURL);
   console.log('oldURL-> ' + evt.oldURL);
   //TODO ejecutar proceso de seguridad y page not found
-}); 
+});
 
 window.initApp = function() {
   console.log('# initApp Ver. 1.0 #');

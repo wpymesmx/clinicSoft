@@ -58,6 +58,9 @@ var Login = React.createClass({
 
     var onSuccess = function(response) {
       console.log('# success  #');
+      var user = window.ctx.get(Constants.USER);
+      user.setJws(response.payload);
+      window.ctx.put(Constants.USER, user);
       self.goToComponent(Constants.HOME_VIEW);
     };
 

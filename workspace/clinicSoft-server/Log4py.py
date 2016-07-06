@@ -17,7 +17,7 @@ class Log4py(object):
     self.logger = logging.getLogger('clinicSoft')
     self.logger.setLevel(self.logMode)
     # create file handler which logs even debug messages
-    fh = logging.handlers.RotatingFileHandler('./logs/clinicSoft.log', mode='a', maxBytes=100000, backupCount=5)
+    fh = logging.handlers.RotatingFileHandler('./logs/clinicSoft.out', mode='a', maxBytes=100000, backupCount=5)
     fh.setLevel(self.logMode)
     # create console handler with a higher log level
     ch = logging.StreamHandler()

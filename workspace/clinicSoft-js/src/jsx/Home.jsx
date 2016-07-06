@@ -15,8 +15,7 @@ var Home = React.createClass({
     //console.log('# Home->getInitialState #');
     return {
       componentKey: 'Home',
-      mainComponent: undefined,
-      contador: 0
+      mainComponent: undefined
     };
   },
   componentWillMount: function() {
@@ -65,13 +64,12 @@ var Home = React.createClass({
   },
   render: function() {
     //console.log('# Home->render #');
-    var mainComponent = this.state.mainComponent == undefined ? (<Medicamento />) : this.state.mainComponent;
-    var valorContador = 'suma=' + this.state.contador;
+    var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
 
     return (
-      <div style={{width: '100%', height: '100%'}}>
+      <div className='home'>
         <div>header</div>
-            <div>{mainComponent}</div>
+          <div>{mainComponent}</div>
         <div>footer</div>
       </div>
     );

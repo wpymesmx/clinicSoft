@@ -9,8 +9,8 @@ node_modules/
 build/
 
 # comunes
-.log
-.db
+*.log
+*.db
 
 #sqlite3
 .sqlite3

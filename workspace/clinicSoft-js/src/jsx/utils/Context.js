@@ -9,6 +9,7 @@ var Context = function() {
     },
     get: function(name) {
       var obj = undefined;
+      
       if(map[name] != undefined) {
         obj = map[name];
       }

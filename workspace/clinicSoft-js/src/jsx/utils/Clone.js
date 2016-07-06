@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
 var Clone = {
   clone: function(obj) {
     var copy;
     // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) {
+    if (null == obj || 'object' != typeof obj) {
       return obj;
     }
     // Handle Date
@@ -35,7 +35,7 @@ var Clone = {
       return copy;
     }
 
-    throw new Error("Tipo de dato no soportado.");
+    throw new Error('Tipo de dato no soportado.');
   }
 };
 

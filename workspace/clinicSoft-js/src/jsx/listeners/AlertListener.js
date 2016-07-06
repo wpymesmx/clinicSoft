@@ -1,6 +1,6 @@
 'use strict';
 
-var NavigatorListener = function() {
+var AlertListener = function() {
   var subscribers = {};
 
   return {
@@ -33,11 +33,8 @@ var NavigatorListener = function() {
           subscriberFun(message);
         }
       }
-    },
-    goToComponent: function(componentName) {
-      this.putMessage(componentName);
     }
   };
 };
 
-module.exports = NavigatorListener;
+module.exports = AlertListener;

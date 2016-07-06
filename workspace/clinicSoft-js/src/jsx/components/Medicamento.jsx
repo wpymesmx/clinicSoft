@@ -8,6 +8,8 @@ var ErrorControlMixin = require('../mixins/ErrorControlMixin.js');
 var Constants = require('../utils/Constants.js');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
+//sweetalert for pupup
+var swal=require('sweetalert');
 
 var Medicamento = React.createClass({
   mixins: [NavigatorMixin(), ErrorControlMixin()],
@@ -95,21 +97,39 @@ var Medicamento = React.createClass({
       'condicion_venta': this.state.condicion_venta,
       'estado': this.state.estado
     };
-
-    medicamentoService.insertar(params, onSuccess, this.onError, this.onFail);
+    swal({title: "Confirmar Registro?",
+       text: "Desea Continuar Con El Registro Del Medicamento!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si,Guardar!",
+          cancelButtonText: "No,Cancelar!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+          },
+          function(isConfirm){
+             if (isConfirm) {
+                 medicamentoService.insertar(params, onSuccess, this.onError, this.onFail),
+                 swal("Aceptar!","Medicamento Registrado Con Exito.",
+                "success");
+             }else {
+                swal("Cancelar", "El Registro Del Medicamento Fue Cancelado.", "error");
+             }
+           });
+    //swal("Here's a message!")
   },
   render: function() {
     //console.log('# App->render #');
     return (
-      <div className='container'>
-      <div className="panel panel-default">
+     <div className='container'>
+     <div className="panel panel-default">
      <div className="panel-body">
         Basic panel example
       </div>
       </div>
         <div className='card card-container'>
-          <div id='profile-img' className='profile-img-card'></div>
-          <p id='profile-name' className='profile-name-card'></p>
+          <div id='profile-img' className=''></div>
+          <p id='profile-name' className=''></p>
           <div className='form-signin'>
             <span id='reauth-email' className='reauth-email'></span>
             <input type='text' className='form-control' placeholder='Id' value={this.state.id} onChange={this.onChangeId} />
@@ -118,8 +138,8 @@ var Medicamento = React.createClass({
             <input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} />
             <input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn} />
             <input type='text' className='form-control' placeholder='Condición Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta} />
-            <input type='text' className='form-control' placeholder='Estado' value={this.state.estado} onChange={this.onChangeEstado} />
-            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Sign in' onClick={this.onClickEntrar} />
+            Estado: <input type="radio" className='form-control' placeholder='Estado' value={this.state.estado} onChange={this.onChangeEstado} />
+            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEntrar} />
           </div>
         </div>
       </div>

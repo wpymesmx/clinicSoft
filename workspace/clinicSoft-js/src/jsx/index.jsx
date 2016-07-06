@@ -23,7 +23,7 @@ window.addEventListener('hashchange', function(evt) {
   //console.log('newURL-> ' + evt.newURL);
   //console.log('oldURL-> ' + evt.oldURL);
   //TODO ejecutar proceso de seguridad y page not found
-}); 
+});
 
 window.resetApp = function() {
   var usuario = Usuario();

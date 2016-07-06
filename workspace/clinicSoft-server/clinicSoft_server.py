@@ -22,7 +22,7 @@ from src.view.medicamento_view import actualizar_medicamento
 #Crear objeto de servidor flask
 app = Flask(__name__)
 
-@app.before_request
+#@app.before_request
 def do_before_request():
   """
     funcion que se ejecuta antes de cada peticion o request
@@ -38,7 +38,7 @@ def do_before_request():
     #validar si se debe filtrar el patron /*/admin/*
     #todo lo que sea admin debe pasar por el filtro de seguridad
     if(re.match('\/{1}[a-zA-Z]*\/{1}admin\/{1}[a-zA-Z]*\/?', request.path)):
-      filter_result = valida_token(request.headers['JWS'])
+      filter_result = valida_token(request.headers['jws'])
 
       if(filter_result):
         log4py.info('Token correcto...')
@@ -75,7 +75,7 @@ def do_after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
   #Establecer Access-Control-Max-Age a 1 en desarrollo para indicar que solo guarde cache el navegador por 1 segundo
   #y quitar esta opcion en produccion para que el navegador decida cuando limpiar cache
-  #response.headers.add('Access-Control-Max-Age', '1')
+  response.headers.add('Access-Control-Max-Age', '1')
 
   return response
 

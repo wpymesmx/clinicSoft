@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var Constants = {
   lastDayInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -17,6 +17,8 @@ var Constants = {
   WIDTH: 'width',
   HEIGHT: 'height',
   CONEXION_ERROR: 'Se ha producido un error de conexión con el servidor, le recomendamos checar su conexión.',
+  ES: 'ES',
+  EN: 'EN',
   LOGIN_VIEW: 'login',
   HOME_VIEW: 'home',
   WELCOME_VIEW: 'welcome'

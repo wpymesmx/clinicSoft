@@ -29,7 +29,7 @@ def insertar_usuario():
     usuarioService = UsuarioService()
     service_response = usuarioService.insertar_usuario(jsonRequest['user'], jsonRequest['passwd'])
 
-    payload = json.dumps({ 'code': 200, 'message': 'OK', 'payload': service_response}, cls=ObjectEncoder)
+    payload = json.dumps({'code': 200, 'message': 'OK', 'payload': service_response}, cls=ObjectEncoder)
     response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:

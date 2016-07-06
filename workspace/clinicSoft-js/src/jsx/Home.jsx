@@ -14,8 +14,7 @@ var Home = React.createClass({
     //console.log('# Home->getInitialState #');
     return {
       componentKey: 'Home',
-      mainComponent: undefined,
-      contador: 0
+      mainComponent: undefined
     };
   },
   componentWillMount: function() {
@@ -61,13 +60,11 @@ var Home = React.createClass({
   render: function() {
     //console.log('# Home->render #');
     var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
-    var valorContador = 'suma=' + this.state.contador;
 
     return (
-      <div style={{width: '100%', height: '100%'}}>
+      <div className='home'>
         <div>header</div>
         <div>{mainComponent}</div>
-        <div><input type='button' value={valorContador} onClick={this.onClickContadorMasMas}/></div>
         <div>footer</div>
       </div>
     );

@@ -115,5 +115,5 @@ gulp.task('dist', ['copy-dist-js']);
 gulp.task('default', ['server-dev', 'watch-dev']);
 //servidor modo produccion
 //gulp.task('default', ['server-prod', 'watch-prod']);
-gulp.task('dev', ['concat-dev', 'less', 'copy-html', 'copy-fonts']);
+gulp.task('dev', ['concat-dev', 'less', 'copy-html']);
 gulp.task('prod', ['concat-prod', 'less', 'copy-html', 'copy-fonts']);

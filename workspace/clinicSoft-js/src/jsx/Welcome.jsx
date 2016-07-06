@@ -41,7 +41,7 @@ var Welcome = React.createClass({
   render: function() {
     //console.log('# App->render #');
     return (
-    <div><input type='button' value='exit' onClick={this.goToLogin}/></div>
+      <div className='welcome'>welcome</div>
     );
   }
 });

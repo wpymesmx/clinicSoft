@@ -3,25 +3,26 @@
 var React = require('react');
 //mixins
 var NavigatorMixin = require('../mixins/NavigatorMixin.js');
-var ErrorControlMixin = require('../mixins/ErrorControlMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
 //sweetalert for pupup
 var swal=require('sweetalert');
+//radio group
+var RadioGroup=require('react-radio-group');
+var Radio=require('react-radio-group');
 
 var Medicamento = React.createClass({
-  mixins: [NavigatorMixin(), ErrorControlMixin()],
+  mixins: [NavigatorMixin()],
   getInitialState: function() {
     return {
-      id:'',
       nombre_comercial: '',
       nombre_generico: '',
       farmaceutica: '',
       elaborado_en: '',
       condicion_venta: '',
-      estado:''
+      estado:'A'
     };
   },
   componentWillMount: function() {
@@ -76,12 +77,7 @@ var Medicamento = React.createClass({
       estado: evt.target.value
     });
   },
-  onChangeId: function(evt) {
-    this.setState({
-      id: evt.target.value
-    });
-  },
-  onClickEntrar: function(evt) {
+   onClickGuardar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
@@ -89,7 +85,6 @@ var Medicamento = React.createClass({
     };
 
     var params = {
-      'cve_medicamento': this.state.id,
       'nombre_comercial': this.state.nombre_comercial,
       'nombre_generico': this.state.nombre_generico,
       'farmaceutica': this.state.farmaceutica,
@@ -122,24 +117,27 @@ var Medicamento = React.createClass({
     //console.log('# App->render #');
     return (
      <div className='container'>
-     <div className="panel panel-default">
-     <div className="panel-body">
-        Basic panel example
-      </div>
-      </div>
         <div className='card card-container'>
           <div id='profile-img' className=''></div>
           <p id='profile-name' className=''></p>
           <div className='form-signin'>
             <span id='reauth-email' className='reauth-email'></span>
-            <input type='text' className='form-control' placeholder='Id' value={this.state.id} onChange={this.onChangeId} />
+            <legend>Datos del medicamento</legend>
             <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} />
             <input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico} />
             <input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} />
             <input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn} />
             <input type='text' className='form-control' placeholder='Condición Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta} />
-            Estado: <input type="radio" className='form-control' placeholder='Estado' value={this.state.estado} onChange={this.onChangeEstado} />
-            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEntrar} />
+            <dev>
+                <fieldset>
+                   Estado del medicamento:
+                   <br />
+                   <input name="" type="radio"  value={this.state.estado} onChange={this.onChangeEstado} checked/>Activo
+                   <br />
+                   <input name="" type="radio"  value={this.state.estado} onChange={this.onChangeEstado}  disabled='true' />Inactivo
+                </fieldset>
+            </dev>
+            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
           </div>
         </div>
       </div>

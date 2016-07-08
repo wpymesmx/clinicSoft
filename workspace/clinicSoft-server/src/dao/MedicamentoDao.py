@@ -40,7 +40,7 @@ class MedicamentoDao(SQLiteDao):
 
     return dao_response
 
-  def insertar_medicamento(self, cve_medicamento, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta):
+  def insertar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):
     """
        Insertar un nuevo medicamento
     """
@@ -51,10 +51,14 @@ class MedicamentoDao(SQLiteDao):
     try:
       self.open()
       cursor = self.get_cursor()
+      # se obtiene o calcula el siguiente pk de la tabla MEDICAMENTO
+      cursor.execute(''' SELECT IFNULL(MAX(MED_ID), 0)+1 NEXT_ID_MED FROM MEDICAMENTO ''')
+      id_med = cursor.fetchone()[0]
+      # insertamos el nuevo medicamento en db
       cursor.execute('''
-        INSERT INTO MEDICAMENTO (MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA)
-        VALUES (?, ?, ?, ?, ?, ?);
-      ''', (cve_medicamento, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta))
+        INSERT INTO MEDICAMENTO (MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA,MED_ESTADO)
+        VALUES (?, ?, ?, ?, ?, ?,?);
+      ''', (id_med, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado))
       self.commit()
 
     except Exception as err:

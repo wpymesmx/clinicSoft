@@ -21,7 +21,7 @@ def insertar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.insertar_medicamento(jsonRequest['cve_medicamento'], jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'])
+    service_response = medicamentService.insertar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'],jsonRequest['condicion_venta'],jsonRequest['estado'])
 
     response = Response(service_response, status=200, mimetype='application/json')
 

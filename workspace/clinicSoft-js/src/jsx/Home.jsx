@@ -57,14 +57,9 @@ var Home = React.createClass({
         console.log('Home-> Vista no configurada' + viewName);
     }
   },
-  onClickContadorMasMas: function(evt) {
-    this.setState({
-      contador: this.state.contador+1
-    });
-  },
   render: function() {
     //console.log('# Home->render #');
-    var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
+    var mainComponent = this.state.mainComponent == undefined ? (<Medicamento />) : this.state.mainComponent;
 
     return (
       <div className='home'>

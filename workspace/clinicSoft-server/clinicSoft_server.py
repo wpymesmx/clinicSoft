@@ -22,7 +22,7 @@ from src.view.medicamento_view import actualizar_medicamento
 #Crear objeto de servidor flask
 app = Flask(__name__)
 
-#@app.before_request
+@app.before_request
 def do_before_request():
   """
     funcion que se ejecuta antes de cada peticion o request
@@ -30,15 +30,15 @@ def do_before_request():
     si se regresa un response ya no se ejecuta el request que se solicito
   """
   log4py.info('## do_before_request ##')
-  log4py.info('path-> {0}'.format(request.path))
   filter_result = None
   payload = None
+  jsonRequest = None
 
   try:
     #validar si se debe filtrar el patron /*/admin/*
     #todo lo que sea admin debe pasar por el filtro de seguridad
     if(re.match('\/{1}[a-zA-Z]*\/{1}admin\/{1}[a-zA-Z]*\/?', request.path)):
-      filter_result = valida_token(request.headers['jws'])
+      filter_result = valida_token(request.args.get('Web_Token'))
 
       if(filter_result):
         log4py.info('Token correcto...')
@@ -70,9 +70,9 @@ def do_after_request(response):
   """
   log4py.info('## do_after_request ##')
   response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Credentials', True)
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, withCredentials, jws')
-  response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
+  response.headers.add('Access-Control-Allow-Credentials', False)
+  response.headers.add('Access-Control-Allow-Headers', 'Origin, Content-type, Authorization, WithCredentials, Web_Token, Accept')
+  response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   #Establecer Access-Control-Max-Age a 1 en desarrollo para indicar que solo guarde cache el navegador por 1 segundo
   #y quitar esta opcion en produccion para que el navegador decida cuando limpiar cache
   response.headers.add('Access-Control-Max-Age', '1')

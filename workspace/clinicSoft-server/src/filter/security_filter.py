@@ -16,7 +16,7 @@ def valida_token(jws):
     securityService = SecurityService()
     #log4py.info('jws-> {0}'.format(jws))
     jwt = securityService.decode_jws(jws)
-    log4py.info('jwt-> {0}'.format(jwt))
+    #log4py.info('jwt-> {0}'.format(jwt))
     #TODO agregar validaciones extra
     filter_result = True
 

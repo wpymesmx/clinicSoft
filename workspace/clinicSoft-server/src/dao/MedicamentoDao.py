@@ -11,7 +11,7 @@ class MedicamentoDao(SQLiteDao):
   def __init__(self):
     pass
 
-  def consultar_medicamento(self, nombre_comercial, nombre_generico):
+  def buscar_medicamento(self, nombre_comercial, nombre_generico):
     log4py.info('## consultar_medicamento  ##')
     dao_response = None
     cursor = None

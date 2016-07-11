@@ -3,27 +3,32 @@
 var React = require('react');
 //mixins
 var NavigatorMixin = require('../mixins/NavigatorMixin.js');
-var ErrorControlMixin = require('../mixins/ErrorControlMixin.js');
+var LanguageMixin = require('../mixins/LanguageMixin.js');
+var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
 
 var Medicamento = React.createClass({
-  mixins: [NavigatorMixin(), ErrorControlMixin()],
+  mixins: [NavigatorMixin(), AlertMixin(), LanguageMixin()],
   getInitialState: function() {
     return {
+      componentKey: 'Medicamento',
+      language: window.language,
       id:'',
       nombre_comercial: '',
       nombre_generico: '',
       farmaceutica: '',
       elaborado_en: '',
       condicion_venta: '',
-      estado:''
+      estado:'',
+      lista_medicamentos: []
     };
   },
   componentWillMount: function() {
     //console.log('# App->componentWillMount #');
+    this.subscribeLanguage(this.state.componentKey, this.changeSessionLanguage);
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
@@ -43,6 +48,7 @@ var Medicamento = React.createClass({
   },
   componentWillUnmount: function() {
     //console.log('# App->componentWillUnmount #');
+    this.unSubscribeLanguage(this.state.componentKey);
   },
   onChangeNombreComercial: function(evt) {
     this.setState({
@@ -84,26 +90,48 @@ var Medicamento = React.createClass({
 
     var onSuccess = function(response) {
       console.log('# success  #');
+      self.setState({
+        lista_medicamentos: response.payload
+      });
     };
 
     var params = {
-      'cve_medicamento': this.state.id,
       'nombre_comercial': this.state.nombre_comercial,
       'nombre_generico': this.state.nombre_generico,
-      'farmaceutica': this.state.farmaceutica,
-      'elaborado_en': this.state.elaborado_en,
-      'condicion_venta': this.state.condicion_venta,
-      'estado': this.state.estado
     };
 
-    medicamentoService.insertar(params, onSuccess, this.onError, this.onFail);
+    medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
   render: function() {
     //console.log('# App->render #');
+    var listaMedicamentosDiv = (<div></div>);
+    //console.log(this.state.lista_medicamentos.length);
+    if(this.state.lista_medicamentos.length > 0) {
+      var rows_medicamento = this.state.lista_medicamentos.map(function(medicamento) {
+        return (
+          <tr key={medicamento.medicamento_id}>
+            <td>{medicamento.medicamento_id}</td>
+            <td>{medicamento.nombre_comercial}</td>
+            <td>{Medicamento.nombre_generico}</td>
+          </tr>
+        );
+      });
+
+      listaMedicamentosDiv = (
+        <div>
+          <table className='table table-striped table-bordered table-hover'>
+           <tbody> 
+            {rows_medicamento}
+          </tbody>
+          </table>
+        </div>
+      );
+    }
+
     return (
       <div className='container'>
       <div className="panel panel-default">
-     <div className="panel-body">
+      <div className="panel-body">
         Basic panel example
       </div>
       </div>
@@ -122,6 +150,7 @@ var Medicamento = React.createClass({
             <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Sign in' onClick={this.onClickEntrar} />
           </div>
         </div>
+        {listaMedicamentosDiv}
       </div>
     );
   }

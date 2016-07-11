@@ -1,0 +1,23 @@
+Agregar libreria sweetalert
+
+Paso 1:
+npm install sweetalert
+Paso 2: Cargar el sweetalert en el package
+ "sweetalert":"^1.1.3"
+Paso 3:Copiar el archivo .css a el directorio less 
+y guardarlo como sweetalert.less
+
+***Paso intermedio***
+****Importante volver a ejecurtar npm install 
+Para que vuelva a a instalar todo lo que hay en el packets
+
+Paso 4: Importar el sweetalert.less en los app.less
+@import 'sweetalert.less';
+Paso 5: Importar el sweetalert en la ventana.jsx
+var swal=require('sweetalert');
+Paso 6: Ya puedes crear un ejmeplo de un popup
+swal("Here's a message!")
+
+//***EJEMPLOS RELACIONADOS  sweetalert**!!
+https://www.ludu.co/lesson/how-to-use-sweetalert
+http://t4t5.github.io/sweetalert/

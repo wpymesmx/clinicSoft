@@ -21,7 +21,7 @@ def insertar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.insertar_medicamento(jsonRequest['cve_medicamento'], jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'])
+    service_response = medicamentService.insertar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'],jsonRequest['condicion_venta'],jsonRequest['estado'])
 
     response = Response(service_response, status=200, mimetype='application/json')
 
@@ -75,6 +75,7 @@ def buscar_medicamento():
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
     service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'])
+
     payload = json.dumps({
      'code': 200,
      'message': 'OK',
@@ -88,7 +89,6 @@ def buscar_medicamento():
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
-
   return response
 
 def eliminar_medicamento():

@@ -8,14 +8,14 @@ class MedicamentoService(object):
   def __init__(self):
     self.medicamDao = MedicamentoDao()
 
-  def insertar_medicamento(self,cve_medicamento,nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta):
+  def insertar_medicamento(self,nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):
     """
     Servicio utilizado para la gestion de medicamento
     """
     log4py.info('## insertar_medicamento ##')
     service_response = None
 
-    service_response = self.medicamDao.insertar_medicamento(cve_medicamento, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta)
+    service_response = self.medicamDao.insertar_medicamento(nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado)
 
     return service_response
 

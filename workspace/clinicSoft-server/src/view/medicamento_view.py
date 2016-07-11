@@ -3,6 +3,7 @@ import traceback
 from flask import Response
 from flask import request
 from Log4py import log4py
+from pickle import dump, dumps, load, loads
 
 from src.view.util.ObjectEncoder import ObjectEncoder
 from src.service.MedicamentoService import MedicamentoService
@@ -73,21 +74,16 @@ def buscar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], cls=ObjectEncoder)
-    payload = json.dumps({
-     'code': 200,
-     'message': 'OK',
-     'payload': service_response
-    })
-
-    response = Response(payload, status=200, mimetype='application/json')
+    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'])
+    pickled_obj = dumps(service_response)
+    print(pickled_obj)
+    response = Response(pickled_obj, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
-
   return response
 
 def eliminar_medicamento():

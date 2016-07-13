@@ -11,8 +11,10 @@ build/
 # comunes
 *.log
 *.db
-*.out.*
+.out*
+.out
 *.out
+*.out*
 
 #sqlite3
 .sqlite3

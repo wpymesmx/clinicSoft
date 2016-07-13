@@ -25,7 +25,8 @@ var Medicamento = React.createClass({
       elaborado_en: '',
       condicion_venta: '',
       estado:'A',
-      lista_medicamentos: []
+      lista_medicamentos: [],
+      comboValue: 0
     };
   },
   componentWillMount: function() {
@@ -120,6 +121,11 @@ var Medicamento = React.createClass({
            });
 */
   },
+  onChangeCombo: function(evt) {
+   this.setState({
+     comboValue: evt.target.value
+   });  
+  },
   render: function() {
     //console.log('# App->render #');
     var listaMedicamentosDiv = (<div></div>);
@@ -172,6 +178,18 @@ var Medicamento = React.createClass({
           </div>
         </div>
         {listaMedicamentosDiv}
+        <div>
+          <div>
+            opcion seleccionada: {this.state.comboValue}
+          </div>
+          <div>
+            <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+              <option value='0'>0 - Selecciona un valor</option>
+              <option value='1'>1 - descripcion</option>
+              <option value='2'>2 - desripcion</option>
+            </select>
+          </div>
+        </div>
       </div>
     );
   }

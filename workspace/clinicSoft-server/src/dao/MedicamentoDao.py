@@ -1,5 +1,6 @@
 from src.dao.SQLiteDao import SQLiteDao
 from src.dao.row.medicamento_row import consulta_medicamento_row
+from src.dao.row.medicamento_row import llenar_combo_row
 from src.dao.row.medicamento_row import row_id_medicamento
 from Log4py import log4py
 
@@ -11,21 +12,22 @@ class MedicamentoDao(SQLiteDao):
   def __init__(self):
     pass
 
-  def buscar_medicamento(self, nombre_comercial, nombre_generico):
+  def buscar_medicamento(self, nombre_comercial):
     log4py.info('## consultar_medicamento  ##')
     dao_response = None
     cursor = None
+    aux = 'A'
 
     try:
       self.open()
       self.set_row_factory(consulta_medicamento_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO
+        SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA, MED_ESTADO
         FROM MEDICAMENTO
-        WHERE MED_NOMBRE_COMERCIAL = ?
-        OR MED_NOMBRE_GENERICO = ?
-      ''', (nombre_comercial, nombre_generico))
+        WHERE MED_ESTADO = ?
+        AND MED_NOMBRE_COMERCIAL = ?
+      ''', (aux, nombre_comercial))
 
       dao_response = cursor.fetchall()
       self.commit()
@@ -38,6 +40,33 @@ class MedicamentoDao(SQLiteDao):
     finally:
       self.close(cursor)
 
+    return dao_response
+
+  def llenar_combo_medicamento(self):
+    log4py.info('## llenar_combo_medicamento  ##')
+    dao_response = None
+    cursor = None
+    aux = 'A'
+    try:
+      self.open()
+      self.set_row_factory(llenar_combo_row)
+      cursor = self.get_cursor()
+      cursor.execute('''
+        SELECT MED_ID,MED_NOMBRE_COMERCIAL
+        FROM MEDICAMENTO
+        WHERE MED_ESTADO = ?
+      ''', (aux))
+
+      dao_response = cursor.fetchall()
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
     return dao_response
 
   def insertar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):

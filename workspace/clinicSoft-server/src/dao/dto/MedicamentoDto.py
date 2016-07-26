@@ -7,3 +7,4 @@ class MedicamentoDto(object):
     self.farmaceutica=''
     self.elaborado_en=''
     self.condicion_venta=''
+    self.estado=''

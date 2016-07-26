@@ -19,14 +19,25 @@ class MedicamentoService(object):
 
     return service_response
 
-  def buscar_medicamento(self, nombre_comercial, nombre_generico):
+  def buscar_medicamento(self, nombre_comercial):
     """
     Función para buscar un medicamento
     """
     log4py.info('## buscar_medicamento ##')
     service_response = None
 
-    service_response = self.medicamDao.buscar_medicamento(nombre_comercial, nombre_generico)
+    service_response = self.medicamDao.buscar_medicamento(nombre_comercial)
+
+    return service_response
+
+  def llenar_combo_medicamento(self):
+    """
+    Función para buscar un medicamento
+    """
+    log4py.info('## llenar_combo_medicamento ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_medicamento()
 
     return service_response
 

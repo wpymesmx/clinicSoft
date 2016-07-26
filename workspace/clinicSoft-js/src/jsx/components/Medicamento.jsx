@@ -11,6 +11,9 @@ var Constants = require('../utils/Constants.js');
 var medicamentoService = require('../services/MedicamentoService.js');
 //sweetalert for pupup
 var swal=require('sweetalert');
+//componentes de la aplicacion
+var MedicamentoAlta = require('./MedicamentoAlta.jsx');
+
 var Medicamento = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin(), LanguageMixin()],
   getInitialState: function() {
@@ -114,15 +117,14 @@ var Medicamento = React.createClass({
     };
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
-
-   onClickNuevo: function(evt) {
+  onClickNuevo: function(evt) {
     var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
     };
+
+    this.refs.medicamentoAlta.show();
   },
-
-
   render: function() {
     //console.log('# App->render #');
     var listaMedicamentosDiv = (<div></div>);
@@ -159,7 +161,6 @@ var Medicamento = React.createClass({
           </table>
         </div>
       );
-
     }
 
     var listaMedicamentosComboOption = [];
@@ -174,10 +175,9 @@ var Medicamento = React.createClass({
       listaMedicamentosComboOption.push(rows_medicamento);
     }
 
-
-
     return (
      <div className='container'>
+       <MedicamentoAlta ref='medicamentoAlta' />
 
         <div className='card card-container'>
           <div id='profile-img' className=''></div>
@@ -186,16 +186,16 @@ var Medicamento = React.createClass({
             <span id='reauth-email' className='reauth-email'></span>
             <legend>Gestión del medicamento</legend>
             <div>
-               <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/>
-               <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
-                  {listaMedicamentosComboOption}
-               </select>
+              <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/>
+              <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+                {listaMedicamentosComboOption}
+              </select>
             </div>
             <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar' onClick={this.onClickBuscar} />
             <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Nuevo' onClick={this.onClickNuevo} />
           </div>
         </div>
-            {listaMedicamentosDiv}
+        {listaMedicamentosDiv}
       </div>
     );
   }

@@ -10,7 +10,7 @@ var Constants = require('../utils/Constants.js');
 /**
 * componente utilizado para mostrar mensajes en forma de alert
 */
-var Alert = React.createClass({
+var AlertComponent = React.createClass({
   mixins: [LanguageMixin()],
   getDefaultProps: function() {
     //console.log('# Alert->getDefaultProps #');
@@ -93,7 +93,7 @@ var Alert = React.createClass({
         button_yes: alertConfig.button_yes,
         button_no: alertConfig.button_no,
         onClickYes: alertConfig.onClickYes,
-        onClickNo: alertConfig.onClickNo 
+        onClickNo: alertConfig.onClickNo
       }
     });
   },
@@ -116,14 +116,14 @@ var Alert = React.createClass({
   },
   onClickYes: function(evt){
     this.hideAlert();
-    
+
     if(this.state.alertConfig.button_yes == true && this.state.alertConfig.onClickYes != undefined) {
       this.state.alertConfig.onClickYes();
     }
   },
   onClickNo: function(evt){
     this.hideAlert();
-    
+
     if(this.state.alertConfig.button_no == true && this.state.alertConfig.onClickNo != undefined) {
       this.state.alertConfig.onClickNo();
     }
@@ -135,7 +135,7 @@ var Alert = React.createClass({
     var classNameAlert = '';
     var divButtonYes = '';
     var divButtonNo = '';
-    
+
     if(this.state.show == true) {
       classNameAlert = CLASS_SHOW;
 
@@ -177,4 +177,4 @@ var Alert = React.createClass({
   }
 });
 
-module.exports = Alert;
+module.exports = AlertComponent;

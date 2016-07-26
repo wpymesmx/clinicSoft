@@ -9,7 +9,7 @@ var Constants = require('./utils/Constants.js');
 //components
 var Login = require('./Login.jsx');
 var Home = require('./Home.jsx');
-var Alert = require('./components/AlertComponent.jsx');
+var AlertComponent = require('./components/AlertComponent.jsx');
 
 var App = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
@@ -70,7 +70,7 @@ var App = React.createClass({
 
     return (
       <div className='app'>
-        <Alert ref='alertComponent'/>
+        <AlertComponent ref='alertComponent'/>
         {mainComponent}
       </div>
     );

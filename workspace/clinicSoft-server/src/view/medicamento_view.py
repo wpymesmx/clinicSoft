@@ -74,7 +74,7 @@ def buscar_medicamento():
     #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'])
+    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'])
 
     payload = json.dumps({
      'code': 200,

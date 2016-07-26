@@ -16,18 +16,18 @@ var swal=require('sweetalert');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
 
-var MedicamentoAlta = React.createClass({
+var MedicamentoEditar = React.createClass({
   mixins: [LanguageMixin()],
   getDefaultProps: function() {
-    //console.log('# MedicamentoAlta->getDefaultProps #');
+    //console.log('# MedicamentoEditar->getDefaultProps #');
     return {
       zindex: 2
     };
   },
   getInitialState: function() {
-    //console.log('# MedicamentoAlta->getInitialState #');
+    //console.log('# MedicamentoEditar->getInitialState #');
     return {
-      componentKey: 'MedicamentoAlta',
+      componentKey: 'MedicamentoEditar',
       language: window.language,
       show: false,
       zindex: this.props.zindex,
@@ -40,27 +40,27 @@ var MedicamentoAlta = React.createClass({
     };
   },
   componentWillMount: function() {
-    //console.log('# MedicamentoAlta->componentWillMount #');
+    //console.log('# MedicamentoEditar->componentWillMount #');
     this.subscribeLanguage(this.state.componentKey, this.changeSessionLanguage);
   },
   componentDidMount: function() {
-    //console.log('# MedicamentoAlta->componentDidMount #');
+    //console.log('# MedicamentoEditar->componentDidMount #');
   },
   componentWillReceiveProps: function(nextProps) {
-    //console.log('# MedicamentoAlta->componentWillReceiveProps #');
+    //console.log('# MedicamentoEditar->componentWillReceiveProps #');
   },
   shouldComponentUpdate: function() {
-    //console.log('# MedicamentoAlta->shouldComponentUpdate #');
+    //console.log('# MedicamentoEditar->shouldComponentUpdate #');
     return true;
   },
   componentWillUpdate: function() {
-    //console.log('# MedicamentoAlta->componentWillUpdate #');
+    //console.log('# MedicamentoEditar->componentWillUpdate #');
   },
   componentDidUpdate: function() {
-    //console.log('# MedicamentoAlta->componentDidUpdate #');
+    //console.log('# MedicamentoEditar->componentDidUpdate #');
   },
   componentWillUnmount: function() {
-    //console.log('# MedicamentoAlta->componentWillUnmount #');
+    //console.log('# MedicamentoEditar->componentWillUnmount #');
     this.unSubscribeLanguage(this.state.componentKey);
   },
 
@@ -152,7 +152,7 @@ var MedicamentoAlta = React.createClass({
            });
   },
   render: function() {
-    //console.log('# MedicamentoAlta->render #');
+    //console.log('# MedicamentoEditar->render #');
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
@@ -198,4 +198,4 @@ var MedicamentoAlta = React.createClass({
   }
 });
 
-module.exports = MedicamentoAlta;
+module.exports = MedicamentoEditar;

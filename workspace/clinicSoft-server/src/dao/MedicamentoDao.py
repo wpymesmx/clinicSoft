@@ -12,7 +12,7 @@ class MedicamentoDao(SQLiteDao):
   def __init__(self):
     pass
 
-  def buscar_medicamento(self, nombre_comercial):
+  def buscar_medicamento(self, nombre_comercial,nombre_generico,farmaceutica, elaborado_en, condicion_venta):
     log4py.info('## consultar_medicamento  ##')
     dao_response = None
     cursor = None
@@ -22,13 +22,31 @@ class MedicamentoDao(SQLiteDao):
       self.open()
       self.set_row_factory(consulta_medicamento_row)
       cursor = self.get_cursor()
-      cursor.execute('''
+      query = ('''
         SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA, MED_ESTADO
         FROM MEDICAMENTO
         WHERE MED_ESTADO = ?
-        AND MED_NOMBRE_COMERCIAL = ?
-      ''', (aux, nombre_comercial))
+         ''')
 
+
+
+      if nombre_comercial != '':
+        query += ' AND MED_NOMBRE_COMERCIAL like \'%' + nombre_comercial + '%\''
+
+      if nombre_generico != '':
+        query = query + ' AND MED_NOMBRE_GENERICO like \'%' + nombre_generico + '%\''
+
+      if farmaceutica != '':
+        query = query + ' AND MED_FARMACEUTICA like \'%' + farmaceutica + '%\''
+
+      if elaborado_en != '':
+        query = query + ' AND MED_ELABORADO_EN like \'%' + elaborado_en + '%\''
+
+      if condicion_venta != '':
+        query = query + ' AND MED_CONDICION_VENTA like \'%' + condicion_venta + '%\''
+
+      log4py.info(query)
+      cursor.execute(query, (aux))
       dao_response = cursor.fetchall()
       self.commit()
 
@@ -49,10 +67,10 @@ class MedicamentoDao(SQLiteDao):
     aux = 'A'
     try:
       self.open()
-      self.set_row_factory(llenar_combo_row)
+      self.set_row_factory(consulta_medicamento_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT MED_ID,MED_NOMBRE_COMERCIAL
+        SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA, MED_ESTADO
         FROM MEDICAMENTO
         WHERE MED_ESTADO = ?
       ''', (aux))

@@ -12,6 +12,7 @@ var medicamentoService = require('../services/MedicamentoService.js');
 //sweetalert for pupup
 var swal=require('sweetalert');
 //componentes de la aplicacion
+var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var MedicamentoAlta = require('./MedicamentoAlta.jsx');
 
 var Medicamento = React.createClass({
@@ -42,10 +43,18 @@ var Medicamento = React.createClass({
     var onSuccess = function(response) {
       console.log('# success  #');
       self.setState({
-        lista_combo : response.payload
+        lista_medicamentos: response.payload
       });
     };
-    medicamentoService.llenarCombo({},onSuccess, this.onError, this.onFail);
+
+    var params = {
+        'nombre_comercial': this.state.nombre_comercial,
+        'nombre_generico': this.state.nombre_generico,
+        'farmaceutica': this.state.farmaceutica,
+        'elaborado_en': this.state.elaborado_en,
+        'condicion_venta': this.state.condicion_venta
+    };
+    medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -68,6 +77,13 @@ var Medicamento = React.createClass({
   onChangeNombreComercial: function(evt) {
     this.setState({
       nombre_comercial: evt.target.value,
+      comboValue: 0
+
+    });
+  },
+   onChangeNombreGenerico: function(evt) {
+    this.setState({
+      nombre_generico: evt.target.value,
       comboValue: 0
 
     });
@@ -113,7 +129,11 @@ var Medicamento = React.createClass({
     };
 
     var params = {
-        'nombre_comercial': this.state.nombre_comercial
+        'nombre_comercial': this.state.nombre_comercial,
+        'nombre_generico': this.state.nombre_generico,
+        'farmaceutica': this.state.farmaceutica,
+        'elaborado_en': this.state.elaborado_en,
+        'condicion_venta': this.state.condicion_venta
     };
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
@@ -124,6 +144,14 @@ var Medicamento = React.createClass({
     };
 
     this.refs.medicamentoAlta.show();
+  },
+  onClickEditar: function(evt) {
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+    };
+
+    this.refs.medicamentoEditar.show();
   },
   render: function() {
     //console.log('# App->render #');
@@ -139,6 +167,7 @@ var Medicamento = React.createClass({
             <td>{medicamento.elaborado_en}</td>
             <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
+            <td></td>
           </tr>
         );
 
@@ -148,13 +177,24 @@ var Medicamento = React.createClass({
         <div>
           <table className='table table-striped table-bordered table-hover'>
            <tbody>
-            <tr>
+             <tr>
              <td>Nombre Comercial</td>
              <td>Nombre Generico</td>
              <td>Farmaceutica</td>
              <td>Elaborado En</td>
              <td>Condición De Venta</td>
              <td>Estado</td>
+             <td></td>
+            </tr>
+            <tr>
+                <td> <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/>
+                </td>
+                <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
+                <td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
+                <td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
+                <td><input type='text' className='form-control' placeholder='Condición De Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta}/></td>
+                <td></td>
+                <td><input  type='button' value='Editar' onClick={this.onClickEditar} /></td>
             </tr>
             {rows_medicamento}
           </tbody>
@@ -176,23 +216,18 @@ var Medicamento = React.createClass({
     }
 
     return (
-     <div className='container'>
+     <div>
        <MedicamentoAlta ref='medicamentoAlta' />
+       <MedicamentoEditar ref='medicamentoEditar' />
 
-        <div className='card card-container'>
+        <div>
           <div id='profile-img' className=''></div>
           <p id='profile-name' className=''></p>
-          <div className='form-signin'>
+          <div>
             <span id='reauth-email' className='reauth-email'></span>
             <legend>Gestión del medicamento</legend>
-            <div>
-              <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/>
-              <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
-                {listaMedicamentosComboOption}
-              </select>
-            </div>
-            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar' onClick={this.onClickBuscar} />
-            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Nuevo' onClick={this.onClickNuevo} />
+            <input  type='button' value='Buscar' onClick={this.onClickBuscar} />
+            <input  type='button' value='Nuevo' onClick={this.onClickNuevo} />
           </div>
         </div>
         {listaMedicamentosDiv}

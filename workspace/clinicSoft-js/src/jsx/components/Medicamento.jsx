@@ -145,20 +145,23 @@ var Medicamento = React.createClass({
 
     this.refs.medicamentoAlta.show();
   },
-  onClickEditar: function(evt) {
+  onClickEditar: function(medicamento, index, evt) {
     var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
     };
 
+    console.log(medicamento.medicamento_id);
+
     this.refs.medicamentoEditar.show();
   },
   render: function() {
+    var self = this;
     //console.log('# App->render #');
     var listaMedicamentosDiv = (<div></div>);
     //console.log(this.state.lista_medicamentos.length);
     if(this.state.lista_medicamentos.length > 0) {
-      var rows_medicamento = this.state.lista_medicamentos.map(function(medicamento) {
+      var rows_medicamento = this.state.lista_medicamentos.map(function(medicamento, index) {
         return (
           <tr key={medicamento.medicamento_id}>
             <td>{medicamento.nombre_comercial}</td>
@@ -167,10 +170,9 @@ var Medicamento = React.createClass({
             <td>{medicamento.elaborado_en}</td>
             <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
-            <td></td>
+            <td><button className='editarButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
           </tr>
         );
-
       });
 
       listaMedicamentosDiv = (
@@ -187,14 +189,13 @@ var Medicamento = React.createClass({
              <td></td>
             </tr>
             <tr>
-                <td> <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/>
-                </td>
+                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
                 <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
                 <td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
                 <td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
                 <td><input type='text' className='form-control' placeholder='Condición De Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta}/></td>
                 <td></td>
-                <td><input  type='button' value='Editar' onClick={this.onClickEditar} /></td>
+                <td></td>
             </tr>
             {rows_medicamento}
           </tbody>

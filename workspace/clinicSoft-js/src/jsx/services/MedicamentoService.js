@@ -5,7 +5,8 @@ var commonService = require('./CommonService.js');
 var paths = {
   buscar: '/admin/medicamento/buscar',
   insertar: '/admin/medicamento/insertar',
-  llenarCombo: '/admin/medicamento/llenarCombo'
+  llenarCombo: '/admin/medicamento/llenarCombo',
+  actualizar:'/admin/medicamento/actualizar'
 };
 
 var MedicamentoService = {
@@ -17,6 +18,9 @@ var MedicamentoService = {
   },
   llenarCombo: function(params,onSuccess, onError, onFail) {
     commonService.ajax(paths.llenarCombo,params,onSuccess, onError, onFail);
+  },
+  actualizar: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.actualizar, params, onSuccess, onError, onFail);
   }
 };
 

@@ -153,7 +153,7 @@ var Medicamento = React.createClass({
 
     console.log(medicamento.medicamento_id);
 
-    this.refs.medicamentoEditar.show();
+    this.refs.medicamentoEditar.show(medicamento);
   },
   render: function() {
     var self = this;

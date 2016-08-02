@@ -36,7 +36,8 @@ var MedicamentoEditar = React.createClass({
       farmaceutica: '',
       elaborado_en: '',
       condicion_venta: '',
-      estado:'A',
+      estadoUno:true,
+      estadoDos:false
     };
   },
   componentWillMount: function() {
@@ -89,16 +90,30 @@ var MedicamentoEditar = React.createClass({
       condicion_venta: evt.target.value
     });
   },
-  onChangeEstado: function(evt) {
-    this.setState({
-      estado: evt.target.value
+  onChangeEstado: function(radioButton,evt) {
+    if (radioButton=='uno'){
+        this.setState({
+         estadoUno:true,
+         estadoDos:false
     });
+    }else{
+    this.setState({
+         estadoUno:false,
+         estadoDos:true
+    });
+    }
   },
 
-  show: function() {
+  show: function(medicamento) {
     //aqui limpiar componente
     this.setState({
-      show: true
+      show: true,
+      nombre_comercial:medicamento.nombre_comercial,
+      nombre_generico:medicamento.nombre_generico,
+      farmaceutica:medicamento.farmaceutica,
+      elaborado_en:medicamento.elaborado_en,
+      condicion_venta:medicamento.condicion_venta,
+      estado:medicamento.estado
     });
   },
   hide: function() {
@@ -143,7 +158,7 @@ var MedicamentoEditar = React.createClass({
           },
           function(isConfirm){
              if (isConfirm) {
-                 medicamentoService.insertar(params, onSuccess, this.onError, this.onFail),
+                 medicamentoService.actualizar(params, onSuccess, this.onError, this.onFail),
                  swal('Aceptar!','Medicamento Registrado Con Exito.',
                 'success');
              }else {
@@ -164,7 +179,7 @@ var MedicamentoEditar = React.createClass({
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Registro De Medicamento
+            Editar Medicamento
           </div>
           <div className='panel-body'>
               <input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} />
@@ -176,9 +191,9 @@ var MedicamentoEditar = React.createClass({
                 <fieldset>
                    Estado del medicamento:
                    <br />
-                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado} checked/>Activo
+                   <input name='rUno' type='radio'  value={this.state.estado} onChange={this.onChangeEstado.bind(self,'uno')} checked={this.state.estadoUno}/>Activo
                    <br />
-                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado}  disabled='true' />Inactivo
+                   <input name='rUno' type='radio'  value={this.state.estado} onChange={this.onChangeEstado.bind(self,'dos')} checked={this.state.estadoDos}/>Inactivo
                 </fieldset>
               </dev>
           </div>

@@ -138,10 +138,11 @@ class MedicamentoDao(SQLiteDao):
     finally:
       self.close(cursor)
 
-  def actualizar_medicamento(self,nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):
+  def actualizar_medicamento(self,nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med):
     """
        Insertar un nuevo medicamento
     """
+    print(nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med)
     log4py.info('##  update_medicamento dao ##')
     dao_response = None
     cursor = None
@@ -151,8 +152,8 @@ class MedicamentoDao(SQLiteDao):
       cursor = self.get_cursor()
       cursor.execute('''
         UPDATE  MEDICAMENTO SET MED_NOMBRE_COMERCIAL=?, MED_NOMBRE_GENERICO=?, MED_FARMACEUTICA=?, MED_ELABORADO_EN=?, MED_CONDICION_VENTA=?, MED_ESTADO=?
-        WHERE MED_NOMBRE_COMERCIAL=?;
-      ''', (nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado))
+        WHERE MED_ID=?;
+      ''', (nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med))
       self.commit()
 
     except Exception as err:

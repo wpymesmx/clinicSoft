@@ -180,6 +180,15 @@ var Medicamento = React.createClass({
           <table className='table table-striped table-bordered table-hover'>
            <tbody>
              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><button className='buscarButton'  onClick={this.onClickBuscar} /></td>
+                <td> <button className='nuevoButton'   onClick={this.onClickNuevo} /></td>
+             </tr>
+             <tr>
              <td>Nombre Comercial</td>
              <td>Nombre Generico</td>
              <td>Farmaceutica</td>
@@ -189,7 +198,7 @@ var Medicamento = React.createClass({
              <td></td>
             </tr>
             <tr>
-                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
+                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.c}/></td>
                 <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
                 <td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
                 <td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
@@ -227,8 +236,6 @@ var Medicamento = React.createClass({
           <div>
             <span id='reauth-email' className='reauth-email'></span>
             <legend>Gestión del medicamento</legend>
-            <input  type='button' value='Buscar' onClick={this.onClickBuscar} />
-            <input  type='button' value='Nuevo' onClick={this.onClickNuevo} />
           </div>
         </div>
         {listaMedicamentosDiv}

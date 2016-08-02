@@ -50,13 +50,13 @@ class MedicamentoService(object):
     service_response = self.medicamDao.eliminar_medicamento(medicamento_id)
     return service_response
 
-  def actualizar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):
+  def actualizar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado, id_med):
     """
     Servicio utilizado para la gestion de medicamento
     """
     log4py.info('## actualizar_medicamento ##')
     service_response = None
 
-    service_response = self.medicamDao.actualizar_medicamento(nombre_comercial, nombre_generico,  farmaceutica, elaborado_en, condicion_venta,estado)
+    service_response = self.medicamDao.actualizar_medicamento(nombre_comercial, nombre_generico,  farmaceutica, elaborado_en, condicion_venta,estado,id_med)
 
     return service_response

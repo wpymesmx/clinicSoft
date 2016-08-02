@@ -47,7 +47,7 @@ def actualizar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.update_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'], jsonRequest['estado'])
+    service_response = medicamentService.actualizar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'], jsonRequest['estado'],jsonRequest['id_med'])
 
     response = Response(service_response, status=200, mimetype='application/json')
 

@@ -37,7 +37,8 @@ var MedicamentoEditar = React.createClass({
       elaborado_en: '',
       condicion_venta: '',
       estadoUno:true,
-      estadoDos:false
+      estadoDos:false,
+      id_med: '',
     };
   },
   componentWillMount: function() {
@@ -64,7 +65,6 @@ var MedicamentoEditar = React.createClass({
     //console.log('# MedicamentoEditar->componentWillUnmount #');
     this.unSubscribeLanguage(this.state.componentKey);
   },
-
   onChangeNombreComercial: function(evt) {
     this.setState({
       nombre_comercial: evt.target.value
@@ -108,6 +108,7 @@ var MedicamentoEditar = React.createClass({
     //aqui limpiar componente
     this.setState({
       show: true,
+      id_med:medicamento.medicamento_id,
       nombre_comercial:medicamento.nombre_comercial,
       nombre_generico:medicamento.nombre_generico,
       farmaceutica:medicamento.farmaceutica,
@@ -122,12 +123,17 @@ var MedicamentoEditar = React.createClass({
       show: false
     });
   },
+  onChangeId: function(id_med) {
+    this.setState({
+      id_med: id_med
+    });
+  },
   onClickCerrar: function(evt) {
     this.setState({
       show: false
     });
   },
-    onClickGuardar: function(evt) {
+  onClickEditar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
@@ -143,15 +149,16 @@ var MedicamentoEditar = React.createClass({
       'farmaceutica': this.state.farmaceutica,
       'elaborado_en': this.state.elaborado_en,
       'condicion_venta': this.state.condicion_venta,
-      'estado': this.state.estado
+      'estado': this.state.estado,
+      'id_med':this.state.id_med
     };
 
-    swal({title: 'Confirmar Registro?',
-       text: 'Desea Continuar Con El Registro Del Medicamento!',
+    swal({title: 'Confirmar Actualización?',
+       text: 'Desea Continuar Con La Actualización Del Medicamento!',
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#DD6B55',
-          confirmButtonText: 'Si,Guardar!',
+          confirmButtonText: 'Si,Editar!',
           cancelButtonText: 'No,Cancelar!',
           closeOnConfirm: false,
           closeOnCancel: false
@@ -159,10 +166,10 @@ var MedicamentoEditar = React.createClass({
           function(isConfirm){
              if (isConfirm) {
                  medicamentoService.actualizar(params, onSuccess, this.onError, this.onFail),
-                 swal('Aceptar!','Medicamento Registrado Con Exito.',
+                 swal('Aceptar!','Medicamento Actualizado Con Exito.',
                 'success');
              }else {
-                swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
+                swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelada.', 'error');
              }
            });
   },
@@ -203,7 +210,7 @@ var MedicamentoEditar = React.createClass({
                 <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
               </span>
               <span className='componentSpace'>
-                <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
+                <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEditar} />
               </span>
             </div>
           </div>

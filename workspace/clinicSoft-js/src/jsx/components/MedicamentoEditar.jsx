@@ -206,12 +206,16 @@ var MedicamentoEditar = React.createClass({
           </div>
           <div className='panel-footer button-align-right'>
             <div className='input-group' align='center'>
-              <span className='componentSpace'>
-                <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
-              </span>
-              <span className='componentSpace'>
-                <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEditar} />
-              </span>
+
+             <div className="btn-group btn-group-justified" role="group" aria-label="...">
+                 <div className="btn-group" role="group">
+                     <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
+                 </div>
+                 <div className="btn-group" role="group">
+                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEditar} />
+                 </div>
+             </div>
+
             </div>
           </div>
         </div>

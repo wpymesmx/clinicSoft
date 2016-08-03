@@ -179,7 +179,7 @@ var Medicamento = React.createClass({
         <div>
           <table className='table table-striped table-bordered table-hover'>
            <tbody>
-             <tr>
+             <tr  className="alert alert-success" role="alert">
              <td>Nombre Comercial</td>
              <td>Nombre Generico</td>
              <td>Farmaceutica</td>
@@ -221,13 +221,11 @@ var Medicamento = React.createClass({
        <MedicamentoAlta ref='medicamentoAlta' />
        <MedicamentoEditar ref='medicamentoEditar' />
 
-        <div>
-          <div id='profile-img' className=''></div>
-          <p id='profile-name' className=''></p>
-          <div align="center">
+
+<div className="panel panel-default">
+  <div className="panel-body">
+
             <h1 align="center"> <span className="label label-success">Gestión del medicamento</span></h1>
-          </div>
-        </div>
 
          <div className="btn-group btn-group-justified" role="group" aria-label="...">
          <div className="btn-group" role="group">
@@ -253,7 +251,8 @@ var Medicamento = React.createClass({
           <button className='nuevoButton'   onClick={this.onClickNuevo} />
          </div>
          </div>
-
+  </div>
+</div>
         {listaMedicamentosDiv}
       </div>
     );

@@ -180,15 +180,6 @@ var Medicamento = React.createClass({
           <table className='table table-striped table-bordered table-hover'>
            <tbody>
              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button className='buscarButton'  onClick={this.onClickBuscar} /></td>
-                <td> <button className='nuevoButton'   onClick={this.onClickNuevo} /></td>
-             </tr>
-             <tr>
              <td>Nombre Comercial</td>
              <td>Nombre Generico</td>
              <td>Farmaceutica</td>
@@ -233,11 +224,36 @@ var Medicamento = React.createClass({
         <div>
           <div id='profile-img' className=''></div>
           <p id='profile-name' className=''></p>
-          <div>
-            <span id='reauth-email' className='reauth-email'></span>
-            <legend>Gestión del medicamento</legend>
+          <div align="center">
+            <h1 align="center"> <span className="label label-success">Gestión del medicamento</span></h1>
           </div>
         </div>
+
+         <div className="btn-group btn-group-justified" role="group" aria-label="...">
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         </div>
+         <div className="btn-group" role="group">
+         <button className='buscarButton'  onClick={this.onClickBuscar} />
+         </div>
+         <div className="btn-group" role="group">
+          <button className='nuevoButton'   onClick={this.onClickNuevo} />
+         </div>
+         </div>
+
         {listaMedicamentosDiv}
       </div>
     );

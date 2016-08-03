@@ -177,9 +177,9 @@ var Medicamento = React.createClass({
 
       listaMedicamentosDiv = (
         <div>
-          <table className='table table-striped table-bordered table-hover'>
+          <table className='table table-bordered table-hover'>
            <tbody>
-             <tr  className="alert alert-success" role="alert">
+             <tr className='alert alert-success trHeader' role='alert'>
              <td>Nombre Comercial</td>
              <td>Nombre Generico</td>
              <td>Farmaceutica</td>
@@ -205,7 +205,7 @@ var Medicamento = React.createClass({
     }
 
     var listaMedicamentosComboOption = [];
-    listaMedicamentosComboOption.push(<option value="0">SELECCIONE UNA OPCIÓN</option>);
+    listaMedicamentosComboOption.push(<option value='0'>SELECCIONE UNA OPCIÓN</option>);
     if(this.state.lista_combo.length>0){
       var rows_medicamento = this.state.lista_combo.map(function(medicamento) {
         return (
@@ -222,32 +222,32 @@ var Medicamento = React.createClass({
        <MedicamentoEditar ref='medicamentoEditar' />
 
 
-<div className="panel panel-default">
-  <div className="panel-body">
+<div className='panel panel-default'>
+  <div className='panel-body'>
 
-            <h1 align="center"> <span className="label label-success">Gestión del medicamento</span></h1>
+            <h1 align='center'> <span className='label label-success'>Gestión del medicamento</span></h1>
 
-         <div className="btn-group btn-group-justified" role="group" aria-label="...">
-         <div className="btn-group" role="group">
+         <div className='btn-group btn-group-justified' role='group' aria-label='...'>
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
          <button className='buscarButton'  onClick={this.onClickBuscar} />
          </div>
-         <div className="btn-group" role="group">
+         <div className='btn-group' role='group'>
           <button className='nuevoButton'   onClick={this.onClickNuevo} />
          </div>
          </div>

@@ -225,7 +225,7 @@ var Medicamento = React.createClass({
 <div className='panel panel-default'>
   <div className='panel-body'>
 
-            <h1 align='center'> <span className='label label-success'>Gestión del medicamento</span></h1>
+         <h1 align='center'> <span className=''>Gestión del medicamento</span></h1>
 
          <div className='btn-group btn-group-justified' role='group' aria-label='...'>
          <div className='btn-group' role='group'>

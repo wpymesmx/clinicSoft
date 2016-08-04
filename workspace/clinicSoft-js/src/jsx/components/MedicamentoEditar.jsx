@@ -175,6 +175,7 @@ var MedicamentoEditar = React.createClass({
   },
   render: function() {
     //console.log('# MedicamentoEditar->render #');
+    var self = this;
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
@@ -205,7 +206,7 @@ var MedicamentoEditar = React.createClass({
               </dev>
           </div>
           <div className='panel-footer button-align-right'>
-            <div className='input-group' align='center'>
+            <div className='input-group' style={{align: 'center'}}>
 
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                  <div className="btn-group" role="group">

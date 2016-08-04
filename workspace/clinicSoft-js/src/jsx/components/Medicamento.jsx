@@ -220,39 +220,35 @@ var Medicamento = React.createClass({
      <div>
        <MedicamentoAlta ref='medicamentoAlta' />
        <MedicamentoEditar ref='medicamentoEditar' />
-
-
-<div className='panel panel-default'>
-  <div className='panel-body'>
-
-         <h1 align='center'> <span className=''>Gestión del medicamento</span></h1>
-
-         <div className='btn-group btn-group-justified' role='group' aria-label='...'>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         </div>
-         <div className='btn-group' role='group'>
-         <button className='buscarButton'  onClick={this.onClickBuscar} />
-         </div>
-         <div className='btn-group' role='group'>
-          <button className='nuevoButton'   onClick={this.onClickNuevo} />
-         </div>
-         </div>
-  </div>
-</div>
+        <div className='panel panel-default'>
+          <div className='panel-body'>
+            <h1 style={{align: 'center'}}> <span className=''>Gestión del medicamento</span></h1>
+            <div className='btn-group btn-group-justified' role='group' aria-label='...'>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            </div>
+            <div className='btn-group' role='group'>
+            <button className='buscarButton'  onClick={this.onClickBuscar} />
+            </div>
+            <div className='btn-group' role='group'>
+              <button className='nuevoButton'   onClick={this.onClickNuevo} />
+            </div>
+            </div>
+          </div>
+        </div>
         {listaMedicamentosDiv}
       </div>
     );

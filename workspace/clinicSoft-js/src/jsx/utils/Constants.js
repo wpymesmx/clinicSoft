@@ -21,7 +21,8 @@ var Constants = {
   EN: 'EN',
   LOGIN_VIEW: 'login',
   HOME_VIEW: 'home',
-  WELCOME_VIEW: 'welcome'
+  WELCOME_VIEW: 'welcome',
+  MEDICAMENTO_VIEW: 'medicamento'
 };
 
 module.exports = Constants;

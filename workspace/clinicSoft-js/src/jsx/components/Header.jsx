@@ -2,21 +2,18 @@
 
 var React = require('react');
 //mixins
-var NavigatorMixin = require('./mixins/NavigatorMixin.js');
-var AlertMixin = require('./mixins/AlertMixin.js');
+var NavigatorMixin = require('../mixins/NavigatorMixin.js');
+var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
-var Constants = require('./utils/Constants.js');
+var Constants = require('../utils/Constants.js');
 //components
-var Login = require('./Login.jsx');
-var Home = require('./Home.jsx');
-var AlertComponent = require('./components/AlertComponent.jsx');
 
-var App = React.createClass({
+var Header = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
-      componentKey: 'App',
+      componentKey: 'Header',
       mainComponent: undefined
     };
   },
@@ -46,36 +43,28 @@ var App = React.createClass({
     this.unSubscribe(this.state.componentKey);
     this.unSubscribeAlert(this.state.componentKey);
   },
-  navigatorApp: function(viewName) {
-    //console.log('# App->goTo-> ' + viewName);
-
-    switch (viewName) {
-      case Constants.LOGIN_VIEW:
-        window.resetApp();
-        this.setState({ mainComponent: (<Login/>) });
-        break;
-      case Constants.HOME_VIEW:
-        this.setState({ mainComponent: (<Home/>) });
-        break;
-      default:
-        console.log('App-> Vista no configurada ->' + viewName);
-    }
+  onClickSalir: function(evt) {
+    this.goToComponent(Constants.LOGIN_VIEW);
   },
-  alertFun: function(alertConfig) {
-    //console.log('## alertFun ##');
-    this.refs.alertComponent.alertFun(alertConfig);
+  onClickIrWelcome: function(evt) {
+    this.goToComponent(Constants.WELCOME_VIEW);
   },
   render: function() {
     //console.log('# App->render #');
-    var mainComponent = this.state.mainComponent == undefined ? (<Login />): this.state.mainComponent;
 
     return (
-      <div className='app'>
-        <AlertComponent ref='alertComponent'/>
-        {mainComponent}
+      <div className='headerMain'>
+        <div className='clinicLogo left_align'>&nbsp;</div>
+        <div className='headerCenter left_align'>&nbsp;</div>
+        <div className='headerSalir left_align'>
+          <button className='salirButton' onClick={this.onClickSalir}></button>
+        </div>
+        <div>
+          <button className='homeButton' onClick={this.onClickIrWelcome}></button>
+        </div>
       </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = Header;

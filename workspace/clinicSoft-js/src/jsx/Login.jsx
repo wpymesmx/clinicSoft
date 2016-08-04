@@ -79,7 +79,7 @@ var Login = React.createClass({
       loginService.login(params, onSuccess, this.onError, this.onFail);
 
     } else {
-      this.showError(response.message);    
+      this.showError(response.message);
     }
   },
   validaFormulario: function() {
@@ -89,7 +89,7 @@ var Login = React.createClass({
     };
 
     if(validaService.isEmpty(this.state.usuario) || validaService.isEmpty(this.state.passwd)) {
-      return {isError: true, message: this.getText('MSG_108')}; 
+      return {isError: true, message: this.getText('MSG_108')};
     }
 
     return response;

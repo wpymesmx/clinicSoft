@@ -8,6 +8,8 @@ var Constants = require('./utils/Constants.js');
 //jsx components
 var Welcome = require('./Welcome.jsx');
 var Medicamento = require('./components/Medicamento.jsx');
+var Header = require('./components/Header.jsx');
+var Footer = require('./components/Footer.jsx');
 
 var Home = React.createClass({
   mixins: [NavigatorMixin()],
@@ -44,28 +46,33 @@ var Home = React.createClass({
   },
   navigatorApp: function(viewName) {
     //console.log('# Home->goTo-> ' + viewName);
-
     switch (viewName) {
       case Constants.WELCOME_VIEW:
         this.setState({ mainComponent: (<Welcome/>) });
         break;
 
-       case Constants.MEDICAMENTO_VIEW:
+      case Constants.MEDICAMENTO_VIEW:
         this.setState({ mainComponent: (<Medicamento/>) });
         break;
       default:
-        console.log('Home-> Vista no configurada' + viewName);
+        console.log('Home-> Vista no configurada->' + viewName);
     }
   },
   render: function() {
     //console.log('# Home->render #');
-    var mainComponent = this.state.mainComponent == undefined ? (<Medicamento />) : this.state.mainComponent;
+    var mainComponent = this.state.mainComponent == undefined ? (<Welcome />) : this.state.mainComponent;
 
     return (
       <div className='home'>
-        <div>header</div>
-          <div>{mainComponent}</div>
-        <div>footer</div>
+        <div className='headerDiv'>
+          <Header />
+        </div>
+        <div className='homeDiv'>
+          {mainComponent}
+        </div>
+        <div className='footerDiv'>
+          <Footer />
+        </div>
       </div>
     );
   }

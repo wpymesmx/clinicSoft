@@ -15,9 +15,14 @@ var swal=require('sweetalert');
 
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
+//Importo valida service
+var validaService = require('../utils/ValidaService.js');
+
+//importamos
+var AlertMixin = require('../mixins/AlertMixin.js');
 
 var MedicamentoAlta = React.createClass({
-  mixins: [LanguageMixin()],
+  mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
     //console.log('# MedicamentoAlta->getDefaultProps #');
     return {
@@ -112,7 +117,21 @@ var MedicamentoAlta = React.createClass({
       show: false
     });
   },
-    onClickGuardar: function(evt) {
+  validaFormulario: function() {
+    var response = {
+      isError: false,
+      message: ''
+    };
+
+    if(validaService.isEmpty(this.state.nombre_comercial)) {
+      return {isError: true, message: this.getText('MSG_108')};
+    }
+
+    return response;
+  },
+
+
+  onClickGuardar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
@@ -122,6 +141,8 @@ var MedicamentoAlta = React.createClass({
       });
     };
 
+    var response = this.validaFormulario();
+    if(!response.isError) {
     var params = {
       'nombre_comercial': this.state.nombre_comercial,
       'nombre_generico': this.state.nombre_generico,
@@ -150,7 +171,12 @@ var MedicamentoAlta = React.createClass({
                 swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
              }
            });
+    } else {
+      this.showError(response.message, {zindex: 3});
+    }
   },
+
+
   render: function() {
     //console.log('# MedicamentoAlta->render #');
     var self = this;

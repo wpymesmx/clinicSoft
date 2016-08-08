@@ -10,7 +10,7 @@ var ValidaService = {
 
     return resp;
   },
-	isOnlyNumbers: function(obj, opt) {
+  isOnlyNumbers: function(obj, opt) {
     var resp = false;
     var regx = /^\d*$/g;
 

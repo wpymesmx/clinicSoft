@@ -124,7 +124,7 @@ var MedicamentoAlta = React.createClass({
     };
 
     if(validaService.isEmpty(this.state.nombre_comercial)) {
-      return {isError: true, message: this.getText('MSG_108')};
+      return {isError: true, message: this.getText('MSG_109')};
     }
 
     return response;
@@ -143,6 +143,13 @@ var MedicamentoAlta = React.createClass({
 
     var response = this.validaFormulario();
     if(!response.isError) {
+
+    var nombre = {
+      'nombre_comercial': this.state.nombre_comercial
+    };
+    medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
+
+
     var params = {
       'nombre_comercial': this.state.nombre_comercial,
       'nombre_generico': this.state.nombre_generico,
@@ -171,8 +178,10 @@ var MedicamentoAlta = React.createClass({
                 swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
              }
            });
+
+
     } else {
-      this.showError(response.message, {zindex: 3});
+      this.showError(response.message, {zindex: 4});
     }
   },
 

@@ -30,6 +30,18 @@ class MedicamentoService(object):
 
     return service_response
 
+  def existe_medicamento(self, nombre_comercial):
+    """
+    Función para buscar un medicamento
+    """
+    log4py.info('## existe_medicamento ##')
+    service_response = None
+    aux='******lo que lleva'
+    print(aux,nombre_comercial)
+    service_response = self.medicamDao.existe_medicamento(nombre_comercial)
+
+    return service_response
+
   def llenar_combo_medicamento(self):
     """
     Función para buscar un medicamento

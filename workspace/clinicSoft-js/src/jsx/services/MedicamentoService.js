@@ -6,7 +6,8 @@ var paths = {
   buscar: '/admin/medicamento/buscar',
   insertar: '/admin/medicamento/insertar',
   llenarCombo: '/admin/medicamento/llenarCombo',
-  actualizar:'/admin/medicamento/actualizar'
+  actualizar:'/admin/medicamento/actualizar',
+  existe:'/admin/medicamento/existe'
 };
 
 var MedicamentoService = {
@@ -21,6 +22,9 @@ var MedicamentoService = {
   },
   actualizar: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.actualizar, params, onSuccess, onError, onFail);
+  },
+  existe: function(nombre, onSuccess, onError, onFail) {
+    commonService.ajax(paths.existe, nombre, onSuccess, onError, onFail);
   }
 };
 

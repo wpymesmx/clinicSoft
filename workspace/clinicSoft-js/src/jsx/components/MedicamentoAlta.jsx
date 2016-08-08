@@ -42,6 +42,7 @@ var MedicamentoAlta = React.createClass({
       elaborado_en: '',
       condicion_venta: '',
       estado:'A',
+      lista_id: []
     };
   },
   componentWillMount: function() {
@@ -148,8 +149,15 @@ var MedicamentoAlta = React.createClass({
       'nombre_comercial': this.state.nombre_comercial
     };
     medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
-
-
+    var onSuccess = function(response) {
+      console.log('# success  #');
+      self.setState({
+        lista_id: response.payload
+      });
+     };
+   if(!this.state.lista_id.length > 0) {
+       this.showError(response.message, {zindex: 4});
+   }else{
     var params = {
       'nombre_comercial': this.state.nombre_comercial,
       'nombre_generico': this.state.nombre_generico,
@@ -178,8 +186,7 @@ var MedicamentoAlta = React.createClass({
                 swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
              }
            });
-
-
+    }
     } else {
       this.showError(response.message, {zindex: 4});
     }

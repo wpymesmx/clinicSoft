@@ -61,18 +61,23 @@ class MedicamentoDao(SQLiteDao):
     return dao_response
 
   def existe_medicamento(self,nombre_comercial):
-    log4py.info('## existe_medicamento  ##')
+    log4py.info('## consultar_medicamento  ##')
     dao_response = None
     cursor = None
-    aux = '******lo que lleva dao'
-    print(aux, nombre_comercial)
+
     try:
       self.open()
       self.set_row_factory(row_id_medicamento)
       cursor = self.get_cursor()
-      cursor.execute('''
-        SELECT MED_ID FROM MEDICAMENTO WHERE MED_NOMBRE_COMERCIAL = ?
-      ''',(nombre_comercial))
+      query = ('''
+          SELECT MED_ID
+          FROM MEDICAMENTO
+           ''')
+      if nombre_comercial != '':
+        query += ' WHERE MED_NOMBRE_COMERCIAL like \'%' + nombre_comercial + '%\''
+
+      log4py.info(query)
+      cursor.execute(query)
       dao_response = cursor.fetchall()
       self.commit()
 
@@ -83,6 +88,7 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
+
     return dao_response
 
   def llenar_combo_medicamento(self):

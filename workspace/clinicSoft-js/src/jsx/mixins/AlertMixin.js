@@ -19,43 +19,79 @@ var AlertMixin = function() {
         window.alertListener.putMessage(message);
       }
     },
-    showInfo: function(message) {
+    showInfo: function(message, options) {
       if(window.alertListener != undefined) {
+        var zindex = 2;
+
+        if(options != undefined) {
+          if(options.zindex != undefined) {
+            zindex = options.zindex;
+          }
+        }
+
         window.alertListener.putMessage({
           show: true,
           title: 'Info',
           message: message,
-          button_yes: true
+          button_yes: true,
+          zindex: zindex
         });
       }
     },
-    showError: function(message) {
+    showError: function(message, options) {
       if(window.alertListener != undefined) {
+        var zindex = 2;
+
+        if(options != undefined) {
+          if(options.zindex != undefined) {
+            zindex = options.zindex;
+          }
+        }
+
         window.alertListener.putMessage({
           show: true,
           title: 'Error',
           message: message,
-          button_yes: true
+          button_yes: true,
+          zindex: zindex
         });
       }
     },
-    onError: function(response) {
+    onError: function(response, options) {
       if(window.alertListener != undefined) {
+        var zindex = 2;
+
+        if(options != undefined) {
+          if(options.zindex != undefined) {
+            zindex = options.zindex;
+          }
+        }
+
         window.alertListener.putMessage({
           show: true,
           title: 'Error',
           message: response.message,
-          button_yes: true
+          button_yes: true,
+          zindex: zindex
         });
       }
     },
-    onFail: function(response) {
+    onFail: function(response, options) {
       if(window.alertListener != undefined) {
+        var zindex = 2;
+
+        if(options != undefined) {
+          if(options.zindex != undefined) {
+            zindex = options.zindex;
+          }
+        }
+
         window.alertListener.putMessage({
           show: true,
           title: 'Error',
           message: ControlText().getText('MSG_103'),
-          button_yes: true
+          button_yes: true,
+          zindex: zindex
         });
       }
     }

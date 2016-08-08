@@ -43,13 +43,13 @@ var Welcome = React.createClass({
     return (
       <div className='welcome'>
         <div className='menuItem align-left'>
-          <button className='menuItemMedicamento' onClick={this.onClickIrMedicamento}/>
+          <button className='menuItemGestionMedicamento' onClick={this.onClickIrMedicamento}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemMedicamento'/>
+          <button className='menuItemGestionMedicamento'/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemMedicamento'/>
+          <button className='menuItemGestionMedicamento'/>
         </div>
       </div>
     );

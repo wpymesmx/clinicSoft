@@ -61,7 +61,7 @@ class MedicamentoDao(SQLiteDao):
     return dao_response
 
   def existe_medicamento(self,nombre_comercial):
-    log4py.info('## consultar_medicamento  ##')
+    log4py.info('## existe_medicamento  ##')
     dao_response = None
     cursor = None
 
@@ -71,13 +71,10 @@ class MedicamentoDao(SQLiteDao):
       cursor = self.get_cursor()
       query = ('''
           SELECT MED_ID
-          FROM MEDICAMENTO
-           ''')
-      if nombre_comercial != '':
-        query += ' WHERE MED_NOMBRE_COMERCIAL like \'%' + nombre_comercial + '%\''
+          FROM MEDICAMENTO   WHERE MED_NOMBRE_COMERCIAL =?
+           ''', (nombre_comercial))
 
       log4py.info(query)
-      cursor.execute(query)
       dao_response = cursor.fetchall()
       self.commit()
 

@@ -20,7 +20,8 @@ var Diccionario = {
     MSG_106: 'Contrase\u00F1a',
     MSG_107: 'Ingresar',
     MSG_108: 'Usuario o contrase\u00F1a son incorrectos, favor de verificarlos.',
-    MSG_109: 'El nombre comercial del medicamento es requerido, favor de llenarlo.'
+    MSG_109: 'El nombre comercial del medicamento es requerido, favor de llenarlo.',
+    MSG_110: 'El nombre comercial del medicamento ya se encuentra registrado.'
   },
   EN: {
     MSG_100: 'English',
@@ -32,7 +33,8 @@ var Diccionario = {
     MSG_106: 'Password',
     MSG_107: 'Sign in',
     MSG_108: 'User or password is incorrect, plece check it.',
-    MSG_109: 'The trade name of the drug is required , please fill.'
+    MSG_109: 'The trade name of the drug is required , please fill.',
+    MSG_110: 'The trade name of the drug  is register.'
   }
 };
 

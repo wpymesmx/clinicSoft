@@ -16,8 +16,14 @@ var swal=require('sweetalert');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
 
+//Importo valida service
+var validaService = require('../utils/ValidaService.js');
+
+//importamos para vetanas de errores o información
+var AlertMixin = require('../mixins/AlertMixin.js');
+
 var MedicamentoEditar = React.createClass({
-  mixins: [LanguageMixin()],
+  mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
     //console.log('# MedicamentoEditar->getDefaultProps #');
     return {
@@ -31,13 +37,15 @@ var MedicamentoEditar = React.createClass({
       language: window.language,
       show: false,
       zindex: this.props.zindex,
-      nombre_comercial: '',
+      nombre_aux: '',
+      nombre_comercial:'',
       nombre_generico: '',
       farmaceutica: '',
       elaborado_en: '',
       condicion_venta: '',
       estadoUno:true,
       estadoDos:false,
+      estado:'',
       id_med: '',
     };
   },
@@ -60,6 +68,7 @@ var MedicamentoEditar = React.createClass({
   },
   componentDidUpdate: function() {
     //console.log('# MedicamentoEditar->componentDidUpdate #');
+
   },
   componentWillUnmount: function() {
     //console.log('# MedicamentoEditar->componentWillUnmount #');
@@ -94,12 +103,14 @@ var MedicamentoEditar = React.createClass({
     if (radioButton=='uno'){
         this.setState({
          estadoUno:true,
-         estadoDos:false
+         estadoDos:false,
+         estado:'A'
     });
     }else{
     this.setState({
          estadoUno:false,
-         estadoDos:true
+         estadoDos:true,
+         estado:'I'
     });
     }
   },
@@ -110,6 +121,7 @@ var MedicamentoEditar = React.createClass({
       show: true,
       id_med:medicamento.medicamento_id,
       nombre_comercial:medicamento.nombre_comercial,
+      nombre_aux:medicamento.nombre_comercial,
       nombre_generico:medicamento.nombre_generico,
       farmaceutica:medicamento.farmaceutica,
       elaborado_en:medicamento.elaborado_en,
@@ -133,46 +145,115 @@ var MedicamentoEditar = React.createClass({
       show: false
     });
   },
+  validaFormulario: function() {
+    var response = {
+      isError: false,
+      message: ''
+    };
+
+    if(validaService.isEmpty(this.state.nombre_comercial)) {
+      return {isError: true, message: this.getText('MSG_109')};
+    }
+
+    return response;
+  },
+  validaExiste: function() {
+    var res = {isError: true, message: this.getText('MSG_110')};
+    return res;
+  },
   onClickEditar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
-      console.log('# success  #');
-      self.setState({
+        console.log('# success  #');
+        var id_medicamento=response.payload;
+        var res = self.validaExiste();
 
-      });
+        if(id_medicamento.length > 0) {
+          self.showInfo(res.message, {zindex: 4})
+
+        } else{
+               var params = {
+                'nombre_comercial': self.state.nombre_comercial,
+                'nombre_generico': self.state.nombre_generico,
+                'farmaceutica': self.state.farmaceutica,
+                'elaborado_en': self.state.elaborado_en,
+                'condicion_venta': self.state.condicion_venta,
+                'estado': self.state.estado,
+                'id_med':self.state.id_med
+              };
+
+
+            swal({title: 'Confirmar Registro?',
+               text: 'Desea Continuar Con La Actualización Del Medicamento!',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'Si,Guardar!',
+                  cancelButtonText: 'No,Cancelar!',
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                  },
+                  function(isConfirm){
+                     if (isConfirm) {
+                         medicamentoService.actualizar(params, onSuccess, self.onError, self.onFail),
+                         swal('Aceptar!','Medicamento Actualizado Con Exito.',
+                        'success');
+
+                     }else {
+                        swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelado.', 'error');
+                     }
+                   });
+        }
     };
 
-    var params = {
-      'nombre_comercial': this.state.nombre_comercial,
-      'nombre_generico': this.state.nombre_generico,
-      'farmaceutica': this.state.farmaceutica,
-      'elaborado_en': this.state.elaborado_en,
-      'condicion_venta': this.state.condicion_venta,
-      'estado': this.state.estado,
-      'id_med':this.state.id_med
-    };
+    var response = this.validaFormulario();
+    if(this.state.nombre_aux != this.state.nombre_comercial){
+      if(!response.isError) {
+        var nombre = {
+          'nombre_comercial': this.state.nombre_comercial
+        };
+        medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
 
-    swal({title: 'Confirmar Actualización?',
-       text: 'Desea Continuar Con La Actualización Del Medicamento!',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#DD6B55',
-          confirmButtonText: 'Si,Editar!',
-          cancelButtonText: 'No,Cancelar!',
-          closeOnConfirm: false,
-          closeOnCancel: false
-          },
-          function(isConfirm){
-             if (isConfirm) {
-                 medicamentoService.actualizar(params, onSuccess, this.onError, this.onFail),
-                 swal('Aceptar!','Medicamento Actualizado Con Exito.',
-                'success');
-             }else {
-                swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelada.', 'error');
-             }
-           });
+      } else {
+      self.showError(response.message, {zindex: 4});
+      }
+    }else{
+     var params = {
+                'nombre_comercial': self.state.nombre_comercial,
+                'nombre_generico': self.state.nombre_generico,
+                'farmaceutica': self.state.farmaceutica,
+                'elaborado_en': self.state.elaborado_en,
+                'condicion_venta': self.state.condicion_venta,
+                'estado': self.state.estado,
+                'id_med':self.state.id_med
+              };
+
+            swal({title: 'Confirmar Registro?',
+               text: 'Desea Continuar Con La Actualización Del Medicamento!',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'Si,Guardar!',
+                  cancelButtonText: 'No,Cancelar!',
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                  },
+                  function(isConfirm){
+                     if (isConfirm) {
+                         medicamentoService.actualizar(params, onSuccess, self.onError, self.onFail),
+                         swal('Aceptar!','Medicamento Actualizado Con Exito.',
+                        'success');
+
+                     }else {
+                        swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelado.', 'error');
+                     }
+            });
+
+    }
   },
+
+
   render: function() {
     //console.log('# MedicamentoEditar->render #');
     var self = this;

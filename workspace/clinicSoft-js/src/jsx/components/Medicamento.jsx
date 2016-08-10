@@ -76,9 +76,7 @@ var Medicamento = React.createClass({
   },
   onChangeNombreComercial: function(evt) {
     this.setState({
-      nombre_comercial: evt.target.value,
-      comboValue: 0
-
+      nombre_comercial: evt.target.value
     });
   },
    onChangeNombreGenerico: function(evt) {
@@ -137,6 +135,7 @@ var Medicamento = React.createClass({
     };
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
+
   onClickNuevo: function(evt) {
     var self = this;
     var onSuccess = function(response) {
@@ -152,7 +151,7 @@ var Medicamento = React.createClass({
     };
 
     console.log(medicamento.medicamento_id);
-
+    console.log(medicamento.nombre_comercial);
     this.refs.medicamentoEditar.show(medicamento);
   },
   render: function() {
@@ -170,10 +169,12 @@ var Medicamento = React.createClass({
             <td>{medicamento.elaborado_en}</td>
             <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
+            <td><button className='detalleButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
             <td><button className='editarButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
           </tr>
         );
       });
+       }
 
       listaMedicamentosDiv = (
         <div>
@@ -189,7 +190,7 @@ var Medicamento = React.createClass({
              <td></td>
             </tr>
             <tr>
-                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.c}/></td>
+                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
                 <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
                 <td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
                 <td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
@@ -202,7 +203,7 @@ var Medicamento = React.createClass({
           </table>
         </div>
       );
-    }
+
 
     var listaMedicamentosComboOption = [];
     listaMedicamentosComboOption.push(<option value='0'>SELECCIONE UNA OPCIÓN</option>);

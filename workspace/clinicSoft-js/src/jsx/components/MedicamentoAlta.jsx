@@ -18,7 +18,7 @@ var medicamentoService = require('../services/MedicamentoService.js');
 //Importo valida service
 var validaService = require('../utils/ValidaService.js');
 
-//importamos
+//importamos para vetanas de errores o información
 var AlertMixin = require('../mixins/AlertMixin.js');
 
 var MedicamentoAlta = React.createClass({
@@ -131,68 +131,67 @@ var MedicamentoAlta = React.createClass({
     return response;
   },
 
+  validaExiste: function() {
+    var res = {isError: true, message: this.getText('MSG_110')};
+    return res;
+  },
 
   onClickGuardar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
-      console.log('# success  #');
-      self.setState({
+        console.log('# success  #');
+        var id_medicamento=response.payload;
+        var res = self.validaExiste();
 
-      });
+        if(id_medicamento.length > 0) {
+          self.showInfo(res.message, {zindex: 4})
+
+        } else{
+            var params = {
+              'nombre_comercial': self.state.nombre_comercial,
+              'nombre_generico': self.state.nombre_generico,
+              'farmaceutica': self.state.farmaceutica,
+              'elaborado_en': self.state.elaborado_en,
+              'condicion_venta': self.state.condicion_venta,
+              'estado': self.state.estado
+            };
+
+            swal({title: 'Confirmar Registro?',
+               text: 'Desea Continuar Con El Registro Del Medicamento!',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'Si,Guardar!',
+                  cancelButtonText: 'No,Cancelar!',
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                  },
+                  function(isConfirm){
+                     if (isConfirm) {
+                         medicamentoService.insertar(params, onSuccess, self.onError, self.onFail),
+                         swal('Aceptar!','Medicamento Registrado Con Exito.',
+                        'success');
+
+                     }else {
+                        swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
+                     }
+                   });
+        }
     };
 
     var response = this.validaFormulario();
+
     if(!response.isError) {
+        var nombre = {
+          'nombre_comercial': this.state.nombre_comercial
+        };
+        medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
 
-    var nombre = {
-      'nombre_comercial': this.state.nombre_comercial
-    };
-    medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
-    var onSuccess = function(response) {
-      console.log('# success  #');
-      self.setState({
-        lista_id: response.payload
-      });
-     };
-   if(!this.state.lista_id.length > 0) {
-       this.showError(response.message, {zindex: 4});
-   }else{
-    var params = {
-      'nombre_comercial': this.state.nombre_comercial,
-      'nombre_generico': this.state.nombre_generico,
-      'farmaceutica': this.state.farmaceutica,
-      'elaborado_en': this.state.elaborado_en,
-      'condicion_venta': this.state.condicion_venta,
-      'estado': this.state.estado
-    };
-
-    swal({title: 'Confirmar Registro?',
-       text: 'Desea Continuar Con El Registro Del Medicamento!',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#DD6B55',
-          confirmButtonText: 'Si,Guardar!',
-          cancelButtonText: 'No,Cancelar!',
-          closeOnConfirm: false,
-          closeOnCancel: false
-          },
-          function(isConfirm){
-             if (isConfirm) {
-                 medicamentoService.insertar(params, onSuccess, this.onError, this.onFail),
-                 swal('Aceptar!','Medicamento Registrado Con Exito.',
-                'success');
-             }else {
-                swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
-             }
-           });
-    }
     } else {
-      this.showError(response.message, {zindex: 4});
+      self.showError(response.message, {zindex: 4});
     }
   },
-
-
   render: function() {
     //console.log('# MedicamentoAlta->render #');
     var self = this;

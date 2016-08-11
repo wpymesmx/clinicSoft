@@ -46,10 +46,13 @@ var Welcome = React.createClass({
           <button className='menuItemGestionMedicamento' onClick={this.onClickIrMedicamento}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionMedicamento'/>
+          <button className='menuItemGestionMedicos'/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionMedicamento'/>
+          <button className='menuItemGestionPacientes'/>
+        </div>
+        <div className='menuItem align-left'>
+          <button className='menuItemGestionCitas'/>
         </div>
       </div>
     );

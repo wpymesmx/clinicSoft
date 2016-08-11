@@ -169,7 +169,6 @@ var Medicamento = React.createClass({
             <td>{medicamento.elaborado_en}</td>
             <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
-            <td><button className='detalleButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
             <td><button className='editarButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
           </tr>
         );
@@ -245,7 +244,7 @@ var Medicamento = React.createClass({
             <button className='buscarButton'  onClick={this.onClickBuscar} />
             </div>
             <div className='btn-group' role='group'>
-              <button className='nuevoButton'   onClick={this.onClickNuevo} />
+              <button className='detalleButton'   onClick={this.onClickNuevo} />
             </div>
             </div>
           </div>

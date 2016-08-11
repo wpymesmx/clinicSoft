@@ -1,5 +1,7 @@
 'use strict';
 
+var React = require('react');
+
 var Context = require('../utils/Context.js');
 var Constants = require('../utils/Constants.js');
 
@@ -270,12 +272,12 @@ var DatePickerReact = React.createClass({
 
     return (
       <div style={{width:'100%', float:'left', marginRight: '3%'}}>        
-        <span style={{float: 'left', marginLeft: '3%', marginRight: '3%'}}>{this.state.inputLabel}</span>
-        <span style={{float: 'left', marginRight: '3%'}}>
+        <span style={{float: 'left', marginLeft: '3%', marginRight: '3%', marginTop: '0.8%'}}>{this.state.inputLabel}</span>
+        <span style={{float: 'left', marginRight: '3%', marginTop: '0.5%'}}>
           <input type='text' value={datePicked} onChange={this.onChangeDatePicked} readOnly={true} />
         </span>
         <span style={{float: 'left', marginLeft: '3%', marginRight: '3%'}}>
-          <a id={this.props.idCal} className='IconCalStyle'  href='#' onClick={this.showDatePicker}></a>
+          <a id={this.props.idCal} className='iconCalStyle'  href='#' onClick={this.showDatePicker}></a>
         </span>
 
         <section className={datePickerStyle}>

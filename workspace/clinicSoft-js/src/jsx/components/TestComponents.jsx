@@ -7,14 +7,16 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
 //components
+var DatePickerReact = require('./DatePickerReact.jsx');
 
-var Header = React.createClass({
+var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
-      componentKey: 'Header',
-      mainComponent: undefined
+      componentKey: 'Test',
+      mainComponent: undefined,
+      datePicked: ''
     };
   },
   componentWillMount: function() {
@@ -49,26 +51,25 @@ var Header = React.createClass({
   onClickIrWelcome: function(evt) {
     this.goToComponent(Constants.WELCOME_VIEW);
   },
-  onClickIrTestComponents: function(evt) {
-    this.goToComponent(Constants.TEST_COMPONENTS_VIEW);
+  onDatePicked: function(datePicked, evt) {
+    console.log('datePicked->' + datePicked);
+
+    this.setState({
+      datePicked: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+    });
   },
   render: function() {
     //console.log('# App->render #');
 
     return (
-      <div className='headerMain'>
-        <div className='clinicLogo left_align'>&nbsp;</div>
-        <div className='headerCenter left_align'>&nbsp;</div>
-        <div className='headerSalir left_align'>
-          <button className='salirButton' onClick={this.onClickSalir}></button>
-        </div>
+      <div style={{width: '100%', height: '100%'}}>
+        <DatePickerReact inputLabel='Fecha de cosulta:' onDatePicked={this.onDatePicked}/>
         <div>
-          <button className='homeButton' onClick={this.onClickIrWelcome}></button>
-          <button onClick={this.onClickIrTestComponents}>COMPONENTE DE PRUEBAS</button>
+          Fecha seleccionada: {this.state.datePicked}
         </div>
       </div>
     );
   }
 });
 
-module.exports = Header;
+module.exports = TestComponents;

@@ -10,6 +10,7 @@ var Welcome = require('./Welcome.jsx');
 var Medicamento = require('./components/Medicamento.jsx');
 var Header = require('./components/Header.jsx');
 var Footer = require('./components/Footer.jsx');
+var TestComponents = require('./components/TestComponents.jsx');
 
 var Home = React.createClass({
   mixins: [NavigatorMixin()],
@@ -54,6 +55,11 @@ var Home = React.createClass({
       case Constants.MEDICAMENTO_VIEW:
         this.setState({ mainComponent: (<Medicamento/>) });
         break;
+
+      case Constants.TEST_COMPONENTS_VIEW:
+        this.setState({ mainComponent: (<TestComponents/>) });
+        break;
+
       default:
         console.log('Home-> Vista no configurada->' + viewName);
     }

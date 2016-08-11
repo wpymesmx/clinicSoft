@@ -26,7 +26,7 @@ var MedicamentoAlta = React.createClass({
   getDefaultProps: function() {
     //console.log('# MedicamentoAlta->getDefaultProps #');
     return {
-      zindex: 2
+      zindex: 4
     };
   },
   getInitialState: function() {
@@ -211,20 +211,18 @@ var MedicamentoAlta = React.createClass({
           <div className='panel-body'>
           <table className='table table-bordered table-hover'>
            <tbody>
-              <tr><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} /></tr>
-              <tr><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico} /></tr>
-              <tr><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} /></tr>
-              <tr><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn} /></tr>
-              <tr><input type='text' className='form-control' placeholder='Condición Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta} /></tr>
-               <tr><dev>
+              <tr><td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} /></td></tr>
+              <tr><td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico} /></td></tr>
+              <tr><td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} /></td></tr>
+              <tr><td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn} /></td></tr>
+              <tr><td><input type='text' className='form-control' placeholder='Condición Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta} /></td></tr>
+              <tr><td>
                 <fieldset>
-                   Estado del medicamento:
-                   <br />
-                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado} checked/>Activo
-                   <br />
+                   Estado del medicamento: <br />
+                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado} checked/>Activo <br />
                    <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado}  disabled='true' />Inactivo
-                </fieldset>
-              </dev></tr>
+                </fieldset></td>
+             </tr>
           </tbody>
           </table>
          </div>
@@ -244,23 +242,17 @@ var MedicamentoAlta = React.createClass({
           </tbody>
           </table>
         </div>
-
-
-
-
-          <div className='panel-footer button-align-right'>
-            <div className='input-group' style={{align: 'center'}}>
-
-               <div className="btn-group btn-group-justified" role="group" aria-label="...">
-                 <div className="btn-group" role="group">
-                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
-                 </div>
-                 <div className="btn-group" role="group">
-                     <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
-                 </div>
+        <div className='panel-footer button-align-right'>
+          <div className='input-group' style={{align: 'center'}}>
+             <div className="btn-group btn-group-justified" role="group" aria-label="...">
+               <div className="btn-group" role="group">
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
                </div>
-
-            </div>
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
+               </div>
+             </div>
+          </div>
           </div>
         </div>
       </div>

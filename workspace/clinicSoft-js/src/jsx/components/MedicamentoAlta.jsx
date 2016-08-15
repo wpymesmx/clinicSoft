@@ -204,7 +204,7 @@ var MedicamentoAlta = React.createClass({
     return (
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClassMedicament'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
             Registro De Medicamento
           </div>
@@ -226,22 +226,6 @@ var MedicamentoAlta = React.createClass({
           </tbody>
           </table>
          </div>
-
-        <div>
-          <table className='table table-bordered table-hover'>
-           <tbody>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
-                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
-                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta}/></td>
-                <td></td>
-                <td></td>
-            </tr>
-          </tbody>
-          </table>
-        </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">

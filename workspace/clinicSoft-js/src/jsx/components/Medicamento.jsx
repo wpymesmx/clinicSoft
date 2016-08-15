@@ -136,6 +136,25 @@ var Medicamento = React.createClass({
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
 
+   onClickBuscar: function(evt) {
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+      self.setState({
+        lista_medicamentos: response.payload
+      });
+    };
+
+    var params = {
+        'nombre_comercial': this.state.nombre_comercial,
+        'nombre_generico': this.state.nombre_generico,
+        'farmaceutica': this.state.farmaceutica,
+        'elaborado_en': this.state.elaborado_en,
+        'condicion_venta': this.state.condicion_venta
+    };
+    medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
+  },
+
   onClickNuevo: function(evt) {
     var self = this;
     var onSuccess = function(response) {

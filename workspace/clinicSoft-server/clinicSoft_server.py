@@ -20,6 +20,9 @@ from src.view.medicamento_view import eliminar_medicamento
 from src.view.medicamento_view import actualizar_medicamento
 from src.view.medicamento_view import llenar_combo_medicamento
 from src.view.medicamento_view import existe_medicamento
+from src.view.medicamento_view import llenar_combo_almacen
+from src.view.medicamento_view import insertar_detalle_medicamento
+from src.view.medicamento_view import  existe_detalle_medicamento
 
 #Crear objeto de servidor flask
 app = Flask(__name__)
@@ -108,9 +111,12 @@ if __name__ == '__main__':
   app.add_url_rule(rule='/clinicSoft/admin/usuario/insertar', view_func=insertar_usuario, methods=['POST'])
   #Administracion de medicamentos
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/insertar', view_func=insertar_medicamento, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/insertarDetalleMed', view_func=insertar_detalle_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/buscar', view_func=buscar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenarCombo', view_func=llenar_combo_medicamento, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenarComboAlmacen', view_func=llenar_combo_almacen, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/eliminar', view_func=eliminar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/actualizar', view_func=actualizar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existe', view_func=existe_medicamento, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/existeDetalle', view_func=existe_detalle_medicamento, methods=['POST'])
   app.run(debug=True, port=8080)

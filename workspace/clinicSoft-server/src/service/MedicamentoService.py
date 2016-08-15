@@ -19,6 +19,18 @@ class MedicamentoService(object):
 
     return service_response
 
+  def insertar_detalle_medicamento(self,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
+    """
+    Servicio utilizado para la gestion de medicamento
+    """
+    log4py.info('## insertar_detalle_medicamento ##')
+    service_response = None
+
+    service_response = self.medicamDao.insertar_detalle_medicamento(id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima,
+                                                                    existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
+
+    return service_response
+
   def buscar_medicamento(self, nombre_comercial,nombre_generico,farmaceutica, elaborado_en, condicion_venta):
     """
     Función para buscar un medicamento
@@ -42,6 +54,18 @@ class MedicamentoService(object):
 
     return service_response
 
+  def existe_detalle_medicamento(self, presentacion):
+    """
+    Función para buscar un detalle medicamento
+    """
+    log4py.info('## existe_detalle_medicamento ##')
+    service_response = None
+    aux = '******lo que lleva'
+    print(aux, presentacion)
+    service_response = self.medicamDao.existe_detalle_medicamento(presentacion)
+
+    return service_response
+
   def llenar_combo_medicamento(self):
     """
     Función para buscar un medicamento
@@ -50,6 +74,17 @@ class MedicamentoService(object):
     service_response = None
 
     service_response = self.medicamDao.llenar_combo_medicamento()
+
+    return service_response
+
+  def llenar_combo_almacen(self):
+    """
+    Función para buscar un medicamento
+    """
+    log4py.info('## llenar_combo_almacen ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_almacen()
 
     return service_response
 

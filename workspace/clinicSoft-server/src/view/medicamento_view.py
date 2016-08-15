@@ -33,6 +33,33 @@ def insertar_medicamento():
 
   return response
 
+def insertar_detalle_medicamento():
+  """
+    metodo utilizado como punto de entrada para gestion de detalle medicament
+  """
+  log4py.info('## insertar_detalle_medicamento  ##')
+  response = None
+  payload = None
+  jsonRequest = None
+  loginService = None
+  service_response = None
+
+  try:
+    jsonRequest = request.get_json(force=True)
+    medicamentService = MedicamentoService()
+    service_response = medicamentService.insertar_detalle_medicamento(jsonRequest['id_med'], jsonRequest['id_almacen'], jsonRequest['presentacion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],
+                                                                      jsonRequest['existencia'], jsonRequest['descripcion'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'])
+
+    response = Response(service_response, status=200, mimetype='application/json')
+
+  except Exception as err:
+    log4py.error('Error-> {0}'.format(err))
+    traceback.print_exc()
+    payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
+    response = Response(payload, status=500, mimetype='application/json')
+
+  return response
+
 def actualizar_medicamento():
   """
     metodo utilizado para actualizar un medicamento
@@ -123,6 +150,38 @@ def existe_medicamento():
     response = Response(payload, status=500, mimetype='application/json')
   return response
 
+def existe_detalle_medicamento():
+  """
+    metodo utilizado para validar si existe un detalle medicamento
+  """
+  log4py.info('##  existe_detalle_medicament  ##')
+  response = None
+  payload = None
+  jsonRequest = None
+  loginService = None
+  service_response = None
+
+  try:
+    #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
+    jsonRequest = request.get_json(force=True)
+    medicamentService = MedicamentoService()
+    service_response = medicamentService.existe_detalle_medicamento(jsonRequest['presentacion'])
+
+    payload = json.dumps({
+     'code': 200,
+     'message': 'OK',
+     'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
+
+  except Exception as err:
+    log4py.error('Error-> {0}'.format(err))
+    traceback.print_exc()
+    payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
+    response = Response(payload, status=500, mimetype='application/json')
+  return response
+
 def llenar_combo_medicamento():
   """
     metodo utilizado para llenar el combo con todos los medicamentos activos
@@ -155,6 +214,38 @@ def llenar_combo_medicamento():
     response = Response(payload, status=500, mimetype='application/json')
   return response
 
+
+def llenar_combo_almacen():
+  """
+    metodo utilizado para llenar el combo con todos los almacenes activos
+  """
+  log4py.info('##  llenar_combo_almacen  ##')
+  response = None
+  payload = None
+  jsonRequest = None
+  loginService = None
+  service_response = None
+
+  try:
+    #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
+    #jsonRequest = request.get_json(force=True)
+    medicamentService = MedicamentoService()
+    service_response = medicamentService.llenar_combo_almacen()
+
+    payload = json.dumps({
+     'code': 200,
+     'message': 'OK',
+     'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
+
+  except Exception as err:
+    log4py.error('Error-> {0}'.format(err))
+    traceback.print_exc()
+    payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
+    response = Response(payload, status=500, mimetype='application/json')
+  return response
 
 def eliminar_medicamento():
   """

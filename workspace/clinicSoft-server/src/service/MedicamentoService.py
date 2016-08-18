@@ -54,7 +54,7 @@ class MedicamentoService(object):
 
     return service_response
 
-  def existe_detalle_medicamento(self, presentacion):
+  def existe_detalle_medicamento(self, presentacion,id_med):
     """
     Función para buscar un detalle medicamento
     """
@@ -62,7 +62,7 @@ class MedicamentoService(object):
     service_response = None
     aux = '******lo que lleva'
     print(aux, presentacion)
-    service_response = self.medicamDao.existe_detalle_medicamento(presentacion)
+    service_response = self.medicamDao.existe_detalle_medicamento(presentacion,id_med)
 
     return service_response
 
@@ -88,13 +88,13 @@ class MedicamentoService(object):
 
     return service_response
 
-  def eliminar_medicamento(self, medicamento_id):
+  def eliminar_detalle_medicamento(self, presentacion,id_med):
     """
     Función para eliminar un medicamento
     """
     log4py.info('## elimina_medicamento ##')
     service_response = None
-    service_response = self.medicamDao.eliminar_medicamento(medicamento_id)
+    service_response = self.medicamDao.eliminar_detalle_medicamento(presentacion,id_med)
     return service_response
 
   def actualizar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado, id_med):

@@ -1,8 +1,10 @@
+from builtins import print
 from src.dao.SQLiteDao import SQLiteDao
 from src.dao.row.medicamento_row import consulta_medicamento_row
 from src.dao.row.medicamento_row import llenar_combo_row
 from src.dao.row.medicamento_row import row_id_medicamento
 from src.dao.row.medicamento_row import llenar_combo_almacen_row
+from src.dao.row.medicamento_row import row_id_detalle_medicamento
 from Log4py import log4py
 
 class MedicamentoDao(SQLiteDao):
@@ -62,20 +64,20 @@ class MedicamentoDao(SQLiteDao):
     return dao_response
 
   def existe_medicamento(self,nombre_comercial):
-    log4py.info('## existe_medicamento  ##')
+    log4py.info('## llenar_combo_almacen  ##')
     dao_response = None
     cursor = None
-
+    aux='A'
     try:
       self.open()
       self.set_row_factory(row_id_medicamento)
       cursor = self.get_cursor()
-      query = ('''
-          SELECT MED_ID
-          FROM MEDICAMENTO   WHERE MED_NOMBRE_COMERCIAL =?
-           ''', (nombre_comercial))
+      cursor.execute('''
+        SELECT MED_ID
+        FROM MEDICAMENTO
+        WHERE MED_NOMBRE_COMERCIAL = ? AND MED_ESTADO=?
+      ''', (nombre_comercial,aux))
 
-      log4py.info(query)
       dao_response = cursor.fetchall()
       self.commit()
 
@@ -86,24 +88,23 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
-
     return dao_response
 
-  def existe_detalle_medicamento(self, presentacion):
+  def existe_detalle_medicamento(self, presentacion, id_med):
     log4py.info('## existe_detalle_medicamento  ##')
     dao_response = None
     cursor = None
-
+    aux = 0
     try:
       self.open()
-      self.set_row_factory(row_id_medicamento)
+      self.set_row_factory(row_id_detalle_medicamento)
       cursor = self.get_cursor()
-      query = ('''
-          SELECT DEM_ID
-          FROM DETALLE_MEDICAMENTO WHERE DEM_PRESENTACION =?
-           ''', (presentacion))
+      cursor.execute('''
+        SELECT DEM_ID
+        FROM DETALLE_MEDICAMENTO
+        WHERE DEM_PRESENTACION=? AND MED_FK=?
+      ''', (presentacion,id_med))
 
-      log4py.info(query)
       dao_response = cursor.fetchall()
       self.commit()
 
@@ -114,7 +115,6 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
-
     return dao_response
 
   def llenar_combo_medicamento(self):
@@ -199,15 +199,19 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
+    return id_med
+
+
 
   def insertar_detalle_medicamento(self,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
     """
        Insertar un nuevo detalle medicamento
     """
+    print(id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
     log4py.info('##  insertar_detalle_medicamento  ##')
     dao_response = None
     cursor = None
-
+    print(id_med)
     try:
       self.open()
       cursor = self.get_cursor()
@@ -217,7 +221,7 @@ class MedicamentoDao(SQLiteDao):
       # insertamos el nuevo detalle medicamento en db
       cursor.execute('''
         INSERT INTO DETALLE_MEDICAMENTO (DEM_ID,MED_FK,ALM_FK,DEM_PRESENTACION,DEM_CANTIDAD_MAXIMA,DEM_CANTIDAD_MINIMA,
-        DEM_EN_EXISTENCIA,DEM_DESCRIPCION,DEM_INDICACIONES,DEM_VIA_ADMIN_DOSIS,DEM_FACHA_ALTA,DEM_FECHA_CADUCIDAD)
+        DEM_EN_EXISTENCIA,DEM_DESCRIPCION,DEM_INDICACIONES,DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD)
         VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?);
       ''', (id_dem,id_med,id_almacen,presentacion,cantidad_maxima,cantidad_minima,existencia,descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad))
       self.commit()
@@ -230,18 +234,18 @@ class MedicamentoDao(SQLiteDao):
     finally:
       self.close(cursor)
 
-  def eliminar_medicamento(self, med_id):
+  def eliminar_detalle_medicamento(self, presentacion, id_med):
     log4py.info('## elimina_medicamento dao  ##')
     dao_response = None
     cursor = None
 
     try:
       self.open()
-      self.set_row_factory(row_id_medicamento)
+      self.set_row_factory(row_id_detalle_medicamento)
       cursor = self.get_cursor()
       cursor.execute('''
-        DELETE FROM MEDICAMENTO WHERE MED_ID = ?;
-      ''', (med_id))
+        DELETE FROM DETALLE_MEDICAMENTO WHERE DEM_PRESENTACION = ? AND MED_FK=?
+      ''', (presentacion,id_med))
       self.commit()
 
     except Exception as err:

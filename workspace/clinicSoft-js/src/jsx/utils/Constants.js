@@ -22,8 +22,7 @@ var Constants = {
   LOGIN_VIEW: 'login',
   HOME_VIEW: 'home',
   WELCOME_VIEW: 'welcome',
-  MEDICAMENTO_VIEW: 'medicamento',
-  TEST_COMPONENTS_VIEW: 'TestComponents'
+  MEDICAMENTO_VIEW: 'medicamento'
 };
 
 module.exports = Constants;

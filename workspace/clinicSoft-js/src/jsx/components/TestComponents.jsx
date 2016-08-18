@@ -15,17 +15,24 @@ var DatePickerReact = require('./DatePickerReact.jsx');
 //servicios
 var medicamentoService = require('../services/MedicamentoService.js');
 
-//importamos para vetanas de errores o información
-var AlertMixin = require('../mixins/AlertMixin.js');
-
 var validaService = require('../utils/ValidaService.js');
+//sweetalert for pupup
+var swal=require('sweetalert');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
+    getDefaultProps: function() {
+    //console.log('# MedicamentoAlta->getDefaultProps #');
+    return {
+      zindex: 4
+    };
+  },
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
       componentKey: 'Test',
+      language: window.language,
+      zindex: this.props.zindex,
       mainComponent: undefined,
       datePicked: '',
       presentacion: '',
@@ -151,35 +158,29 @@ var TestComponents = React.createClass({
     });
   },
 
-   validaFormulario: function() {
+  validaFormulario: function() {
     var response = {
       isError: false,
       message: ''
     };
 
     if(validaService.isEmpty(this.state.presentacion)) {
-      //return {isError: true, message: this.getText('MSG_109')};
+      return {isError: true, message: this.getText('MSG_109')};
     }
 
     return response;
   },
    validaExiste: function() {
-    //var res = {isError: true, message: this.getText('MSG_110')};
+    var res = {isError: true, message: this.getText('MSG_110')};
     return res;
   },
 
-   onClickGuardar: function(evt) {
+  onClickGuardar: function(evt) {
     var self = this;
 
     var onSuccess = function(response) {
         console.log('# success  #');
-        var id_medicamento=response.payload;
-        var res = self.validaExiste();
-
-        if(id_medicamento.length > 0) {
-          self.showInfo(res.message, {zindex: 4})
-
-        } else{
+     };
             var params = {
                'id_med':self.state.id_med,
                'id_almacen':self.state.comboValue,
@@ -214,24 +215,6 @@ var TestComponents = React.createClass({
                         swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
                      }
                    });
-        }
-    };
-
-
-
-
-
-    var response = this.validaFormulario();
-
-    if(!response.isError) {
-        var presentacion = {
-          'presentacion': this.state.presentacion
-        };
-        medicamentoService.existeDetalle(presentacion, onSuccess, this.onError, this.onFail);
-
-    } else {
-      self.showError(response.message, {zindex: 4});
-    }
   },
 
   render: function() {

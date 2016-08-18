@@ -23,14 +23,19 @@ def insertar_medicamento():
     medicamentService = MedicamentoService()
     service_response = medicamentService.insertar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'],jsonRequest['condicion_venta'],jsonRequest['estado'])
 
-    response = Response(service_response, status=200, mimetype='application/json')
+    payload = json.dumps({
+     'code': 200,
+     'message': 'OK',
+     'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
-
   return response
 
 def insertar_detalle_medicamento():
@@ -49,15 +54,19 @@ def insertar_detalle_medicamento():
     medicamentService = MedicamentoService()
     service_response = medicamentService.insertar_detalle_medicamento(jsonRequest['id_med'], jsonRequest['id_almacen'], jsonRequest['presentacion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],
                                                                       jsonRequest['existencia'], jsonRequest['descripcion'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'])
-
-    response = Response(service_response, status=200, mimetype='application/json')
+    payload = json.dumps({
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
-
   return response
 
 def actualizar_medicamento():
@@ -165,12 +174,12 @@ def existe_detalle_medicamento():
     #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.existe_detalle_medicamento(jsonRequest['presentacion'])
+    service_response = medicamentService.existe_detalle_medicamento(jsonRequest['presentacion'],jsonRequest['id_med'])
 
     payload = json.dumps({
-     'code': 200,
-     'message': 'OK',
-     'payload': service_response
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
     }, cls=ObjectEncoder)
     print(payload)
     response = Response(payload, status=200, mimetype='application/json')
@@ -247,7 +256,7 @@ def llenar_combo_almacen():
     response = Response(payload, status=500, mimetype='application/json')
   return response
 
-def eliminar_medicamento():
+def eliminar_detalle_medicamento():
   """
   metodo utilizado como punto de entrada para gestion de medicament
   """
@@ -261,13 +270,20 @@ def eliminar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.eliminar_medicamento(jsonRequest['med_id'])
+    service_response = medicamentService.eliminar_detalle_medicamento(jsonRequest['presentacion'],jsonRequest['id_med'])
     response = Response(service_response, status=200, mimetype='application/json')
+
+    payload = json.dumps({
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
-
   return response

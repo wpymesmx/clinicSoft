@@ -21,12 +21,14 @@ var validaService = require('../utils/ValidaService.js');
 //importamos para vetanas de errores o información
 var AlertMixin = require('../mixins/AlertMixin.js');
 
+var DetalleMedicamentoAlta = require('./DetalleMedicamentoAlta.jsx');
+
 var MedicamentoAlta = React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
     //console.log('# MedicamentoAlta->getDefaultProps #');
     return {
-      zindex: 4
+      zindex: 2
     };
   },
   getInitialState: function() {
@@ -37,12 +39,14 @@ var MedicamentoAlta = React.createClass({
       show: false,
       zindex: this.props.zindex,
       nombre_comercial: '',
+      nombre_aux: '',
       nombre_generico: '',
       farmaceutica: '',
       elaborado_en: '',
       condicion_venta: '',
       estado:'A',
-      lista_id: []
+      lista_id: [],
+      id_med: 0
     };
   },
   componentWillMount: function() {
@@ -68,6 +72,19 @@ var MedicamentoAlta = React.createClass({
   componentWillUnmount: function() {
     //console.log('# MedicamentoAlta->componentWillUnmount #');
     this.unSubscribeLanguage(this.state.componentKey);
+  },
+
+  onClickSiguiente: function(id_med,evt) {
+    var self = this;
+    console.log('#id_med que enviara a la ventana de detalles.#');
+    console.log(id_med);
+    var onSuccess = function(response) {
+      console.log('# success  #');
+    };
+    //Oculto el popup de MedicamentoAlta
+    this.hide();
+    //Muestro el popup de DetalleMedicamentoAlta
+    this.refs.detalleMedicamentoAlta.show(id_med);
   },
 
   onChangeNombreComercial: function(evt) {
@@ -100,7 +117,6 @@ var MedicamentoAlta = React.createClass({
       estado: evt.target.value
     });
   },
-
   show: function() {
     //aqui limpiar componente
     this.setState({
@@ -125,14 +141,16 @@ var MedicamentoAlta = React.createClass({
     };
 
     if(validaService.isEmpty(this.state.nombre_comercial)) {
-      return {isError: true, message: this.getText('MSG_109')};
+       var self = this;
+      return {isError: true, message: self.getText('MSG_109')};
     }
 
     return response;
   },
 
   validaExiste: function() {
-    var res = {isError: true, message: this.getText('MSG_110')};
+    var self = this;
+    var res = {isError: true, message: self.getText('MSG_110')};
     return res;
   },
 
@@ -142,11 +160,11 @@ var MedicamentoAlta = React.createClass({
     var onSuccess = function(response) {
         console.log('# success  #');
         var id_medicamento=response.payload;
+        console.log(id_medicamento);
         var res = self.validaExiste();
 
         if(id_medicamento.length > 0) {
-          self.showInfo(res.message, {zindex: 4})
-
+           self.showInfo(res.message, {zindex: 4});
         } else{
             var params = {
               'nombre_comercial': self.state.nombre_comercial,
@@ -169,7 +187,19 @@ var MedicamentoAlta = React.createClass({
                   },
                   function(isConfirm){
                      if (isConfirm) {
-                         medicamentoService.insertar(params, onSuccess, self.onError, self.onFail),
+                         var onSuc = function(res) {
+                           console.log('# success  #');
+                           var id=res.payload;
+                            self.setState({
+                                id_med: id
+                            });
+                            console.log('#Recupera el numero de MED_ID insertado#');
+                            console.log(self.state.id_med);
+                            console.log(id);
+                         };
+
+
+                         medicamentoService.insertar(params, onSuc, self.onError, self.onFail),
                          swal('Aceptar!','Medicamento Registrado Con Exito.',
                         'success');
 
@@ -181,17 +211,20 @@ var MedicamentoAlta = React.createClass({
     };
 
     var response = this.validaFormulario();
-
     if(!response.isError) {
         var nombre = {
           'nombre_comercial': this.state.nombre_comercial
         };
-        medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
+        medicamentoService.existeMedicamento(nombre, onSuccess, this.onError, this.onFail);
 
     } else {
-      self.showError(response.message, {zindex: 4});
+      self.showInfo(response.message, {zindex: 4});
     }
+
+
   },
+
+
   render: function() {
     //console.log('# MedicamentoAlta->render #');
     var self = this;
@@ -201,12 +234,19 @@ var MedicamentoAlta = React.createClass({
 
     className = (this.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
 
+
+
     return (
+
+    <div>
+      <DetalleMedicamentoAlta ref='detalleMedicamentoAlta' papa={self}/>
+
       <div className={className}>
+
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Registro De Medicamento
+            Datos Generales Del Medicamento
           </div>
           <div className='panel-body'>
           <table className='table table-bordered table-hover'>
@@ -235,10 +275,14 @@ var MedicamentoAlta = React.createClass({
                <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
                </div>
+                    <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'  onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+               </div>
              </div>
           </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

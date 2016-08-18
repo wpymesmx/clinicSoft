@@ -5,12 +5,13 @@ var commonService = require('./CommonService.js');
 var paths = {
   buscar: '/admin/medicamento/buscar',
   insertar: '/admin/medicamento/insertar',
-  insertarDetalle: '/admin/medicamento/insertarDetalleMed',
+  existeDetalle: '/admin/medicamento/existeDetalle',
   llenarCombo: '/admin/medicamento/llenarCombo',
-  llenarComboAlmacen: '/admin/medicamento/llenarComboAlmacen',
   actualizar:'/admin/medicamento/actualizar',
-  existe:'/admin/medicamento/existe',
-  existeDetalle:'/admin/medicamento/existeDetalle'
+  insertarDetalleMed:'/admin/medicamento/insertarDetalleMed',
+  llenarComboAlmacen:'/admin/medicamento/llenarComboAlmacen',
+  existeMedicamento:'/admin/medicamento/existe',
+  eliminarDetalle:'/admin/medicamento/eliminar'
 };
 
 var MedicamentoService = {
@@ -19,6 +20,9 @@ var MedicamentoService = {
   },
   insertar: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.insertar, params, onSuccess, onError, onFail);
+  },
+  insertarDetalleMed: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.insertarDetalleMed, params, onSuccess, onError, onFail);
   },
   llenarCombo: function(params,onSuccess, onError, onFail) {
     commonService.ajax(paths.llenarCombo,params,onSuccess, onError, onFail);
@@ -29,15 +33,15 @@ var MedicamentoService = {
   actualizar: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.actualizar, params, onSuccess, onError, onFail);
   },
-  existe: function(nombre, onSuccess, onError, onFail) {
-    commonService.ajax(paths.existe, nombre, onSuccess, onError, onFail);
-  },
-  insertarDetalle: function(params, onSuccess, onError, onFail) {
-    commonService.ajax(paths.existe, params, onSuccess, onError, onFail);
-  },
   existeDetalle: function(presentacion, onSuccess, onError, onFail) {
     commonService.ajax(paths.existeDetalle, presentacion, onSuccess, onError, onFail);
   },
+  existeMedicamento: function(nombre, onSuccess, onError, onFail) {
+    commonService.ajax(paths.existeMedicamento, nombre, onSuccess, onError, onFail);
+  },
+  eliminarDetalle: function(dem_id, onSuccess, onError, onFail) {
+    commonService.ajax(paths.eliminarDetalle, dem_id, onSuccess, onError, onFail);
+  }
 };
 
 module.exports = MedicamentoService;

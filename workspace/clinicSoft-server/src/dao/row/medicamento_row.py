@@ -24,6 +24,11 @@ def llenar_combo_almacen_row(cursor, row):
   detalleMediDto.det_ubicacion = row[1]
   return detalleMediDto
 
+def row_id_detalle_medicamento(cursor, row):
+  detalleMediDto = DetalleMedicamentoDto()
+  detalleMediDto.det_id = row[0]
+  return detalleMediDto
+
 def row_id_medicamento(cursor, row):
   medicamentoDto = MedicamentoDto()
   medicamentoDto.medicamento_id = row[0]

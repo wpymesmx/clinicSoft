@@ -22,6 +22,8 @@ var validaService = require('../utils/ValidaService.js');
 //importamos para vetanas de errores o información
 var AlertMixin = require('../mixins/AlertMixin.js');
 
+var DetalleMedicamentoEditar = require('./DetalleMedicamentoEditar.jsx');
+
 var MedicamentoEditar = React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
@@ -139,6 +141,18 @@ var MedicamentoEditar = React.createClass({
     this.setState({
       id_med: id_med
     });
+  },
+  onClickSiguiente: function(id_med,evt) {
+    var self = this;
+    console.log('#id_med que enviara a la ventana de detalles.#');
+    console.log(id_med);
+    var onSuccess = function(response) {
+      console.log('# success  #');
+    };
+    //Oculto el popup de MedicamentoEditar
+    this.hide();
+    //Muestro el popup de DetalleMedicamentoEditar
+    this.refs.detalleMedicamentoEditar.show(id_med);
   },
   onClickCerrar: function(evt) {
     this.setState({
@@ -264,6 +278,8 @@ var MedicamentoEditar = React.createClass({
     className = (this.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
 
     return (
+     <div>
+      <DetalleMedicamentoEditar ref='detalleMedicamentoEditar' papa={self}/>
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
@@ -296,12 +312,16 @@ var MedicamentoEditar = React.createClass({
                  <div className="btn-group" role="group">
                     <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEditar} />
                  </div>
+                 <div className="btn-group" role="group">
+                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'  onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+                 </div>
              </div>
 
             </div>
           </div>
         </div>
       </div>
+     </div>
     );
   }
 });

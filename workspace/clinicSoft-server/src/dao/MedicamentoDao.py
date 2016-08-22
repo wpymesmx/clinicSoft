@@ -5,6 +5,8 @@ from src.dao.row.medicamento_row import llenar_combo_row
 from src.dao.row.medicamento_row import row_id_medicamento
 from src.dao.row.medicamento_row import llenar_combo_almacen_row
 from src.dao.row.medicamento_row import row_id_detalle_medicamento
+from src.dao.row.detalle_medicamento_row import consulta_detalles_row
+
 from Log4py import log4py
 
 class MedicamentoDao(SQLiteDao):
@@ -104,6 +106,35 @@ class MedicamentoDao(SQLiteDao):
         FROM DETALLE_MEDICAMENTO
         WHERE DEM_PRESENTACION=? AND MED_FK=?
       ''', (presentacion,id_med))
+
+      dao_response = cursor.fetchall()
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
+    return dao_response
+
+  def buscar_detalles(self,id_med):
+    log4py.info('## buscar_detalles  ##')
+    dao_response = None
+    cursor = None
+    aux = 0
+    print('el id_med para buscar detalles')
+    print(id_med)
+    try:
+      self.open()
+      self.set_row_factory(consulta_detalles_row)
+      cursor = self.get_cursor()
+      cursor.execute('''
+        SELECT DEM_ID,DEM_PRESENTACION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_DESCRIPCION, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS
+        FROM DETALLE_MEDICAMENTO
+        WHERE MED_FK=? AND DEM_ID>?
+      ''', (id_med,aux))
 
       dao_response = cursor.fetchall()
       self.commit()

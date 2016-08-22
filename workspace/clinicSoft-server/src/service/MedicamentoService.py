@@ -66,6 +66,18 @@ class MedicamentoService(object):
 
     return service_response
 
+  def buscar_detalles(self, id_med):
+    """
+    Función para buscar un detalle medicamento
+    """
+    log4py.info('## existe_detalle_medicamento ##')
+    service_response = None
+    aux = '******lo que lleva'
+    print(aux, id_med)
+    service_response = self.medicamDao.buscar_detalles(id_med)
+
+    return service_response
+
   def llenar_combo_medicamento(self):
     """
     Función para buscar un medicamento

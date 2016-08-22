@@ -191,6 +191,39 @@ def existe_detalle_medicamento():
     response = Response(payload, status=500, mimetype='application/json')
   return response
 
+def buscar_detalles():
+  """
+    metodo utilizado para validar si existe un detalle medicamento
+  """
+  log4py.info('##  buscar_detalles  ##')
+  response = None
+  payload = None
+  jsonRequest = None
+  loginService = None
+  service_response = None
+
+  try:
+    #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
+    jsonRequest = request.get_json(force=True)
+    medicamentService = MedicamentoService()
+    service_response = medicamentService.buscar_detalles(jsonRequest['id_med'])
+
+    payload = json.dumps({
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
+
+  except Exception as err:
+    log4py.error('Error-> {0}'.format(err))
+    traceback.print_exc()
+    payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
+    response = Response(payload, status=500, mimetype='application/json')
+  return response
+
+
 def llenar_combo_medicamento():
   """
     metodo utilizado para llenar el combo con todos los medicamentos activos

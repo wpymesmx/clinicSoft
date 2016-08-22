@@ -260,10 +260,13 @@ var Medicamento = React.createClass({
             <div className='btn-group' role='group'>
             </div>
             <div className='btn-group' role='group'>
-            <button className='buscarButton'  onClick={this.onClickBuscar} />
+            <button className='buscarButton'  title='Buscar' onClick={this.onClickBuscar} />
             </div>
             <div className='btn-group' role='group'>
-              <button className='newButton' onClick={this.onClickNuevo} />
+              <button className='newButton' title='Nuevo' onClick={this.onClickNuevo} />
+            </div>
+            <div className='btn-group' title='Reporte' role='group'>
+              <button className='informeButton'/>
             </div>
             </div>
           </div>

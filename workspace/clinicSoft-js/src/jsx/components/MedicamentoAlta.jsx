@@ -46,7 +46,8 @@ var MedicamentoAlta = React.createClass({
       condicion_venta: '',
       estado:'A',
       lista_id: [],
-      id_med: 0
+      id_med: 0,
+      ban:true
     };
   },
   componentWillMount: function() {
@@ -85,6 +86,9 @@ var MedicamentoAlta = React.createClass({
     this.hide();
     //Muestro el popup de DetalleMedicamentoAlta
     this.refs.detalleMedicamentoAlta.show(id_med);
+     self.setState({
+       ban: true
+     });
   },
 
   onChangeNombreComercial: function(evt) {
@@ -133,6 +137,11 @@ var MedicamentoAlta = React.createClass({
     this.setState({
       show: false
     });
+    this.state.nombre_comercial='',
+    this.state.nombre_generico='',
+    this.state.farmaceutica='',
+    this.state.elaborado_en='',
+    this.state.condicion_venta=''
   },
   validaFormulario: function() {
     var response = {
@@ -201,7 +210,10 @@ var MedicamentoAlta = React.createClass({
 
                          medicamentoService.insertar(params, onSuc, self.onError, self.onFail),
                          swal('Aceptar!','Medicamento Registrado Con Exito.',
-                        'success');
+                         'success');
+                         self.setState({
+                            ban: false
+                         });
 
                      }else {
                         swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
@@ -276,7 +288,7 @@ var MedicamentoAlta = React.createClass({
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
                </div>
                     <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'  onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'     disabled={this.state.ban} onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
                </div>
              </div>
           </div>

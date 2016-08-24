@@ -119,3 +119,14 @@ class MedicamentoService(object):
     service_response = self.medicamDao.actualizar_medicamento(nombre_comercial, nombre_generico,  farmaceutica, elaborado_en, condicion_venta,estado,id_med)
 
     return service_response
+
+  def update_detalle_medicamento(self,dem_id,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
+    """
+    Servicio utilizado para actualizar un detalle medicamento.
+    """
+    log4py.info('## update_detalle_medicamento ##')
+    service_response = None
+    service_response = self.medicamDao.update_detalle_medicamento(dem_id,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
+
+    return service_response
+

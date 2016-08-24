@@ -85,14 +85,50 @@ def actualizar_medicamento():
     medicamentService = MedicamentoService()
     service_response = medicamentService.actualizar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'], jsonRequest['estado'],jsonRequest['id_med'])
 
-    response = Response(service_response, status=200, mimetype='application/json')
+    payload = json.dumps({
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
     response = Response(payload, status=500, mimetype='application/json')
+  return response
 
+def update_detalle_medicamento():
+  """
+    metodo utilizado para actualizar un medicamento
+  """
+  log4py.info('## update_detalle_medicamento  ##')
+  response = None
+  payload = None
+  jsonRequest = None
+  loginService = None
+  service_response = None
+
+  try:
+    jsonRequest = request.get_json(force=True)
+    medicamentService = MedicamentoService()
+    service_response = medicamentService.update_detalle_medicamento(jsonRequest['dem_id'],jsonRequest['id_med'], jsonRequest['id_almacen'], jsonRequest['presentacion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],jsonRequest['existencia'], jsonRequest['descripcion'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'])
+
+    payload = json.dumps({
+      'code': 200,
+      'message': 'OK',
+      'payload': service_response
+    }, cls=ObjectEncoder)
+    print(payload)
+    response = Response(payload, status=200, mimetype='application/json')
+
+  except Exception as err:
+    log4py.error('Error-> {0}'.format(err))
+    traceback.print_exc()
+    payload = json.dumps({'code': 500, 'message': 'Error interno...', 'payload': None})
+    response = Response(payload, status=500, mimetype='application/json')
   return response
 
 def buscar_medicamento():
@@ -303,6 +339,7 @@ def eliminar_detalle_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
+    print(jsonRequest['presentacion'])
     service_response = medicamentService.eliminar_detalle_medicamento(jsonRequest['presentacion'],jsonRequest['id_med'])
     response = Response(service_response, status=200, mimetype='application/json')
 

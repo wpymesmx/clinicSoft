@@ -12,6 +12,7 @@ var paths = {
   llenarComboAlmacen:'/admin/medicamento/llenarComboAlmacen',
   existeMedicamento:'/admin/medicamento/existe',
   eliminarDetalle:'/admin/medicamento/eliminar',
+  editarDetalle:'/admin/medicamento/editaDetalle',
   buscarDetalles:'/admin/medicamento/buscarDetalles'
 };
 
@@ -45,6 +46,9 @@ var MedicamentoService = {
   },
   buscarDetalles: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.buscarDetalles, params, onSuccess, onError, onFail);
+  },
+  editarDetalle: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.editarDetalle, params, onSuccess, onError, onFail);
   }
 };
 

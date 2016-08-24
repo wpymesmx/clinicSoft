@@ -24,6 +24,7 @@ from src.view.medicamento_view import llenar_combo_almacen
 from src.view.medicamento_view import insertar_detalle_medicamento
 from src.view.medicamento_view import  existe_detalle_medicamento
 from src.view.medicamento_view import  buscar_detalles
+from src.view.medicamento_view import  update_detalle_medicamento
 
 #Crear objeto de servidor flask
 app = Flask(__name__)
@@ -121,4 +122,5 @@ if __name__ == '__main__':
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existe', view_func=existe_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existeDetalle', view_func=existe_detalle_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/buscarDetalles', view_func=buscar_detalles, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/editaDetalle', view_func=update_detalle_medicamento, methods=['POST'])
   app.run(debug=True, port=8080)

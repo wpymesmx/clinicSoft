@@ -175,18 +175,12 @@ var MedicamentoEditar = React.createClass({
     var res = {isError: true, message: this.getText('MSG_110')};
     return res;
   },
-  onClickEditar: function(evt) {
-    var self = this;
 
+  onClickEditar: function(evt) {
     var onSuccess = function(response) {
         console.log('# success  #');
-        var id_medicamento=response.payload;
-        var res = self.validaExiste();
-
-        if(id_medicamento.length > 0) {
-          self.showInfo(res.message, {zindex: 4})
-
-        } else{
+    };
+    var self = this;
                var params = {
                 'nombre_comercial': self.state.nombre_comercial,
                 'nombre_generico': self.state.nombre_generico,
@@ -218,16 +212,10 @@ var MedicamentoEditar = React.createClass({
                         swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelado.', 'error');
                      }
                    });
-        }
-    };
 
     var response = this.validaFormulario();
     if(this.state.nombre_aux != this.state.nombre_comercial){
       if(!response.isError) {
-        var nombre = {
-          'nombre_comercial': this.state.nombre_comercial
-        };
-        medicamentoService.existe(nombre, onSuccess, this.onError, this.onFail);
 
       } else {
       self.showError(response.message, {zindex: 4});

@@ -12,7 +12,7 @@ class TestLoginView(unittest.TestCase):
 
   def test_login_view(self):
     data = b'''{
-      "user": "root@gmail.com", "passwd": "123456"
+      "user": "root", "passwd": "1234"
     }'''
     web_token = ''
     method = 'POST'

@@ -136,6 +136,25 @@ var Medicamento = React.createClass({
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
 
+   onClickBuscar: function(evt) {
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+      self.setState({
+        lista_medicamentos: response.payload
+      });
+    };
+
+    var params = {
+        'nombre_comercial': this.state.nombre_comercial,
+        'nombre_generico': this.state.nombre_generico,
+        'farmaceutica': this.state.farmaceutica,
+        'elaborado_en': this.state.elaborado_en,
+        'condicion_venta': this.state.condicion_venta
+    };
+    medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
+  },
+
   onClickNuevo: function(evt) {
     var self = this;
     var onSuccess = function(response) {
@@ -241,10 +260,13 @@ var Medicamento = React.createClass({
             <div className='btn-group' role='group'>
             </div>
             <div className='btn-group' role='group'>
-            <button className='buscarButton'  onClick={this.onClickBuscar} />
+            <button className='buscarButton'  title='Buscar' onClick={this.onClickBuscar} />
             </div>
             <div className='btn-group' role='group'>
-              <button className='nuevoButton' onClick={this.onClickNuevo} />
+              <button className='newButton' title='Nuevo' onClick={this.onClickNuevo} />
+            </div>
+            <div className='btn-group' title='Reporte' role='group'>
+              <button className='informeButton'/>
             </div>
             </div>
           </div>

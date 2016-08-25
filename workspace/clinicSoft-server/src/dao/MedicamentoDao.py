@@ -1,7 +1,13 @@
+from builtins import print
 from src.dao.SQLiteDao import SQLiteDao
 from src.dao.row.medicamento_row import consulta_medicamento_row
 from src.dao.row.medicamento_row import llenar_combo_row
 from src.dao.row.medicamento_row import row_id_medicamento
+from src.dao.row.medicamento_row import llenar_combo_almacen_row
+from src.dao.row.medicamento_row import row_id_detalle_medicamento
+from src.dao.row.detalle_medicamento_row import consulta_detalles_row
+from src.dao.row.medicamento_row import consulta_detalles_row
+
 from Log4py import log4py
 
 class MedicamentoDao(SQLiteDao):
@@ -61,20 +67,20 @@ class MedicamentoDao(SQLiteDao):
     return dao_response
 
   def existe_medicamento(self,nombre_comercial):
-    log4py.info('## existe_medicamento  ##')
+    log4py.info('## llenar_combo_almacen  ##')
     dao_response = None
     cursor = None
-
+    aux='A'
     try:
       self.open()
       self.set_row_factory(row_id_medicamento)
       cursor = self.get_cursor()
-      query = ('''
-          SELECT MED_ID
-          FROM MEDICAMENTO   WHERE MED_NOMBRE_COMERCIAL =?
-           ''', (nombre_comercial))
+      cursor.execute('''
+        SELECT MED_ID
+        FROM MEDICAMENTO
+        WHERE MED_NOMBRE_COMERCIAL = ? AND MED_ESTADO=?
+      ''', (nombre_comercial,aux))
 
-      log4py.info(query)
       dao_response = cursor.fetchall()
       self.commit()
 
@@ -85,7 +91,62 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
+    return dao_response
 
+  def existe_detalle_medicamento(self, presentacion, id_med):
+    log4py.info('## existe_detalle_medicamento  ##')
+    dao_response = None
+    cursor = None
+    aux = 0
+    try:
+      self.open()
+      self.set_row_factory(row_id_detalle_medicamento)
+      cursor = self.get_cursor()
+      cursor.execute('''
+        SELECT DEM_ID
+        FROM DETALLE_MEDICAMENTO
+        WHERE DEM_PRESENTACION=? AND MED_FK=?
+      ''', (presentacion,id_med))
+
+      dao_response = cursor.fetchall()
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
+    return dao_response
+
+  def buscar_detalles(self,id_med):
+    log4py.info('## buscar_detalles  ##')
+    dao_response = None
+    cursor = None
+    aux = 0
+    print('el id_med para buscar detalles')
+    print(id_med)
+    try:
+      self.open()
+      self.set_row_factory(consulta_detalles_row)
+      cursor = self.get_cursor()
+      cursor.execute('''
+        SELECT DEM_ID,ALM_FK,DEM_PRESENTACION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_DESCRIPCION, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD
+        FROM DETALLE_MEDICAMENTO
+        WHERE MED_FK=? AND DEM_ID>?
+      ''', (id_med,aux))
+
+      dao_response = cursor.fetchall()
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
     return dao_response
 
   def llenar_combo_medicamento(self):
@@ -101,6 +162,33 @@ class MedicamentoDao(SQLiteDao):
         SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA, MED_ESTADO
         FROM MEDICAMENTO
         WHERE MED_ESTADO = ?
+      ''', (aux))
+
+      dao_response = cursor.fetchall()
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
+    return dao_response
+
+  def llenar_combo_almacen(self):
+    log4py.info('## llenar_combo_almacen  ##')
+    dao_response = None
+    cursor = None
+    aux = 'A'
+    try:
+      self.open()
+      self.set_row_factory(llenar_combo_almacen_row)
+      cursor = self.get_cursor()
+      cursor.execute('''
+        SELECT ALM_ID, ALM_UBICACION
+        FROM ALMACEN
+        WHERE ALM_ESTADO = ?
       ''', (aux))
 
       dao_response = cursor.fetchall()
@@ -143,19 +231,81 @@ class MedicamentoDao(SQLiteDao):
 
     finally:
       self.close(cursor)
+    return id_med
 
-  def eliminar_medicamento(self, med_id):
+
+
+  def insertar_detalle_medicamento(self,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
+    """
+       Insertar un nuevo detalle medicamento
+    """
+    print(id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
+    log4py.info('##  insertar_detalle_medicamento  ##')
+    dao_response = None
+    cursor = None
+    print(id_med)
+    try:
+      self.open()
+      cursor = self.get_cursor()
+      # se obtiene o calcula el siguiente pk de la tabla MEDICAMENTO
+      cursor.execute(''' SELECT IFNULL(MAX(DEM_ID), 0)+1 NEXT_ID_DEM FROM DETALLE_MEDICAMENTO ''')
+      id_dem = cursor.fetchone()[0]
+      # insertamos el nuevo detalle medicamento en db
+      cursor.execute('''
+        INSERT INTO DETALLE_MEDICAMENTO (DEM_ID,MED_FK,ALM_FK,DEM_PRESENTACION,DEM_CANTIDAD_MAXIMA,DEM_CANTIDAD_MINIMA,
+        DEM_EN_EXISTENCIA,DEM_DESCRIPCION,DEM_INDICACIONES,DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD)
+        VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?);
+      ''', (id_dem,id_med,id_almacen,presentacion,cantidad_maxima,cantidad_minima,existencia,descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad))
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
+
+  def update_detalle_medicamento(self,dem_id, id_med, id_almacen, presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion, indicasiones, via_aministracion, fecha_alta, fecha_caducidad):
+    """
+       Update un detalle medicamento
+    """
+    print(dem_id,id_med, id_almacen, presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion, indicasiones, via_aministracion, fecha_alta, fecha_caducidad)
+    log4py.info('##  update_detalle_medicamento  ##')
+    dao_response = None
+    cursor = None
+    try:
+      self.open()
+      cursor = self.get_cursor()
+      # Se actualiza el detalle medicamento en db
+      cursor.execute('''
+        UPDATE  DETALLE_MEDICAMENTO SET DEM_ID=?, MED_FK=?, ALM_FK=?, DEM_PRESENTACION=?, DEM_CANTIDAD_MAXIMA=?, DEM_CANTIDAD_MINIMA=?,
+        DEM_EN_EXISTENCIA=?, DEM_DESCRIPCION=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_FECHA_ALTA=?, DEM_FECHA_CADUCIDAD=?
+        WHERE DEM_ID=?
+      ''', (dem_id, id_med, id_almacen, presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion, indicasiones,
+      via_aministracion, fecha_alta, fecha_caducidad,dem_id))
+      self.commit()
+
+    except Exception as err:
+      log4py.error('Error-> {0}'.format(err))
+      self.rollback()
+      raise err
+
+    finally:
+      self.close(cursor)
+
+  def eliminar_detalle_medicamento(self, presentacion, id_med):
     log4py.info('## elimina_medicamento dao  ##')
     dao_response = None
     cursor = None
 
     try:
       self.open()
-      self.set_row_factory(row_id_medicamento)
+      self.set_row_factory(row_id_detalle_medicamento)
       cursor = self.get_cursor()
       cursor.execute('''
-        DELETE FROM MEDICAMENTO WHERE MED_ID = ?;
-      ''', (med_id))
+        DELETE FROM DETALLE_MEDICAMENTO WHERE DEM_PRESENTACION = ? AND DEM_ID=?
+      ''', (presentacion,id_med))
       self.commit()
 
     except Exception as err:

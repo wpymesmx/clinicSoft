@@ -48,6 +48,7 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med:[],
       lista_detalles: [],
       lista_detalle_tmp:[],
+      medicamento:[],
       comboValue: 0
     };
   },
@@ -56,22 +57,19 @@ var DetalleMedicamentoEditar= React.createClass({
     //console.log('# App->componentWillMount #');
     self.subscribeLanguage(self.state.componentKey, self.changeSessionLanguage);
   },
+
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
     var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
-      console.log(response.payload);
       self.setState({
-        lista_detalles_med: response.payload
+        lista_combo : response.payload
       });
     };
-    var params = {
-        'id_med': self.state.id_med
-    };
-    medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
-
+    medicamentoService.llenarComboAlmacen({},onSuccess, self.onError, self.onFail);
   },
+
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
   },
@@ -91,7 +89,7 @@ var DetalleMedicamentoEditar= React.createClass({
     self.unSubscribeLanguage(self.state.componentKey);
   },
 
-  onDatePicked: function(datePicked, evt) {
+  onDatePickedUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
     this.setState({
@@ -99,7 +97,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
-  onDatePickedDos: function(datePicked, evt) {
+  onDatePickedDosUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
     this.setState({
@@ -107,6 +105,71 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
+  onChangePresentacionUno: function(evt) {
+    this.setState({
+      presentacion: evt.target.value
+    });
+  },
+
+  onChangeCantidad_maximaUno: function(evt) {
+    this.setState({
+      cantidad_maxima: evt.target.value
+    });
+  },
+  onChangeCantidad_minimaUno: function(evt) {
+    this.setState({
+      cantidad_minima: evt.target.value
+    });
+  },
+  onChangeExistenciaUno: function(evt) {
+    this.setState({
+      existencia: evt.target.value
+    });
+  },
+  onChangeDescripcionUno: function(evt) {
+    this.setState({
+      descripcion: evt.target.value
+    });
+  },
+  onChangeIndicasionesUno: function(evt) {
+    this.setState({
+      indicasiones: evt.target.value
+    });
+  },
+  onChangeViaAdministracionUno: function(evt) {
+    this.setState({
+      via_aministracion: evt.target.value
+    });
+  },
+  onChangeFechaAltaUno: function(evt) {
+    this.setState({
+      fecha_alta: evt.target.value
+    });
+  },
+  onChangeFechaCaducidadUno: function(evt) {
+    this.setState({
+      fecha_caducidad: evt.target.value
+    });
+  },
+
+
+
+
+
+  onDatePicked: function(datePicked, evt) {
+    console.log('datePicked->' + datePicked);
+
+    this.setState({
+      fecha_alta: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+    });
+  },
+  onDatePickedDos: function(datePicked, evt) {
+    console.log('datePicked->' + datePicked);
+
+    this.setState({
+      fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+    });
+  },
   onChangePresentacion: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -115,8 +178,6 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-
-
   onChangeCantidad_maxima: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -233,20 +294,34 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.fecha_caducidad='',
     this.state.id_med='',
     this.state.id_almacen='',
-    this.state.comboValue=0
+    this.state.comboValue=0,
+    this.state.lista_detalles_med=[]
   },
 
-  onClickRegresar: function(evt) {
+  onClickRegresar: function(medicamento,evt) {
     var onSuccess = function(response) {
       console.log('# success  #');
     };
     //Oculto el popup de DetalleMedicamentoEditar
     this.hide();
     //Muestro el popup de MedicamentoEditar
-    this.props.papa.show();
+    this.props.papa.show(medicamento);
   },
 
-  validaFormulario: function(index) {
+  validaFormulario: function() {
+    var self = this;
+    var response = {
+      isError: false,
+      message: ''
+    };
+
+    if(validaService.isEmpty(self.state.presentacion)) {
+      return {isError: true, message: self.getText('MSG_112')};
+    }
+    return response;
+  },
+
+  validaRegistros: function(index) {
     var self = this;
     var response = {
       isError: false,
@@ -299,12 +374,68 @@ var DetalleMedicamentoEditar= React.createClass({
                    });
   },
 
+  onClickGuardar: function(evt) {
+    var onSuccess = function(response) {
+      console.log('# success  #');
+    };
+    var self = this;
+    var response = this.validaFormulario();
+    if(!response.isError) {
+
+            var params = {
+               'id_med':self.state.id_med,
+               'id_almacen':self.state.comboValue,
+               'presentacion': self.state.presentacion,
+               'cantidad_maxima':self.state.cantidad_maxima,
+               'cantidad_minima':self.state.cantidad_minima,
+               'existencia':self.state.existencia,
+               'descripcion':self.state.descripcion,
+               'indicasiones':self.state.indicasiones,
+               'via_aministracion':self.state.via_aministracion,
+               'fecha_alta': self.state.fecha_alta,
+               'fecha_caducidad':self.state.fecha_caducidad
+            };
+
+            swal({title: 'Confirmar Registro?',
+               text: 'Desea Continuar Con El Registro De La Presentación!',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: 'Si,Guardar!',
+                  cancelButtonText: 'No,Cancelar!',
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+                  },
+                  function(isConfirm){
+                     if (isConfirm) {
+                         medicamentoService.insertarDetalleMed(params, onSuccess, self.onError, self.onFail),
+                         swal('Aceptar!','Presentación Registrada Con Exito.',
+                         'success');
+
+                         var auxParams = {
+                            'presentacion': self.state.presentacion,
+                            'cantidad_maxima': self.state.cantidad_maxima,
+                            'cantidad_minima': self.state.cantidad_minima,
+                            'existencia': self.state.existencia,
+                            'fecha_caducidad': self.state.fecha_caducidad
+                         };
+
+                     }else {
+                        swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
+                     }
+                   });
+
+    } else {
+        self.showInfo(response.message, {zindex: 4});
+    }
+  },
+
   onClickEditarDetalle: function(index,evt) {
     var onSuccess = function(response) {
         console.log('# success  #');
     };
     var self = this;
-    var response = this.validaFormulario(index);
+    var response = this.validaRegistros(index);
     if(!response.isError) {
         var detalles_med=this.state.lista_detalles_med[index];
             var params = {
@@ -355,8 +486,11 @@ var DetalleMedicamentoEditar= React.createClass({
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
+
     className = (self.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
+
     var rows_detalles = [];
+
      console.log('total detalles');
      console.log(self.state.lista_detalles_med.length);
      if(self.state.lista_detalles_med.length > 0) {
@@ -426,7 +560,40 @@ var DetalleMedicamentoEditar= React.createClass({
             Editar Detalles Del Medicamento
           </div>
           <div className='panel-body'>
-             {listaDetallesDiv}
+
+           <table>
+           <tbody>
+            <tr>
+                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.presentacion} onChange={this.onChangePresentacionUno}/></td>
+                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.cantidad_maxima} onChange={this.onChangeCantidad_maximaUno}/></td>
+            </tr>
+            <tr>
+                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.cantidad_minima} onChange={this.onChangeCantidad_minimaUno}/></td>
+                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.existencia} onChange={this.onChangeExistenciaUno}/></td>
+            </tr>
+            <tr>
+                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.descripcion} onChange={this.onChangeDescripcionUno}/></td>
+                <td><input type='text' className='form-control' placeholder='Indicasiones' value={this.state.indicasiones} onChange={this.onChangeIndicasionesUno}/></td>
+            </tr>
+            <tr>
+                <td><input type='text' className='form-control' placeholder='Via Aministracion' value={this.state.via_aministracion} onChange={this.onChangeViaAdministracionUno}/></td>
+                <td>
+                   <div>
+                      <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+                         {listaAlmacenComboOption}
+                      </select>
+                   </div>
+               </td>
+            </tr>
+            <tr>
+                <td><DatePickerReact inputLabel='Fecha Alta:' onDatePicked={this.onDatePickedUno}  /></td>
+                <td><DatePickerReact inputLabel='Fecha Caducidad:' onDatePicked={this.onDatePickedDosUno} /></td>
+                <td><button className='nuevoButton' onClick={this.onClickGuardar} /> </td>
+            </tr>
+          </tbody>
+          </table>
+
+          {listaDetallesDiv}
           </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
@@ -435,7 +602,7 @@ var DetalleMedicamentoEditar= React.createClass({
                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar'  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar.bind(this,this.state.medicamento)}/>
                </div>
                 <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar'  onClick={this.onClickBuscar} />

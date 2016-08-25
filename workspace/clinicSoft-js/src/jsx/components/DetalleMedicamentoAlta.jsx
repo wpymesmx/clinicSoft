@@ -188,10 +188,10 @@ var DetalleMedicamentoAlta= React.createClass({
   },
 
   onClickRegresar: function(evt) {
+    //Oculto el popup de DetalleMedicamentoAlta
     var onSuccess = function(response) {
       console.log('# success  #');
     };
-    //Oculto el popup de DetalleMedicamentoAlta
     this.hide();
     //Muestro el popup de MedicamentoAlta
     this.props.papa.show();

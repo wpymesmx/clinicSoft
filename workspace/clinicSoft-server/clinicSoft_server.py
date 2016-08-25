@@ -16,10 +16,15 @@ from jwt.exceptions import DecodeError
 #medicamento
 from src.view.medicamento_view import insertar_medicamento
 from src.view.medicamento_view import buscar_medicamento
-from src.view.medicamento_view import eliminar_medicamento
+from src.view.medicamento_view import eliminar_detalle_medicamento
 from src.view.medicamento_view import actualizar_medicamento
 from src.view.medicamento_view import llenar_combo_medicamento
 from src.view.medicamento_view import existe_medicamento
+from src.view.medicamento_view import llenar_combo_almacen
+from src.view.medicamento_view import insertar_detalle_medicamento
+from src.view.medicamento_view import  existe_detalle_medicamento
+from src.view.medicamento_view import  buscar_detalles
+from src.view.medicamento_view import  update_detalle_medicamento
 #personal
 from src.view.personal_view import insert_personal
 from src.view.personal_view import update_personal

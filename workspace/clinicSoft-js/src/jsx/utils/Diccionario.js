@@ -47,8 +47,10 @@ var Diccionario = {
     MSG_511: 'Sexo',
     MSG_512: 'Masculino',
     MSG_513: 'Femenino',
+    MSG_514: 'Espa\u00F1ol',
+    MSG_515: 'Ingles',
     //mensajes para manejo de personal
-    MSG_1000: 'Gestion de personal',
+    MSG_1000: 'Gesti\u00F3n de personal',
     MSG_1001: 'Agregar nuevo personal',
     MSG_1002: 'Editar personal',
     MSG_1003: 'El personal se guardo correctamente',
@@ -58,7 +60,13 @@ var Diccionario = {
     MSG_2003: 'El apellido materno del personal es obligatorio.',
     MSG_2004: 'El n\u00FAmero de tel\u00E9fono es obligatorio.',
     MSG_2005: 'El correo electr\u00F3nico es obligatorio.',
-    MSG_2006: 'Es obligatorio seleccionar un usuario para el personal.'
+    MSG_2006: 'Es obligatorio seleccionar un usuario para el personal.',
+    //mensajes para manejos de medicamentoService
+    MSG_3000: 'Gesti\u00F3n del medicamento',
+    //mensajes para administration de pacientes
+    MSG_4000: 'Gesti\u00F3n de pacientes.',
+    //mensajes para administration de citas medicas
+    MSG_5000: 'Gesti\u00F3n de citas m\u00E9dicas'
   },
   EN: {
     MSG_100: 'English',
@@ -97,6 +105,8 @@ var Diccionario = {
     MSG_511: 'Sex',
     MSG_512: 'Male',
     MSG_513: 'Female',
+    MSG_514: 'Spanish',
+    MSG_515: 'English',
     //mensajes para manejo de personal
     MSG_1000: 'Personal administration',
     MSG_1001: 'Add new personal',
@@ -108,7 +118,13 @@ var Diccionario = {
     MSG_2003: 'Personal last name is required.',
     MSG_2004: 'Phone number is required.',
     MSG_2005: 'Email is required.',
-    MSG_2006: 'User is required.'
+    MSG_2006: 'User is required.',
+    //mensajes para administration de medicamentos
+    MSG_3000: 'Drug administration',
+    //mensajes para administration de pacientes
+    MSG_4000: 'Patient administration',
+    //mensajes para administration de citas medicas
+    MSG_5000: 'medical appointments administration'
   }
 };
 

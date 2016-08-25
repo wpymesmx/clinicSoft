@@ -26,7 +26,9 @@ var Constants = {
   HOME_VIEW: 'home',
   WELCOME_VIEW: 'welcome',
   MEDICAMENTO_VIEW: 'medicamento',
-  PERSONAL_VIEW: 'Personal',
+  PERSONAL_VIEW: 'personal',
+  PERSONAL_NEW_EDIT_VIEW: 'personal_new_edit',
+  HEADER_VIEW: 'header',
   TEST_COMPONENTS_VIEW: 'TestComponents'
 };
 

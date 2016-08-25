@@ -3,17 +3,21 @@
 var React = require('react');
 //mixins
 var NavigatorMixin = require('./mixins/NavigatorMixin.js');
+var LanguageMixin = require('./mixins/LanguageMixin.js');
 //utils
 var Constants = require('./utils/Constants.js');
 
 var Welcome = React.createClass({
-  mixins: [NavigatorMixin()],
+  mixins: [NavigatorMixin(),LanguageMixin()],
   getInitialState: function() {
     return {
+      componentKey: Constants.WELCOME_VIEW,
+      language: window.language,
     };
   },
   componentWillMount: function() {
     //console.log('# App->componentWillMount #');
+    this.subscribeLanguage(this.state.componentKey, this.changeSessionLanguage);
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
@@ -34,6 +38,7 @@ var Welcome = React.createClass({
   },
   componentWillUnmount: function() {
     //console.log('# App->componentWillUnmount #');
+    this.unSubscribeLanguage(this.state.componentKey);
   },
   onClickIrMedicamento: function(evt) {
    this.goToComponent(Constants.MEDICAMENTO_VIEW);
@@ -46,16 +51,16 @@ var Welcome = React.createClass({
     return (
       <div className='welcome'>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionMedicamento' onClick={this.onClickIrMedicamento}/>
+          <button className='menuItemGestionMedicamento' title={this.getText('MSG_3000')} onClick={this.onClickIrMedicamento}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionMedicos' onClick={this.onClickIrPersonal}/>
+          <button className='menuItemGestionMedicos' title={this.getText('MSG_1000')} onClick={this.onClickIrPersonal}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionPacientes'/>
+          <button className='menuItemGestionPacientes' title={this.getText('MSG_4000')}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionCitas'/>
+          <button className='menuItemGestionCitas' title={this.getText('MSG_5000')}/>
         </div>
       </div>
     );

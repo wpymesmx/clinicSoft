@@ -18,7 +18,7 @@ var PersonalNewEdit = React.createClass({
   getInitialState: function() {
     //console.log('# Personal->getInitialState #');
     return {
-      componentKey: Constants.PERSONAL_VIEW,
+      componentKey: Constants.PERSONAL_NEW_EDIT_VIEW,
       language: window.language,
       zindex: 4,
       personalMode: 1,  //1-New 2-Edit, bandera para establecer el modo de funcionamiento del componente
@@ -438,12 +438,13 @@ var PersonalNewEdit = React.createClass({
                   <DatePickerReact ref='fechan'/>
                 </div>
               </div>
+              {/*Horario*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_508')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='M' checked={this.state.morningSelected} onChange={this.onClickMorning}/>
                     </span>
@@ -451,7 +452,7 @@ var PersonalNewEdit = React.createClass({
                       {this.getText('MSG_509')}
                     </span>
                   </div>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='V' checked={this.state.eveningSelected}  onChange={this.onClickEvening}/>
                     </span>
@@ -461,12 +462,13 @@ var PersonalNewEdit = React.createClass({
                   </div>
                 </div>
               </div>
+              {/*Sexo*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_511')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='M' checked={this.state.maleSelected} onChange={this.onClickMale}/>
                     </span>
@@ -474,7 +476,7 @@ var PersonalNewEdit = React.createClass({
                       {this.getText('MSG_512')}
                     </span>
                   </div>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='V' checked={this.state.femaleSelected}  onChange={this.onClickFemale}/>
                     </span>
@@ -495,12 +497,13 @@ var PersonalNewEdit = React.createClass({
                   </select>
                 </div>
               </div>
+              {/*Estado*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_504')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='A' checked={this.state.activoSelected} onChange={this.onClickActivo}/>
                     </span>
@@ -508,7 +511,7 @@ var PersonalNewEdit = React.createClass({
                       {this.getText('MSG_202')}
                     </span>
                   </div>
-                  <div style={{width: '25%', marginRight: '25%'}} className='left_align'>
+                  <div style={{width: '50%'}} className='left_align'>
                     <span style={{marginRight: '10%'}}>
                       <input type='radio' value='I' checked={this.state.inactivoSelected}  onChange={this.onClickInactivo}/>
                     </span>

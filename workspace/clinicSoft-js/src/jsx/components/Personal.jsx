@@ -182,32 +182,35 @@ var Personal = React.createClass({
               </div>
             </div>
             <div>
-              <div className='btn-group right_align'>
-                <button type='button' className='btn btn-default nuevoButton' title={this.getText('MSG_205')} onClick={this.onClickAddPersonal}/>
+              <div className='btn-group left_left' style={{width: '100%'}}>
+                <button type='button' className='btn btn-default nuevoButton' title={this.getText('MSG_205')} style={{float: 'right'}}
+                  onClick={this.onClickAddPersonal}/>
               </div>
-              <table className='table table-bordered table-hover'>
-                <tbody>
-                  <tr className='alert alert-success trHeader'>
-                    <td>{this.getText('MSG_500')}</td>
-                    <td>{this.getText('MSG_501')}</td>
-                    <td>{this.getText('MSG_502')}</td>
-                    <td>{this.getText('MSG_503')}</td>
-                    <td>{this.getText('MSG_504')}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td><input type='text' className='form-control' placeholder={this.getText('MSG_500')} /></td>
-                    <td><input type='text' className='form-control' placeholder={this.getText('MSG_501')} /></td>
-                    <td><input type='text' className='form-control' placeholder={this.getText('MSG_502')} /></td>
-                    <td><input type='text' className='form-control' placeholder={this.getText('MSG_503')} /></td>
-                    <td><input type='text' className='form-control' placeholder={this.getText('MSG_504')} /></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  {rowsPersonalList}
-                </tbody>
-              </table>
+              <div className='overflowXauto left_left' style={{width: '100%'}}>
+                <table className='table table-bordered table-hover'>
+                  <tbody>
+                    <tr className='alert alert-success trHeader'>
+                      <td>{this.getText('MSG_500')}</td>
+                      <td>{this.getText('MSG_501')}</td>
+                      <td>{this.getText('MSG_502')}</td>
+                      <td>{this.getText('MSG_503')}</td>
+                      <td>{this.getText('MSG_504')}</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_500')} /></td>
+                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_501')} /></td>
+                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_502')} /></td>
+                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_503')} /></td>
+                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_504')} /></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    {rowsPersonalList}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

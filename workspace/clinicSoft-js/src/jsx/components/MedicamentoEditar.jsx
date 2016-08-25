@@ -48,7 +48,7 @@ var MedicamentoEditar = React.createClass({
       estadoUno:true,
       estadoDos:false,
       estado:'',
-      id_med: '',
+      id_med: ''
     };
   },
   componentWillMount: function() {

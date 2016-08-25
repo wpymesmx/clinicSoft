@@ -12,14 +12,24 @@ import re
 from Log4py import log4py
 from src.filter.security_filter import valida_token
 from src.view.login_view import login_view
-from src.view.usuario_view import insertar_usuario
 from jwt.exceptions import DecodeError
+#medicamento
 from src.view.medicamento_view import insertar_medicamento
 from src.view.medicamento_view import buscar_medicamento
 from src.view.medicamento_view import eliminar_medicamento
 from src.view.medicamento_view import actualizar_medicamento
 from src.view.medicamento_view import llenar_combo_medicamento
 from src.view.medicamento_view import existe_medicamento
+#personal
+from src.view.personal_view import insert_personal
+from src.view.personal_view import update_personal
+from src.view.personal_view import activar_personal
+from src.view.personal_view import inactivar_personal
+from src.view.personal_view import getPersonalById
+from src.view.personal_view import getAllPersonal
+from src.view.personal_view import getPersonalByFilter
+#usaurio
+from src.view.usuario_view import getAllUsers
 
 #Crear objeto de servidor flask
 app = Flask(__name__)
@@ -104,8 +114,6 @@ if __name__ == '__main__':
   log4py.info('## iniciando servidor clinicSoft  ##')
   #Inicio de sesion del usuario o login
   app.add_url_rule(rule='/clinicSoft/login', view_func=login_view, methods=['POST'])
-  #Administracion de usuarios
-  app.add_url_rule(rule='/clinicSoft/admin/usuario/insertar', view_func=insertar_usuario, methods=['POST'])
   #Administracion de medicamentos
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/insertar', view_func=insertar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/buscar', view_func=buscar_medicamento, methods=['POST'])
@@ -113,4 +121,14 @@ if __name__ == '__main__':
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/eliminar', view_func=eliminar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/actualizar', view_func=actualizar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existe', view_func=existe_medicamento, methods=['POST'])
+  #Administracion de personal
+  app.add_url_rule(rule='/clinicSoft/admin/personal/insert_personal', view_func=insert_personal, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/update_personal', view_func=update_personal, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/activar_personal', view_func=activar_personal, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/inactivar_personal', view_func=inactivar_personal, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/getPersonalById', view_func=getPersonalById, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/getAllPersonal', view_func=getAllPersonal, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/personal/getPersonalByFilter', view_func=getPersonalByFilter, methods=['POST'])
+  #administracion de usuarios
+  app.add_url_rule(rule='/clinicSoft/admin/user/getAllUsers', view_func=getAllUsers, methods=['POST'])
   app.run(debug=True, port=8080)

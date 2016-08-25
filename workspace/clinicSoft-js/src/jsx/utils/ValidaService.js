@@ -62,6 +62,17 @@ var ValidaService = {
     }
 
     return resp;
+  },
+  isEmail: function(obj, opt) {
+    var resp = false;
+    var regx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if(!this.isEmpty(obj) && regx.test(obj)) {
+        resp = true;
+    }
+
+    return resp;
+
   }
 };
 

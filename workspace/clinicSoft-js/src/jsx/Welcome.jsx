@@ -38,6 +38,9 @@ var Welcome = React.createClass({
   onClickIrMedicamento: function(evt) {
    this.goToComponent(Constants.MEDICAMENTO_VIEW);
   },
+  onClickIrPersonal: function(evt) {
+    this.goToComponent(Constants.PERSONAL_VIEW);
+  },
   render: function() {
     //console.log('# App->render #');
     return (
@@ -46,7 +49,7 @@ var Welcome = React.createClass({
           <button className='menuItemGestionMedicamento' onClick={this.onClickIrMedicamento}/>
         </div>
         <div className='menuItem align-left'>
-          <button className='menuItemGestionMedicos'/>
+          <button className='menuItemGestionMedicos' onClick={this.onClickIrPersonal}/>
         </div>
         <div className='menuItem align-left'>
           <button className='menuItemGestionPacientes'/>

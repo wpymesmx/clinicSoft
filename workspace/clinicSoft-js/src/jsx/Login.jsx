@@ -83,10 +83,7 @@ var Login = React.createClass({
     }
   },
   validaFormulario: function() {
-    var response = {
-      isError: false,
-      message: ''
-    };
+    var response = {isError: false, message: ''};
 
     if(validaService.isEmpty(this.state.usuario) || validaService.isEmpty(this.state.passwd)) {
       return {isError: true, message: this.getText('MSG_108')};

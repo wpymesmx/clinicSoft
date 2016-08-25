@@ -204,7 +204,7 @@ var MedicamentoAlta = React.createClass({
     return (
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClassMedicament'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-primary popUpClassPersonal'} style={{zIndex: this.state.zindex}}>
           <div className='panel-heading'>
             Registro De Medicamento
           </div>

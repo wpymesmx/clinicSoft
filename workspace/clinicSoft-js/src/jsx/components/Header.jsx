@@ -60,9 +60,9 @@ var Header = React.createClass({
         <div className='clinicLogo left_align'>&nbsp;</div>
         <div className='headerCenter left_align'>&nbsp;</div>
         <div className='headerSalir left_align'>
-          <button className='salirButton' onClick={this.onClickSalir}></button>
+          <button className='salirButton right_align' onClick={this.onClickSalir}></button>
         </div>
-        <div>
+        <div className='menuHeader left_align'>
           <button className='homeButton' onClick={this.onClickIrWelcome}></button>
           <button onClick={this.onClickIrTestComponents}>COMPONENTE DE PRUEBAS</button>
         </div>

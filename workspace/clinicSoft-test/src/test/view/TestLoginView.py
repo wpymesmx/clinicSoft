@@ -6,13 +6,13 @@ import urllib.parse as parse
 class TestLoginView(unittest.TestCase):
   """
     clase para pruebas unitarias de LoginService
-    comando para ejecutar desde terminal: python -m unittest -v TestLoginView.python
+    comando para ejecutar desde terminal: python -m unittest -v TestLoginView.py
     Nota: toooodos los metodos que inician con test seran ejecutados como prueba unitaria
   """
 
   def test_login_view(self):
     data = b'''{
-      "user": "root@gmail.com", "passwd": "123456"
+      "user": "root", "passwd": "123456"
     }'''
     web_token = ''
     method = 'POST'

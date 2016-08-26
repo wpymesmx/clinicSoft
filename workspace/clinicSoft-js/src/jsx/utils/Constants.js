@@ -19,10 +19,17 @@ var Constants = {
   CONEXION_ERROR: 'Se ha producido un error de conexión con el servidor, le recomendamos checar su conexión.',
   ES: 'ES',
   EN: 'EN',
+  COMPONENT_MODE_NEW: 1,
+  COMPONENT_MODE_EDIT: 2,
+  COMPONENT_MODE_DETAIL: 3,
   LOGIN_VIEW: 'login',
   HOME_VIEW: 'home',
   WELCOME_VIEW: 'welcome',
-  MEDICAMENTO_VIEW: 'medicamento'
+  MEDICAMENTO_VIEW: 'medicamento',
+  PERSONAL_VIEW: 'personal',
+  PERSONAL_NEW_EDIT_VIEW: 'personal_new_edit',
+  HEADER_VIEW: 'header',
+  TEST_COMPONENTS_VIEW: 'TestComponents'
 };
 
 module.exports = Constants;

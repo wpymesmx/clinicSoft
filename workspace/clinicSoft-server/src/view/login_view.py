@@ -37,7 +37,7 @@ def login_view():
     log4py.error('Error-> {0}'.format(err))
     traceback.print_exc()
     payload = json.dumps({'code': 500, 'message': err.message, 'payload': None})
-    response = Response(payload, status=500, mimetype='application/json')
+    response = Response(payload, status=200, mimetype='application/json')
 
   except Exception as err:
     log4py.error('Error-> {0}'.format(err))

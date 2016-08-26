@@ -105,7 +105,7 @@ class MedicamentoDao(SQLiteDao):
       cursor.execute('''
         SELECT DEM_ID
         FROM DETALLE_MEDICAMENTO
-        WHERE DEM_PRESENTACION=? AND MED_FK=?
+        WHERE DEM_PRESENTACION=? AND MED_ID=?
       ''', (presentacion,id_med))
 
       dao_response = cursor.fetchall()
@@ -132,9 +132,9 @@ class MedicamentoDao(SQLiteDao):
       self.set_row_factory(consulta_detalles_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT DEM_ID,ALM_FK,DEM_PRESENTACION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_DESCRIPCION, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD
+        SELECT DEM_ID,ALM_ID,DEM_PRESENTACION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_DESCRIPCION, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD
         FROM DETALLE_MEDICAMENTO
-        WHERE MED_FK=? AND DEM_ID>?
+        WHERE MED_ID=? AND DEM_ID>?
       ''', (id_med,aux))
 
       dao_response = cursor.fetchall()
@@ -252,7 +252,7 @@ class MedicamentoDao(SQLiteDao):
       id_dem = cursor.fetchone()[0]
       # insertamos el nuevo detalle medicamento en db
       cursor.execute('''
-        INSERT INTO DETALLE_MEDICAMENTO (DEM_ID,MED_FK,ALM_FK,DEM_PRESENTACION,DEM_CANTIDAD_MAXIMA,DEM_CANTIDAD_MINIMA,
+        INSERT INTO DETALLE_MEDICAMENTO (DEM_ID,MED_ID,ALM_ID,DEM_PRESENTACION,DEM_CANTIDAD_MAXIMA,DEM_CANTIDAD_MINIMA,
         DEM_EN_EXISTENCIA,DEM_DESCRIPCION,DEM_INDICACIONES,DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD)
         VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?);
       ''', (id_dem,id_med,id_almacen,presentacion,cantidad_maxima,cantidad_minima,existencia,descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad))
@@ -279,7 +279,7 @@ class MedicamentoDao(SQLiteDao):
       cursor = self.get_cursor()
       # Se actualiza el detalle medicamento en db
       cursor.execute('''
-        UPDATE  DETALLE_MEDICAMENTO SET DEM_ID=?, MED_FK=?, ALM_FK=?, DEM_PRESENTACION=?, DEM_CANTIDAD_MAXIMA=?, DEM_CANTIDAD_MINIMA=?,
+        UPDATE  DETALLE_MEDICAMENTO SET DEM_ID=?, MED_ID=?, ALM_ID=?, DEM_PRESENTACION=?, DEM_CANTIDAD_MAXIMA=?, DEM_CANTIDAD_MINIMA=?,
         DEM_EN_EXISTENCIA=?, DEM_DESCRIPCION=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_FECHA_ALTA=?, DEM_FECHA_CADUCIDAD=?
         WHERE DEM_ID=?
       ''', (dem_id, id_med, id_almacen, presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion, indicasiones,

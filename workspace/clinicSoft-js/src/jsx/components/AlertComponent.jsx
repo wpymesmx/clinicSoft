@@ -15,7 +15,7 @@ var AlertComponent = React.createClass({
   getDefaultProps: function() {
     //console.log('# Alert->getDefaultProps #');
     return {
-      zindex: 2
+      zindex: 99
     };
   },
   getInitialState: function() {

@@ -15,7 +15,7 @@ var Login = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin(), LanguageMixin()],
   getInitialState: function() {
     return {
-      componentKey: 'Login',
+      componentKey: Constants.LOGIN_VIEW,
       language: window.language,
       usuario: '',
       passwd: ''
@@ -83,10 +83,7 @@ var Login = React.createClass({
     }
   },
   validaFormulario: function() {
-    var response = {
-      isError: false,
-      message: ''
-    };
+    var response = {isError: false, message: ''};
 
     if(validaService.isEmpty(this.state.usuario) || validaService.isEmpty(this.state.passwd)) {
       return {isError: true, message: this.getText('MSG_108')};
@@ -109,19 +106,27 @@ var Login = React.createClass({
   render: function() {
     //console.log('# App->render #');
     return (
-      <div className='container'>
-        <div className='card card-container'>
-          <div className='profile-img-card'></div>
-          <p className='profile-name-card'></p>
-          <form className='form-signin'>
-            <span className='reauth-email'></span>
-            <input type='text' className='form-control' placeholder={this.getText('MSG_105')} value={this.state.usuario} onChange={this.onChangeUsuario} />
-            <input type='password' className='form-control' placeholder={this.getText('MSG_106')} value={this.state.passwd} onChange={this.onChangePasswd} />
-            <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_107')} onClick={this.onClickEntrar} />
-          </form>
-          <a href='#' className='forgot-password' onClick={this.forgetPassword}>
-            {this.getText('MSG_104')}
-          </a>
+      <div>
+        <div className='groupTop btn-group left_align languaje_scale'>
+          <button type='button' className='btn btn-lg btn-primary btn-signin mexico_flag'
+            title={this.getText('MSG_514')} onClick={this.changeLanguage.bind(this, Constants.ES)} />
+          <button type='button' className='btn btn-lg btn-primary btn-signin united_states_flag'
+            title={this.getText('MSG_515')} onClick={this.changeLanguage.bind(this, Constants.EN)} />
+        </div>
+        <div className='container left_align' style={{width: '100%'}}>
+          <div className='card card-container'>
+            <div className='profile-img-card'></div>
+            <p className='profile-name-card'></p>
+            <form className='form-signin'>
+              <span className='reauth-email'></span>
+              <input type='text' className='form-control' placeholder={this.getText('MSG_105')} value={this.state.usuario} onChange={this.onChangeUsuario} />
+              <input type='password' className='form-control' placeholder={this.getText('MSG_106')} value={this.state.passwd} onChange={this.onChangePasswd} />
+              <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_107')} onClick={this.onClickEntrar} />
+            </form>
+            <a href='#' className='forgot-password' onClick={this.forgetPassword}>
+              {this.getText('MSG_104')}
+            </a>
+          </div>
         </div>
       </div>
     );

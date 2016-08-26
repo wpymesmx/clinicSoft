@@ -18,11 +18,9 @@ class LoginService(object):
   def login(self, user, passwd) -> AppException:
     """
       Servicio utilizado para autenticar el usuario en el sistema y obtener un token valido
-
       Args:
         user: Usuario del sistema
         passwd: Password del usuario
-
       Returns:
         service_response: String que representa un token valido
     """
@@ -43,3 +41,4 @@ class LoginService(object):
     jws = self.securityService.encode_jws(id_usuario, user)
 
     return jws
+

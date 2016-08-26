@@ -13,7 +13,8 @@ var DatePickerReact = React.createClass({
       datePicked: new Date(),
       dateView: new Date(),
       dateFormat: this.props.dateFormat,
-      inputLabel: this.props.inputLabel
+      inputLabel: this.props.inputLabel,
+      zIndex: this.props.zIndex
     };
   },
   getDefaultProps: function() {
@@ -30,7 +31,8 @@ var DatePickerReact = React.createClass({
     ctx.put('lastDayInMonth', Constants.lastDayInMonth);
 
     return {
-      dateFormat: 'dd/mm/yyyy',
+      dateFormat: 'yyyy-MM-dd-',
+      zIndex: 4,
       ctx: ctx
     };
   },
@@ -69,14 +71,11 @@ var DatePickerReact = React.createClass({
       isShow: false
     });
   },
-  onClickAceptarDatePicked: function(evt) {
-    this.hide();
-  },
-  onChangeDatePicked: function(evt) {
-
-  },
   getDatePicked: function() {
     return this.state.datePicked;
+  },
+  getDatePickedFormat: function() {
+    return (this.state.datePicked.getFullYear() + '-' + (this.state.datePicked.getMonth()+1) + '-' + this.state.datePicked.getDate());
   },
   isBisiesto: function(dateView) {
     var isBisiesto = false;
@@ -88,18 +87,18 @@ var DatePickerReact = React.createClass({
     }
 
     return isBisiesto;
-  },  
+  },
   lastDayInMonth: function(dateView) {
     var lastDay = 0;
     var month = dateView.getMonth();
     var isBiciesto = false;
     var BICIESTO_LAST_DAY = 28;
 
-    isBiciesto = this.isBisiesto(dateView);    
+    isBiciesto = this.isBisiesto(dateView);
 
     if(isBiciesto && month == Constants.Months.FEBREO) {
       lastDay = BICIESTO_LAST_DAY;
-      
+
     } else {
       lastDay = this.props.ctx.get('lastDayInMonth')[month];
     }
@@ -120,7 +119,6 @@ var DatePickerReact = React.createClass({
     var datePicked = new Date(dateView.getTime());
 
     datePicked.setDate(dayCount);
-
     this.setState({
       datePicked: datePicked,
       isShow: false
@@ -138,7 +136,6 @@ var DatePickerReact = React.createClass({
     var dateView = this.state.dateView;
 
     dateView.setMonth(dateView.getMonth() + 1);
-
     this.setState({
       dateView: dateView
     });
@@ -148,7 +145,6 @@ var DatePickerReact = React.createClass({
     var dateView = this.state.dateView;
 
     dateView.setFullYear(dateView.getFullYear() + 1);
-
     this.setState({
       dateView: dateView
     });
@@ -157,8 +153,7 @@ var DatePickerReact = React.createClass({
     evt.preventDefault();
     var dateView = this.state.dateView;
 
-    dateView.setMonth(dateView.getMonth() - 1);   
-
+    dateView.setMonth(dateView.getMonth() - 1);
     this.setState({
       dateView: dateView
     });
@@ -168,7 +163,6 @@ var DatePickerReact = React.createClass({
     var dateView = this.state.dateView;
 
     dateView.setFullYear(dateView.getFullYear() - 1);
-
     this.setState({
       dateView: dateView
     });
@@ -196,10 +190,17 @@ var DatePickerReact = React.createClass({
     this.setState({
       isShow: false,
       datePicked: new Date(),
-      dateView: new Date(),
+      dateView: new Date()
     });
   },
-  render: function() {  
+  setDatePicked: function(newDatePicked) {
+    this.setState({
+      isShow: false,
+      datePicked: new Date(newDatePicked),
+      dateView: new Date(newDatePicked)
+    });
+  },
+  render: function() {
     var self = this;
     var componentShow = 'componentShow';
     var componentHide = 'componentHide';
@@ -208,6 +209,7 @@ var DatePickerReact = React.createClass({
     var colsHTML = [];
     var calTitle = '';
     var datePicked = '';
+    var inputLabel = '';
 
     if(this.state.isShow) {
       datePickerStyle += ' ' + componentShow;
@@ -241,15 +243,17 @@ var DatePickerReact = React.createClass({
 
           var stylePicked = {};
 
-          if(this.state.datePicked.getDate() == dayCount && 
-              this.state.datePicked.getMonth() == this.state.dateView.getMonth() && 
+          if(this.state.datePicked.getDate() == dayCount &&
+              this.state.datePicked.getMonth() == this.state.dateView.getMonth() &&
               this.state.datePicked.getFullYear() == this.state.dateView.getFullYear()) {
             stylePicked = {
               background: '#6FC1D6'
-            }; 
+            };
           }
 
-          colHTML.push(<td><a href='#' style={stylePicked} onClick={onPickDateOn}>{dayCount}</a></td>);
+          colHTML.push(<td key={('cal_td' + dayCount + initCol)}>
+                        <a key={('cal_td_a' + dayCount + initCol)} href='#' style={stylePicked} onClick={onPickDateOn}>{dayCount}</a>
+                      </td>);
           dayCount++;
 
         } else {
@@ -257,30 +261,36 @@ var DatePickerReact = React.createClass({
             self.onPickDateOff(dayCount, dateView, evt);
           }.bind(self, 0, this.state.dateView);
 
-          colHTML.push(<td className='cal-off'><a href='#' onClick={onPickDateOff}></a></td>);
+          colHTML.push(<td key={('cal_td' + dayCount + initCol)} className='cal-off'>
+                        <a key={('cal_td_a' + dayCount + initCol)} href='#' onClick={onPickDateOff}></a>
+                      </td>);
         }
       }
 
-      rowsHTML.push(<tr>
+      rowsHTML.push(<tr key={('cal_tr_' + dayCount)}>
         {colHTML}
       </tr>);
     }
     //crear etiqueta del titulo de mes y anio que se esta calculando
     calTitle = Constants.MonthsFull[this.state.dateView.getMonth()] + ' ' + this.state.dateView.getFullYear();
     //crear etiqueta para el campo en base al formato deseado (TODO)
-    datePicked = (this.state.datePicked.getDate() + '/' + (this.state.datePicked.getMonth() + 1) + '/' + this.state.datePicked.getFullYear());
+    datePicked = (this.state.datePicked.getFullYear() + '-' + (this.state.datePicked.getMonth() + 1) + '-' + this.state.datePicked.getDate());
+
+    if(this.state.inputLabel != undefined && this.state.inputLabel != '') {
+      inputLabel = (<span style={{float: 'left', marginLeft: '3%', marginRight: '3%', marginTop: '0.8%'}}>{this.state.inputLabel}</span>);
+    }
 
     return (
-      <div style={{width:'100%', float:'left', marginRight: '3%'}}>        
-        <span style={{float: 'left', marginLeft: '3%', marginRight: '3%', marginTop: '0.8%'}}>{this.state.inputLabel}</span>
+      <div style={{width:'100%', float:'left', marginRight: '3%'}}>
+        {inputLabel}
         <span style={{float: 'left', marginRight: '3%', marginTop: '0.5%'}}>
-          <input type='text' value={datePicked} onChange={this.onChangeDatePicked} readOnly={true} />
+          <input type='text' value={datePicked} readOnly={true} />
         </span>
         <span style={{float: 'left', marginLeft: '3%', marginRight: '3%'}}>
           <a id={this.props.idCal} className='iconCalStyle'  href='#' onClick={this.showDatePicker}></a>
         </span>
 
-        <section className={datePickerStyle}>
+        <section className={datePickerStyle} style={{zIndex: this.state.zIndex}}>
           <div className='cal'>
             <table className='cal-table'>
               <caption className='cal-caption'>

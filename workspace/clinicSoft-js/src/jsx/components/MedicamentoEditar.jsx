@@ -1,5 +1,10 @@
-'use strict';
+/**
+* __title__ = 'Edición de medicamento.'
+* __author__ = '@LLV'
+* __date__ = '26/08/2016'
+*/
 
+'use strict';
 var React = require('react');
 //mixins
 var LanguageMixin = require('../mixins/LanguageMixin.js');
@@ -48,6 +53,7 @@ var MedicamentoEditar = React.createClass({
       estadoUno:true,
       estadoDos:false,
       estado:'',
+      medicamento:undefined,
       id_med: ''
     };
   },
@@ -116,7 +122,7 @@ var MedicamentoEditar = React.createClass({
     });
     }
   },
-
+  //@LLV Método para mostrar this ppoup.
   show: function(medicamento) {
     //aqui limpiar componente
     this.setState({
@@ -128,7 +134,8 @@ var MedicamentoEditar = React.createClass({
       farmaceutica:medicamento.farmaceutica,
       elaborado_en:medicamento.elaborado_en,
       condicion_venta:medicamento.condicion_venta,
-      estado:medicamento.estado
+      estado:medicamento.estado,
+      medicamento:medicamento
     });
   },
   hide: function() {
@@ -152,30 +159,33 @@ var MedicamentoEditar = React.createClass({
     //Oculto el popup de MedicamentoEditar
     this.hide();
     //Muestro el popup de DetalleMedicamentoEditar
-    this.refs.detalleMedicamentoEditar.show(id_med);
+    this.refs.detalleMedicamentoEditar.show(id_med,this.state.medicamento);
   },
   onClickCerrar: function(evt) {
     this.setState({
       show: false
     });
   },
+
+  //@LLV Método utilzado para validar los campos del formulario.
   validaFormulario: function() {
     var response = {
       isError: false,
       message: ''
     };
-
     if(validaService.isEmpty(this.state.nombre_comercial)) {
       return {isError: true, message: this.getText('MSG_109')};
     }
-
     return response;
   },
+
+  //@LLV Método que manda el mensaje de medicamento existente.
   validaExiste: function() {
     var res = {isError: true, message: this.getText('MSG_110')};
     return res;
   },
 
+  //@LLV Método utilizado para actualizar un medicamento.
   onClickEditar: function(evt) {
     var onSuccess = function(response) {
         console.log('# success  #');
@@ -190,8 +200,6 @@ var MedicamentoEditar = React.createClass({
                 'estado': self.state.estado,
                 'id_med':self.state.id_med
               };
-
-
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con La Actualización Del Medicamento!',
                   type: 'warning',
@@ -205,14 +213,11 @@ var MedicamentoEditar = React.createClass({
                   function(isConfirm){
                      if (isConfirm) {
                          medicamentoService.actualizar(params, onSuccess, self.onError, self.onFail),
-                         swal('Aceptar!','Medicamento Actualizado Con Exito.',
-                        'success');
-
+                         swal('Aceptar!','Medicamento Actualizado Con Exito.', 'success');
                      }else {
                         swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelado.', 'error');
                      }
                    });
-
     var response = this.validaFormulario();
     if(this.state.nombre_aux != this.state.nombre_comercial){
       if(!response.isError) {
@@ -230,7 +235,6 @@ var MedicamentoEditar = React.createClass({
                 'estado': self.state.estado,
                 'id_med':self.state.id_med
               };
-
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con La Actualización Del Medicamento!',
                   type: 'warning',
@@ -244,27 +248,22 @@ var MedicamentoEditar = React.createClass({
                   function(isConfirm){
                      if (isConfirm) {
                          medicamentoService.actualizar(params, onSuccess, self.onError, self.onFail),
-                         swal('Aceptar!','Medicamento Actualizado Con Exito.',
-                        'success');
-
+                         swal('Aceptar!','Medicamento Actualizado Con Exito.','success');
                      }else {
                         swal('Cancelar', 'La Actualización Del Medicamento Fue Cancelado.', 'error');
                      }
             });
-
     }
   },
 
-
+  //@LLV Método principal para renderizar los componentes.
   render: function() {
     //console.log('# MedicamentoEditar->render #');
     var self = this;
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
-
     className = (this.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
-
     return (
      <div>
       <DetalleMedicamentoEditar ref='detalleMedicamentoEditar' papa={self}/>
@@ -292,7 +291,6 @@ var MedicamentoEditar = React.createClass({
           </div>
           <div className='panel-footer button-align-right'>
             <div className='input-group' style={{align: 'center'}}>
-
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                  <div className="btn-group" role="group">
                      <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
@@ -301,14 +299,13 @@ var MedicamentoEditar = React.createClass({
                     <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickEditar} />
                  </div>
                  <div className="btn-group" role="group">
-                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'  onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'  onClick={this.onClickSiguiente.bind(this, this.state.id_med)} />
                  </div>
+              </div>
              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
+           </div>
+         </div>
+       </div>
      </div>
     );
   }

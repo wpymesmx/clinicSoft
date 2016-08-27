@@ -1,5 +1,10 @@
-'use strict';
+/**
+* __title__ = 'Alta de medicamento.'
+* __author__ = '@LLV'
+* __date__ = '26/08/2016'
+*/
 
+'use strict';
 var React = require('react');
 //mixins
 var LanguageMixin = require('../mixins/LanguageMixin.js');
@@ -23,6 +28,7 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 
 var DetalleMedicamentoAlta = require('./DetalleMedicamentoAlta.jsx');
 
+//@LLV Inicio de la clae MedicmantoAlta.
 var MedicamentoAlta = React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
@@ -74,7 +80,7 @@ var MedicamentoAlta = React.createClass({
     //console.log('# MedicamentoAlta->componentWillUnmount #');
     this.unSubscribeLanguage(this.state.componentKey);
   },
-
+  //@LLV Método que muestra la siguiente ventana.
   onClickSiguiente: function(id_med,evt) {
     var self = this;
     console.log('#id_med que enviara a la ventana de detalles.#');
@@ -90,7 +96,6 @@ var MedicamentoAlta = React.createClass({
        ban: true
      });
   },
-
   onChangeNombreComercial: function(evt) {
     this.setState({
       nombre_comercial: evt.target.value
@@ -128,12 +133,15 @@ var MedicamentoAlta = React.createClass({
       show: true
     });
   },
+
   hide: function() {
     //aqui limpiar componente
     this.setState({
       show: false
     });
   },
+
+  //@LLV Método que cierra popup y limpia componentes.
   onClickCerrar: function(evt) {
     this.setState({
       show: false
@@ -144,35 +152,35 @@ var MedicamentoAlta = React.createClass({
     this.state.elaborado_en='',
     this.state.condicion_venta=''
   },
+
+  //@LLV Método para vlaidar los campos obligatorios en el formulario.
   validaFormulario: function() {
     var response = {
       isError: false,
       message: ''
     };
-
     if(validaService.isEmpty(this.state.nombre_comercial)) {
        var self = this;
-      return {isError: true, message: self.getText('MSG_109')};
+       return {isError: true, message: self.getText('MSG_109')};
     }
-
     return response;
   },
 
+  //@LLV Método para mensaje de medicamento esxistente.
   validaExiste: function() {
     var self = this;
     var res = {isError: true, message: self.getText('MSG_110')};
     return res;
   },
 
+  //@LLV Método utilizado para relaizar un insert a BD.
   onClickGuardar: function(evt) {
     var self = this;
-
     var onSuccess = function(response) {
         console.log('# success  #');
         var id_medicamento=response.payload;
         console.log(id_medicamento);
         var res = self.validaExiste();
-
         if(id_medicamento.length > 0) {
            self.showInfo(res.message, {zindex: 4});
         } else{
@@ -184,7 +192,6 @@ var MedicamentoAlta = React.createClass({
               'condicion_venta': self.state.condicion_venta,
               'estado': self.state.estado
             };
-
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro Del Medicamento!',
                   type: 'warning',
@@ -207,56 +214,40 @@ var MedicamentoAlta = React.createClass({
                             console.log(self.state.id_med);
                             console.log(id);
                          };
-
-
                          medicamentoService.insertar(params, onSuc, self.onError, self.onFail),
-                         swal('Aceptar!','Medicamento Registrado Con Exito.',
-                         'success');
+                         swal('Aceptar!','Medicamento Registrado Con Exito.','success');
                          self.setState({
                             ban: false
                          });
-
                      }else {
                         swal('Cancelar', 'El Registro Del Medicamento Fue Cancelado.', 'error');
                      }
                    });
         }
     };
-
     var response = this.validaFormulario();
-
     if(!response.isError) {
         var nombre = {
           'nombre_comercial': this.state.nombre_comercial
         };
         medicamentoService.existeMedicamento(nombre, onSuccess, this.onError, this.onFail);
-
     } else {
       self.showInfo(response.message, {zindex: 4});
     }
-
-
   },
 
-
+  //Función principal que renderiza los componentes.
   render: function() {
     //console.log('# MedicamentoAlta->render #');
     var self = this;
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
-
     className = (this.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
-
-
-
     return (
-
     <div>
       <DetalleMedicamentoAlta ref='detalleMedicamentoAlta' papa={self}/>
-
       <div className={className}>
-
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
@@ -264,7 +255,7 @@ var MedicamentoAlta = React.createClass({
           </div>
           <div className='panel-body'>
           <table className='table table-bordered table-hover'>
-           <tbody>
+            <tbody>
               <tr><td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} /></td></tr>
               <tr><td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico} /></td></tr>
               <tr><td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} /></td></tr>
@@ -280,39 +271,23 @@ var MedicamentoAlta = React.createClass({
           </tbody>
           </table>
          </div>
-
-        <div>
-          <table className='table table-bordered table-hover'>
-           <tbody>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
-                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
-                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta}/></td>
-                <td></td>
-                <td></td>
-            </tr>
-          </tbody>
-          </table>
-        </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
                </div>
                <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
                </div>
-                    <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente'     disabled={this.state.ban} onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente' disabled={this.state.ban} onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
                </div>
-             </div>
+            </div>
           </div>
-          </div>
+         </div>
         </div>
-      </div>
+       </div>
       </div>
     );
   }

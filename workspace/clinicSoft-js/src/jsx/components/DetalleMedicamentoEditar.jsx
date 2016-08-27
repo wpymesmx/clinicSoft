@@ -1,3 +1,9 @@
+/**
+* __title__ = 'Detalle Medicamento Editar.'
+* __author__ = '@LLV'
+* __date__ = '26/08/2016'
+*/
+
 'use strict';
 var React = require('react');
 //mixins
@@ -15,7 +21,7 @@ var medicamentoService = require('../services/MedicamentoService.js');
 var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var validaService = require('../utils/ValidaService.js');
 
-//components
+//@LLV Inicio de la clase principal.
 var DetalleMedicamentoEditar= React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
@@ -24,7 +30,6 @@ var DetalleMedicamentoEditar= React.createClass({
       zindex: 4
     };
   },
-
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
@@ -48,7 +53,7 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med:[],
       lista_detalles: [],
       lista_detalle_tmp:[],
-      medicamento:[],
+      medicamento:undefined,
       comboValue: 0
     };
   },
@@ -57,7 +62,6 @@ var DetalleMedicamentoEditar= React.createClass({
     //console.log('# App->componentWillMount #');
     self.subscribeLanguage(self.state.componentKey, self.changeSessionLanguage);
   },
-
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
     var self = this;
@@ -69,7 +73,6 @@ var DetalleMedicamentoEditar= React.createClass({
     };
     medicamentoService.llenarComboAlmacen({},onSuccess, self.onError, self.onFail);
   },
-
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
   },
@@ -88,7 +91,6 @@ var DetalleMedicamentoEditar= React.createClass({
     //console.log('# App->componentWillUnmount #');
     self.unSubscribeLanguage(self.state.componentKey);
   },
-
   onDatePickedUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -96,7 +98,6 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_alta: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
   onDatePickedDosUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -104,13 +105,11 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
   onChangePresentacionUno: function(evt) {
     this.setState({
       presentacion: evt.target.value
     });
   },
-
   onChangeCantidad_maximaUno: function(evt) {
     this.setState({
       cantidad_maxima: evt.target.value
@@ -151,10 +150,6 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_caducidad: evt.target.value
     });
   },
-
-
-
-
 
   onDatePicked: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
@@ -248,17 +243,15 @@ var DetalleMedicamentoEditar= React.createClass({
      det_ubicacion: evt.target.value
    });
   },
-
-  show: function(id_med) {
+  show: function(id_med,medicamento) {
     //aqui limpiar componente
     console.log('# id_med que recibe cuando cargo el view detalle_medicamento.#');
     console.log(id_med);
     this.setState({
       show: true,
-      id_med:id_med
+      medicamento:medicamento
     });
   },
-
   hide: function() {
     //aqui limpiar componente
     this.setState({
@@ -280,6 +273,7 @@ var DetalleMedicamentoEditar= React.createClass({
     medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
   },
 
+  //@LLV Método utilizado para cerrar popup y limpiar componentes.
   onClickCerrar: function(evt) {
     this.setState({
       show: false
@@ -298,23 +292,24 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.lista_detalles_med=[]
   },
 
-  onClickRegresar: function(medicamento,evt) {
+  //@LLV Método utilizado para regresar a la ventana  anterior.
+  onClickRegresar: function(evt) {
     var onSuccess = function(response) {
       console.log('# success  #');
     };
     //Oculto el popup de DetalleMedicamentoEditar
     this.hide();
     //Muestro el popup de MedicamentoEditar
-    this.props.papa.show(medicamento);
+    this.props.papa.show(this.state.medicamento);
   },
 
+  //@LLV Método utilizado para validar los campos de entrada del formulario.
   validaFormulario: function() {
     var self = this;
     var response = {
       isError: false,
       message: ''
     };
-
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
     }
@@ -327,7 +322,6 @@ var DetalleMedicamentoEditar= React.createClass({
       isError: false,
       message: ''
     };
-
     var detalles_med=this.state.lista_detalles_med[index];
     if(validaService.isEmpty(detalles_med.dem_presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
@@ -335,12 +329,7 @@ var DetalleMedicamentoEditar= React.createClass({
     return response;
   },
 
-  validaExiste: function() {
-    var self = this;
-    var res = {isError: true, message: self.getText('MSG_111')};
-    return res;
-  },
-
+  //@LLV Método utilizado para eliminar un detalle del medicamento.
   onClickEliminar:  function(index,evt){
        var onSuccess = function(response) {
           console.log('# success  #');
@@ -374,6 +363,7 @@ var DetalleMedicamentoEditar= React.createClass({
                    });
   },
 
+  //@LLV Método utilizado para agruegar un nuevo detalle a un medicamento.
   onClickGuardar: function(evt) {
     var onSuccess = function(response) {
       console.log('# success  #');
@@ -381,7 +371,6 @@ var DetalleMedicamentoEditar= React.createClass({
     var self = this;
     var response = this.validaFormulario();
     if(!response.isError) {
-
             var params = {
                'id_med':self.state.id_med,
                'id_almacen':self.state.comboValue,
@@ -395,7 +384,6 @@ var DetalleMedicamentoEditar= React.createClass({
                'fecha_alta': self.state.fecha_alta,
                'fecha_caducidad':self.state.fecha_caducidad
             };
-
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
                   type: 'warning',
@@ -409,9 +397,7 @@ var DetalleMedicamentoEditar= React.createClass({
                   function(isConfirm){
                      if (isConfirm) {
                          medicamentoService.insertarDetalleMed(params, onSuccess, self.onError, self.onFail),
-                         swal('Aceptar!','Presentación Registrada Con Exito.',
-                         'success');
-
+                         swal('Aceptar!','Presentación Registrada Con Exito.', 'success');
                          var auxParams = {
                             'presentacion': self.state.presentacion,
                             'cantidad_maxima': self.state.cantidad_maxima,
@@ -419,17 +405,16 @@ var DetalleMedicamentoEditar= React.createClass({
                             'existencia': self.state.existencia,
                             'fecha_caducidad': self.state.fecha_caducidad
                          };
-
                      }else {
                         swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
                      }
                    });
-
     } else {
         self.showInfo(response.message, {zindex: 4});
     }
   },
 
+  //@LLV Método utilizado para editar un detalle del medicamento.
   onClickEditarDetalle: function(index,evt) {
     var onSuccess = function(response) {
         console.log('# success  #');
@@ -479,6 +464,7 @@ var DetalleMedicamentoEditar= React.createClass({
 
   },
 
+  //@LLV Función principal para mostrar los componetes.
   render: function() {
     //console.log('# DetalleMedicamentoEditar->render #');
     var listaDetallesDiv = (<div></div>);
@@ -486,11 +472,8 @@ var DetalleMedicamentoEditar= React.createClass({
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
-
     className = (self.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
-
     var rows_detalles = [];
-
      console.log('total detalles');
      console.log(self.state.lista_detalles_med.length);
      if(self.state.lista_detalles_med.length > 0) {
@@ -513,24 +496,23 @@ var DetalleMedicamentoEditar= React.createClass({
         );
       });
      }
-
       listaDetallesDiv = (
         <div>
           <table className='table table-bordered table-hover'>
            <tbody>
              <tr className='alert alert-success trHeader' role='alert'>
-             <td>Número Almacen</td>
-             <td>Presentación</td>
-             <td>Cantidad Máxima</td>
-             <td>Cantidad Mínima</td>
-             <td>Existencia</td>
-             <td>Descripción</td>
-             <td>Indicasiones</td>
-             <td>Dosis</td>
-             <td>Fecha Alta</td>
-             <td>Fecha Caducidad</td>
-             <td></td>
-             <td></td>
+               <td>Número Almacen</td>
+               <td>Presentación</td>
+               <td>Cantidad Máxima</td>
+               <td>Cantidad Mínima</td>
+               <td>Existencia</td>
+               <td>Descripción</td>
+               <td>Indicasiones</td>
+               <td>Dosis</td>
+               <td>Fecha Alta</td>
+               <td>Fecha Caducidad</td>
+               <td></td>
+               <td></td>
             </tr>
             {rows_detalles}
            </tbody>
@@ -538,8 +520,7 @@ var DetalleMedicamentoEditar= React.createClass({
         </div>
       );
 
-
-    //La variable almacen puede tomar cualquier nombre.
+    //@LLV La variable almacen puede tomar cualquier nombre.
     var listaAlmacenComboOption = [];
     listaAlmacenComboOption.push(<option value="0">SELECCIONE UNA OPCIÓN</option>);
     if(self.state.lista_combo.length>0){
@@ -548,19 +529,16 @@ var DetalleMedicamentoEditar= React.createClass({
            <option value={almacen.det_id}>{almacen.det_ubicacion}</option>
         );
       });
-
       listaAlmacenComboOption.push(rows_almacen);
     }
     return (
       <div className={className}>
-
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className={'panel panel-primary popUpClassDetalles'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
             Editar Detalles Del Medicamento
           </div>
           <div className='panel-body'>
-
            <table>
            <tbody>
             <tr>
@@ -592,7 +570,6 @@ var DetalleMedicamentoEditar= React.createClass({
             </tr>
           </tbody>
           </table>
-
           {listaDetallesDiv}
           </div>
         <div className='panel-footer button-align-right'>
@@ -602,9 +579,9 @@ var DetalleMedicamentoEditar= React.createClass({
                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar'  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar.bind(this,this.state.medicamento)}/>
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar}/>
                </div>
-                <div className="btn-group" role="group">
+               <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar'  onClick={this.onClickBuscar} />
                </div>
              </div>
@@ -612,7 +589,6 @@ var DetalleMedicamentoEditar= React.createClass({
           </div>
         </div>
       </div>
-
     );
   }
 });

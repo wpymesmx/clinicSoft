@@ -54,6 +54,7 @@ var Diccionario = {
     MSG_1001: 'Agregar nuevo personal',
     MSG_1002: 'Editar personal',
     MSG_1003: 'El personal se guardo correctamente',
+    MSG_1004: 'Detalle de personal',
     //mensajes para manejo de errores
     MSG_2001: 'El nombre del personal es obligatorio.',
     MSG_2002: 'El apellido paterno del personal es obligatorio.',
@@ -112,6 +113,7 @@ var Diccionario = {
     MSG_1001: 'Add new personal',
     MSG_1002: 'Edit personal',
     MSG_1003: 'Personal was saved successfully',
+    MSG_1004: 'Personal Detail',
     //mensajes para manejo de errores
     MSG_2001: 'Personal name is required.',
     MSG_2002: 'Personal first name is required.',

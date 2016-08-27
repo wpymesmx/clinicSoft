@@ -121,7 +121,7 @@ var PersonalNewEdit = React.createClass({
         inactivoSelected = true;
       }
 
-      this.refs.fechan.setDatePicked(personalDtoTmp.pers_fechan);
+      //this.refs.fechan.setDatePicked(personalDtoTmp.pers_fechan);
     }
 
     this.setState({
@@ -310,6 +310,15 @@ var PersonalNewEdit = React.createClass({
       personalDto: personalDto
     });
   },
+  onFechanPicked: function(datePicked, evt) {
+    console.log('onFechanPicked->' + datePicked);
+    var personalDto = this.state.personalDto;
+
+    personalDto.pers_fechan = (datePicked.getFullYear() + '-' + (datePicked.getMonth()+1) + '-' + datePicked.getDate());
+    this.setState({
+      personalDto: personalDto
+    });
+  },
   onClickGuardar: function(evt) {
     var self = this;
     var result = undefined;
@@ -358,9 +367,6 @@ var PersonalNewEdit = React.createClass({
     var ACTIVO = 'A';
     var ACTIVO_STR = this.getText('MSG_202');
     var INACTIVO_STR = this.getText('MSG_203');
-    var CLASS_HIDDEN = 'componentHide';
-    var CLASS_SHOW = 'componentShow';
-    var componentClass = (this.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
     var componentTitle = (this.state.personalMode == Constants.COMPONENT_MODE_NEW ? this.getText('MSG_1001') : this.getText('MSG_1002'))
 
     if(this.state.userList != undefined && this.state.userList.length > 0) {
@@ -369,8 +375,8 @@ var PersonalNewEdit = React.createClass({
       });
     }
 
-    return (
-      <div className={componentClass}>
+    return (this.state.show != true ? (<div></div>) : (
+      <div className='componentShow'>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
         <div className='panel panel-default popUpClassPersonal' style={{zIndex: this.state.zindex}}>
           <div className='panel-heading'>{componentTitle}</div>
@@ -435,7 +441,7 @@ var PersonalNewEdit = React.createClass({
                   {this.getText('MSG_506')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <DatePickerReact ref='fechan'/>
+                  <DatePickerReact ref='fechan' datePicked={this.state.personalDto.pers_fechan} onDatePicked={this.onFechanPicked}/>
                 </div>
               </div>
               {/*Horario*/}
@@ -529,7 +535,7 @@ var PersonalNewEdit = React.createClass({
           </div>
         </div>
       </div>
-    );
+    ));
   }
 });
 

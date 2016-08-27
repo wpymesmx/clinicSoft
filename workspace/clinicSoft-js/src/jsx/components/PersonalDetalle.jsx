@@ -104,7 +104,7 @@ var PersonalDetalle = React.createClass({
               {/*nombre*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  *{this.getText('MSG_500')}:
+                  {this.getText('MSG_500')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_500')} value={this.state.personalDto.pers_nombre}
@@ -114,7 +114,7 @@ var PersonalDetalle = React.createClass({
               {/*apellido paterno*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  *{this.getText('MSG_501')}:
+                  {this.getText('MSG_501')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_501')} value={this.state.personalDto.pers_apellido_pat}
@@ -124,7 +124,7 @@ var PersonalDetalle = React.createClass({
               {/*apellido materno*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  *{this.getText('MSG_502')}:
+                  {this.getText('MSG_502')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_502')} value={this.state.personalDto.pers_apellido_mat}
@@ -134,7 +134,7 @@ var PersonalDetalle = React.createClass({
               {/*correo electronico*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  *{this.getText('MSG_503')}:
+                  {this.getText('MSG_503')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_503')} value={this.state.personalDto.pers_correo}
@@ -154,7 +154,7 @@ var PersonalDetalle = React.createClass({
               {/*telefono o celular*/}
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  *{this.getText('MSG_507')}:
+                  {this.getText('MSG_507')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_507')} value={this.state.personalDto.pers_celular}
@@ -212,7 +212,7 @@ var PersonalDetalle = React.createClass({
                 </div>
               </div>
             </div>
-            <div className='groupTop btn-group' style={{width: '100%', paddingRight: '25%', paddingLeft: '25%'}}>
+            <div className='groupTop btn-group' style={{width: '100%', paddingRight: '40%', paddingLeft: '40%'}}>
               <button type='button' className='btn btn-lg btn-primary btn-signin okButton' style={{width: '100%'}} title={this.getText('MSG_102')}
                 onClick={this.hide} />
             </div>

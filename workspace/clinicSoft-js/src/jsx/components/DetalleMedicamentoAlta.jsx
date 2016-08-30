@@ -36,6 +36,7 @@ var DetalleMedicamentoAlta= React.createClass({
       componentKey: 'DetalleMedicamentoAlta',
       mainComponent: undefined,
       language: window.language,
+      zindex: this.props.zindex,
       datePicked: '',
       presentacion: '',
       cantidad_maxima: '',
@@ -52,7 +53,8 @@ var DetalleMedicamentoAlta= React.createClass({
       lista_combo: [],
       lista_detalles: [],
       lista_detalle_tmp:[],
-      comboValue: 0
+      comboValue: 0,
+      ban:true
     };
   },
   componentWillMount: function() {
@@ -172,7 +174,8 @@ var DetalleMedicamentoAlta= React.createClass({
   //@LLV Método que cierra el popup y limpia componentes.
   onClickCerrar: function(evt) {
     this.setState({
-      show: false
+      show: false,
+      ban:true
     });
     this.state.presentacion='',
     this.state.cantidad_maxima='',
@@ -208,6 +211,18 @@ var DetalleMedicamentoAlta= React.createClass({
 
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_maxima)) {
+      return {isError: true, message: self.getText('MSG_3025')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_minima)) {
+      return {isError: true, message: self.getText('MSG_3026')};
+    }
+    if(validaService.isEmpty(self.state.existencia)) {
+      return {isError: true, message: self.getText('MSG_3027')};
+    }
+    if(validaService.isEmpty(self.state.id_almacen)) {
+      return {isError: true, message: self.getText('MSG_3028')};
     }
     return response;
   },
@@ -334,6 +349,7 @@ var DetalleMedicamentoAlta= React.createClass({
             <td>{auxDetalle.cantidad_maxima}</td>
             <td>{auxDetalle.cantidad_minima}</td>
             <td>{auxDetalle.existencia}</td>
+            <td>{auxDetalle.fecha_alta}</td>
             <td>{auxDetalle.fecha_caducidad}</td>
             <td><button className='detalleButton' onClick={self.onClickEliminar}/></td>
           </tr>
@@ -342,7 +358,7 @@ var DetalleMedicamentoAlta= React.createClass({
     }
     //La variable almacen puede tomar cualquier nombre.
     var listaAlmacenComboOption = [];
-    listaAlmacenComboOption.push(<option value="0">SELECCIONE UNA OPCIÓN</option>);
+    listaAlmacenComboOption.push(<option value="0">{this.getText('MSG_3017')}</option>);
     if(self.state.lista_combo.length>0){
       var rows_almacen = self.state.lista_combo.map(function(almacen) {
         return (
@@ -356,56 +372,129 @@ var DetalleMedicamentoAlta= React.createClass({
     return (
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClassMedicament'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-default popUpClassMedicament'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Detalles Del Medicamento
+            {this.getText('MSG_3009')}
           </div>
           <div className='panel-body'>
 
-          <table>
-           <tbody>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.presentacion} onChange={this.onChangePresentacion}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.cantidad_maxima} onChange={this.onChangeCantidad_maxima}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.cantidad_minima} onChange={this.onChangeCantidad_minima}/></td>
-                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.existencia} onChange={this.onChangeExistencia}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.descripcion} onChange={this.onChangeDescripcion}/></td>
-                <td><input type='text' className='form-control' placeholder='Indicasiones' value={this.state.indicasiones} onChange={this.onChangeIndicasiones}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Via Aministracion' value={this.state.via_aministracion} onChange={this.onChangeViaAdministracion}/></td>
-                <td>
-                   <div>
-                      <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
-                         {listaAlmacenComboOption}
-                      </select>
-                   </div>
-               </td>
-            </tr>
-            <tr>
-                <td><DatePickerReact inputLabel='Fecha Alta:' onDatePicked={this.onDatePicked}  /></td>
-                <td><DatePickerReact inputLabel='Fecha Caducidad:' onDatePicked={this.onDatePickedDos} /></td>
-                <td><button className='nuevoButton' onClick={this.onClickGuardar} /> </td>
-            </tr>
-          </tbody>
-          </table>
+
+            <div style={{width: '80%'}} className='panelForm'>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3010')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3010')} value={this.state.presentacion}
+                    onChange={this.onChangePresentacion}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3011')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3011')} value={this.state.cantidad_maxima}
+                    onChange={this.onChangeCantidad_maxima}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3012')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3012')} value={this.state.cantidad_minima}
+                    onChange={this.onChangeCantidad_minima}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3013')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3013')} value={this.state.existencia}
+                    onChange={this.onChangeExistencia}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3014')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcion}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3015')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3015')} value={this.state.indicasiones}  onChange={this.onChangeIndicasiones}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3016')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3016')} value={this.state.via_aministracion}  onChange={this.onChangeViaAdministracion}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3021')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                   <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+                      {listaAlmacenComboOption}
+                   </select>
+                </div>
+
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3018')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePicked} />
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3019')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedDos} />
+                </div>
+              </div>
+
+            </div>
 
           <div className='panelScroll'>
            <table className='table table-bordered table-hover'>
             <tbody>
-              <tr className='alert alert-success trHeader' role='alert'>
-                <td>Presentación</td>
-                <td>Cantidad Maxima</td>
-                <td>Cantidad Minima</td>
-                <td>Existencia</td>
-                <td>Caducidad</td>
+              <tr className='alert alert-success default' role='alert'>
+                 <td>{this.getText('MSG_3010')}</td>
+                 <td>{this.getText('MSG_3011')}</td>
+                 <td>{this.getText('MSG_3012')}</td>
+                 <td>{this.getText('MSG_3013')}</td>
+                 <td>{this.getText('MSG_3018')}</td>
+                 <td>{this.getText('MSG_3019')}</td>
                 <td></td>
              </tr>
              {rows_detalles}
+
+
             </tbody>
            </table>
           </div>
@@ -415,10 +504,13 @@ var DetalleMedicamentoAlta= React.createClass({
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar'  onClick={this.onClickCerrar}/>
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
+               </div>
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar} />
                </div>
              </div>
            </div>

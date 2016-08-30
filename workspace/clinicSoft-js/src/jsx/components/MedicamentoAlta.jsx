@@ -93,7 +93,7 @@ var MedicamentoAlta = React.createClass({
     //Muestro el popup de DetalleMedicamentoAlta
     this.refs.detalleMedicamentoAlta.show(id_med);
      self.setState({
-       ban: true
+       ban: false
      });
   },
   onChangeNombreComercial: function(evt) {
@@ -144,7 +144,8 @@ var MedicamentoAlta = React.createClass({
   //@LLV Método que cierra popup y limpia componentes.
   onClickCerrar: function(evt) {
     this.setState({
-      show: false
+      show: false,
+      ban:true
     });
     this.state.nombre_comercial='',
     this.state.nombre_generico='',
@@ -249,39 +250,88 @@ var MedicamentoAlta = React.createClass({
       <DetalleMedicamentoAlta ref='detalleMedicamentoAlta' papa={self}/>
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-default popUpClass'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Datos Generales Del Medicamento
+             {this.getText('MSG_3007')}
           </div>
           <div className='panel-body'>
-          <table className='table table-bordered table-hover'>
-            <tbody>
-              <tr><td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial} /></td></tr>
-              <tr><td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico} /></td></tr>
-              <tr><td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica} /></td></tr>
-              <tr><td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn} /></td></tr>
-              <tr><td><input type='text' className='form-control' placeholder='Condición Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta} /></td></tr>
-              <tr><td>
-                <fieldset>
-                   Estado del medicamento: <br />
-                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado} checked/>Activo <br />
-                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado}  disabled='true' />Inactivo
-                </fieldset></td>
-             </tr>
-          </tbody>
-          </table>
+
+
+            <div style={{width: '80%'}} className='panelForm'>
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3001')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3001')} value={this.state.nombre_comercial}
+                    onChange={this.onChangeNombreComercial}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3002')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3002')} value={this.state.nombre_generico}
+                    onChange={this.onChangeNombreGenerico}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3003')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
+                    onChange={this.onChangeFarmaceutica}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3004')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
+                    onChange={this.onChangeElaboradoEn}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3005')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}  onChange={this.onChangeCondicionVenta}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3006')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado} checked/>{this.getText('MSG_202')} <br />
+                   <input name='' type='radio'  value={this.state.estado} onChange={this.onChangeEstado}  disabled='true' />{this.getText('MSG_203')}
+                </div>
+              </div>
+
+            </div>
+
+
          </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar' onClick={this.onClickCerrar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')} onClick={this.onClickCerrar} />
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Guardar' onClick={this.onClickGuardar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')} onClick={this.onClickGuardar} />
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Siguiente' disabled={this.state.ban} onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3008')} disabled={this.state.ban}  onClick={this.onClickSiguiente.bind(this,this.state.id_med)} />
                </div>
             </div>
           </div>

@@ -36,6 +36,7 @@ var DetalleMedicamentoEditar= React.createClass({
       componentKey: 'DetalleMedicamentoEditar',
       mainComponent: undefined,
       language: window.language,
+      zindex: this.props.zindex,
       datePicked: '',
       presentacion: '',
       cantidad_maxima: '',
@@ -251,6 +252,7 @@ var DetalleMedicamentoEditar= React.createClass({
       show: true,
       medicamento:medicamento
     });
+    this.onClickBuscar();
   },
   hide: function() {
     //aqui limpiar componente
@@ -259,7 +261,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
   onClickBuscar: function(evt) {
-  var self = this;
+    var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
       console.log(response.payload);
@@ -312,6 +314,18 @@ var DetalleMedicamentoEditar= React.createClass({
     };
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_maxima)) {
+      return {isError: true, message: self.getText('MSG_3025')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_minima)) {
+      return {isError: true, message: self.getText('MSG_3026')};
+    }
+    if(validaService.isEmpty(self.state.existencia)) {
+      return {isError: true, message: self.getText('MSG_3027')};
+    }
+    if(validaService.isEmpty(self.state.id_almacen)) {
+      return {isError: true, message: self.getText('MSG_3028')};
     }
     return response;
   },
@@ -490,27 +504,27 @@ var DetalleMedicamentoEditar= React.createClass({
             <td><input type='text' className='form-control' placeholder='Via de administración' value={detalle.dem_via_admin} onChange={self.onChangeViaAdministracion.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder='Fecha Alta' value={detalle.dem_fecha_alta} onChange={self.onChangeFechaAlta.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder='Fecha De Caducidad' value={detalle.dem_fecha_caducidad} onChange={self.onChangeFechaCaducidad.bind(self,index)}/></td>
-            <td><button className='saveButton' onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
-            <td><button className='detalleButton' onClick={self.onClickEliminar.bind(self,index)}/></td>
+            <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
+            <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
           </tr>
         );
       });
      }
       listaDetallesDiv = (
-        <div>
+        <div className='panelScrollDetalle' >
           <table className='table table-bordered table-hover'>
            <tbody>
-             <tr className='alert alert-success trHeader' role='alert'>
-               <td>Número Almacen</td>
-               <td>Presentación</td>
-               <td>Cantidad Máxima</td>
-               <td>Cantidad Mínima</td>
-               <td>Existencia</td>
-               <td>Descripción</td>
-               <td>Indicasiones</td>
-               <td>Dosis</td>
-               <td>Fecha Alta</td>
-               <td>Fecha Caducidad</td>
+             <tr className='alert alert-success default' role='alert'>
+               <td>{this.getText('MSG_3021')}</td>
+               <td>{this.getText('MSG_3010')}</td>
+               <td>{this.getText('MSG_3011')}</td>
+               <td>{this.getText('MSG_3012')}</td>
+               <td>{this.getText('MSG_3013')}</td>
+               <td>{this.getText('MSG_3014')}</td>
+               <td>{this.getText('MSG_3015')}</td>
+               <td>{this.getText('MSG_3016')}</td>
+               <td>{this.getText('MSG_3018')}</td>
+               <td>{this.getText('MSG_3019')}</td>
                <td></td>
                <td></td>
             </tr>
@@ -534,55 +548,127 @@ var DetalleMedicamentoEditar= React.createClass({
     return (
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClassDetalles'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-default popUpClassDetalles'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Editar Detalles Del Medicamento
+            {this.getText('MSG_3023')}
           </div>
           <div className='panel-body'>
-           <table>
-           <tbody>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.presentacion} onChange={this.onChangePresentacionUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.cantidad_maxima} onChange={this.onChangeCantidad_maximaUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.cantidad_minima} onChange={this.onChangeCantidad_minimaUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.existencia} onChange={this.onChangeExistenciaUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.descripcion} onChange={this.onChangeDescripcionUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Indicasiones' value={this.state.indicasiones} onChange={this.onChangeIndicasionesUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Via Aministracion' value={this.state.via_aministracion} onChange={this.onChangeViaAdministracionUno}/></td>
-                <td>
-                   <div>
-                      <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
-                         {listaAlmacenComboOption}
-                      </select>
-                   </div>
-               </td>
-            </tr>
-            <tr>
-                <td><DatePickerReact inputLabel='Fecha Alta:' onDatePicked={this.onDatePickedUno}  /></td>
-                <td><DatePickerReact inputLabel='Fecha Caducidad:' onDatePicked={this.onDatePickedDosUno} /></td>
-                <td><button className='nuevoButton' onClick={this.onClickGuardar} /> </td>
-            </tr>
-          </tbody>
-          </table>
-          {listaDetallesDiv}
+            <div style={{width: '80%'}} className='panelForm'>
+
+             <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3010')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3010')} value={this.state.presentacion}
+                    onChange={this.onChangePresentacionUno}/>
+                </div>
+              </div>
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3011')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3011')} value={this.state.cantidad_maxima}
+                    onChange={this.onChangeCantidad_maximaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3012')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3012')} value={this.state.cantidad_minima}
+                    onChange={this.onChangeCantidad_minimaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3013')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3013')} value={this.state.existencia}
+                    onChange={this.onChangeExistenciaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3014')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3015')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3015')} value={this.state.indicasiones}  onChange={this.onChangeIndicasiones}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3016')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3016')} value={this.state.via_aministracion}  onChange={this.onChangeViaAdministracionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3021')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                   <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+                      {listaAlmacenComboOption}
+                   </select>
+                </div>
+
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3018')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedUno} />
+                </div>
+              </div>
+
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3019')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedDosUno} />
+                </div>
+              </div>
+
+
+            {listaDetallesDiv}
+            </div>
           </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar'  onClick={this.onClickCerrar}/>
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar}/>
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_204')}  onClick={this.onClickBuscar} />
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar'  onClick={this.onClickBuscar} />
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
+               </div>
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar}/>
                </div>
              </div>
           </div>

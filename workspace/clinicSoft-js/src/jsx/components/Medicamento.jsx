@@ -25,7 +25,7 @@ var Medicamento = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin(), LanguageMixin()],
   getInitialState: function() {
     return {
-      componentKey: 'Medicamento',
+      componentKey: Constants.MEDICAMENTO_VIEW,
       language: window.language,
       id:'',
       nombre_comercial: '',
@@ -179,7 +179,7 @@ var Medicamento = React.createClass({
             <td>{medicamento.elaborado_en}</td>
             <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
-            <td><button className='editarButton' onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
+            <td><button className='editarButton'  title={self.getText('MSG_200')} onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
           </tr>
         );
       });
@@ -190,12 +190,12 @@ var Medicamento = React.createClass({
           <table className='table table-bordered table-hover'>
             <tbody>
               <tr className='alert alert-success trHeader' role='alert'>
-                <td>Nombre Comercial</td>
-                <td>Nombre Generico</td>
-                <td>Farmaceutica</td>
-                <td>Elaborado En</td>
-                <td>Condición De Venta</td>
-                <td>Estado</td>
+                  <td>{this.getText('MSG_3001')}</td>
+                  <td>{this.getText('MSG_3002')}</td>
+                  <td>{this.getText('MSG_3003')}</td>
+                  <td>{this.getText('MSG_3004')}</td>
+                  <td>{this.getText('MSG_3005')}</td>
+                  <td>{this.getText('MSG_3006')}</td>
                 <td></td>
               </tr>
               <tr>
@@ -230,7 +230,7 @@ var Medicamento = React.createClass({
        <MedicamentoEditar ref='medicamentoEditar' />
         <div className='panel panel-default'>
           <div className='panel-body'>
-            <h1 style={{align: 'center'}}> <span className=''>Gestión del medicamento</span></h1>
+            <h1 style={{align: 'center'}}> <span className=''>{this.getText('MSG_3000')}</span></h1>
             <div className='btn-group btn-group-justified' role='group' aria-label='...'>
             <div className='btn-group' role='group'>
             </div>
@@ -249,12 +249,12 @@ var Medicamento = React.createClass({
             <div className='btn-group' role='group'>
             </div>
             <div className='btn-group' role='group'>
-            <button className='buscarButton'  title='Buscar' onClick={this.onClickBuscar} />
+            <button className='buscarButton'  title={this.getText('MSG_204')} onClick={this.onClickBuscar} />
             </div>
             <div className='btn-group' role='group'>
-              <button className='nuevoButton' title='Nuevo' onClick={this.onClickNuevo} />
+              <button className='nuevoButton' title={this.getText('MSG_205')} onClick={this.onClickNuevo} />
             </div>
-            <div className='btn-group' title='Reporte' role='group'>
+            <div className='btn-group' title={this.getText('MSG_3024')} role='group'>
               <button className='informeButton'/>
             </div>
             </div>

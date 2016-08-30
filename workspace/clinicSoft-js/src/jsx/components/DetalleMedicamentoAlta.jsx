@@ -53,7 +53,7 @@ var DetalleMedicamentoAlta= React.createClass({
       lista_combo: [],
       lista_detalles: [],
       lista_detalle_tmp:[],
-      comboValue: 0,
+      comboValue: 1,
       ban:true
     };
   },
@@ -221,9 +221,6 @@ var DetalleMedicamentoAlta= React.createClass({
     if(validaService.isEmpty(self.state.existencia)) {
       return {isError: true, message: self.getText('MSG_3027')};
     }
-    if(validaService.isEmpty(self.state.id_almacen)) {
-      return {isError: true, message: self.getText('MSG_3028')};
-    }
     return response;
   },
 
@@ -272,7 +269,7 @@ var DetalleMedicamentoAlta= React.createClass({
         console.log(id_detalle);
         var res = self.validaExiste();
         if(id_detalle.length > 0) {
-           self.showInfo(res.message, {zindex: 4});
+           self.showInfo(res.message, {zindex: 6});
         } else{
             var params = {
                'id_med':self.state.id_med,
@@ -329,7 +326,7 @@ var DetalleMedicamentoAlta= React.createClass({
         };
         medicamentoService.existeDetalle(presentacion, onSuccess, self.onError, self.onFail);
     } else {
-        self.showInfo(response.message, {zindex: 4});
+        self.showInfo(response.message, {zindex: 6});
     }
   },
 

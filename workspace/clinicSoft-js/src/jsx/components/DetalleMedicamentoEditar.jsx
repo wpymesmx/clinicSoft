@@ -55,7 +55,7 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles: [],
       lista_detalle_tmp:[],
       medicamento:undefined,
-      comboValue: 0
+      comboValue: 1
     };
   },
   componentWillMount: function() {
@@ -250,10 +250,30 @@ var DetalleMedicamentoEditar= React.createClass({
     console.log(id_med);
     this.setState({
       show: true,
-      medicamento:medicamento
+      medicamento:medicamento,
+      id_med:id_med
     });
-    this.onClickBuscar();
+
+    //@LLV Reaiza una consulta de detalles del medicamento
+    console.log('/*Into onClickBuscar*/');
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+      console.log(response.payload);
+      self.setState({
+        lista_detalles_med: response.payload
+      });
+    };
+    var params = {
+        'id_med': id_med
+    };
+    console.log('*Parametro enviado para buscar detalles*');
+    console.log(self.state.id_med);
+    medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
+
   },
+
+
   hide: function() {
     //aqui limpiar componente
     this.setState({
@@ -261,6 +281,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
   onClickBuscar: function(evt) {
+    console.log('/*Into onClickBuscar*/');
     var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
@@ -272,6 +293,8 @@ var DetalleMedicamentoEditar= React.createClass({
     var params = {
         'id_med': self.state.id_med
     };
+    console.log('*Parametro enviado para buscar detalles*');
+    console.log(self.state.id_med);
     medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
   },
 
@@ -323,9 +346,6 @@ var DetalleMedicamentoEditar= React.createClass({
     }
     if(validaService.isEmpty(self.state.existencia)) {
       return {isError: true, message: self.getText('MSG_3027')};
-    }
-    if(validaService.isEmpty(self.state.id_almacen)) {
-      return {isError: true, message: self.getText('MSG_3028')};
     }
     return response;
   },
@@ -424,7 +444,7 @@ var DetalleMedicamentoEditar= React.createClass({
                      }
                    });
     } else {
-        self.showInfo(response.message, {zindex: 4});
+        self.showInfo(response.message, {zindex: 6});
     }
   },
 
@@ -473,7 +493,7 @@ var DetalleMedicamentoEditar= React.createClass({
                    });
 
     } else {
-        self.showInfo(response.message, {zindex: 4});
+        self.showInfo(response.message, {zindex: 6});
     }
 
   },
@@ -553,9 +573,9 @@ var DetalleMedicamentoEditar= React.createClass({
             {this.getText('MSG_3023')}
           </div>
           <div className='panel-body'>
-            <div style={{width: '80%'}} className='panelForm'>
+            <div style={{width: '100%'}} className='panelForm'>
 
-             <div style={{width: '100%'}} className='row'>
+             <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3010')}:
                 </div>
@@ -564,7 +584,7 @@ var DetalleMedicamentoEditar= React.createClass({
                     onChange={this.onChangePresentacionUno}/>
                 </div>
               </div>
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3011')}:
                 </div>
@@ -574,7 +594,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3012')}:
                 </div>
@@ -584,7 +604,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3013')}:
                 </div>
@@ -594,7 +614,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3014')}:
                 </div>
@@ -603,7 +623,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3015')}:
                 </div>
@@ -612,7 +632,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3016')}:
                 </div>
@@ -621,7 +641,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3021')}:
                 </div>
@@ -633,7 +653,7 @@ var DetalleMedicamentoEditar= React.createClass({
 
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3018')}:
                 </div>
@@ -642,7 +662,7 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3019')}:
                 </div>

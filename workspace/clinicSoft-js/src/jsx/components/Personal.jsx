@@ -12,6 +12,7 @@ var validaService = require('../utils/ValidaService.js');
 var personalService = require('../services/PersonalService.js');
 //components
 var PersonalNewEdit = require('./PersonalNewEdit.jsx');
+var PersonalDetalle = require('./PersonalDetalle.jsx');
 
 var Personal = React.createClass({
   mixins: [AlertMixin(), LanguageMixin()],
@@ -69,7 +70,7 @@ var Personal = React.createClass({
         personalList: response.payload
       });
     };
-    console.log('pers_nombre:' + this.state.pers_nombre);
+
     var params = {
       usu_id: this.state.usu_id,
       pers_nombre: this.state.pers_nombre,
@@ -114,14 +115,12 @@ var Personal = React.createClass({
     });
   },
   onClickAddPersonal: function(evt) {
-    var self = this;
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_NEW);
   },
   onClickDetalle: function(personal, evt) {
-    var self = this;
+    this.refs.personalDetalle.show(personal);
   },
   onClickEdital: function(personal, evt) {
-    var self = this;
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_EDIT, clone.clone(personal));
   },
   render: function() {
@@ -159,6 +158,7 @@ var Personal = React.createClass({
     return (
       <div>
         <PersonalNewEdit ref='personalNewEdit' super={self}/>
+        <PersonalDetalle ref='personalDetalle' super={self}/>
         <div className='panel panel-default'>
           <div className='panel-heading'>{this.getText('MSG_1000')}</div>
           <div className='panel-body'>

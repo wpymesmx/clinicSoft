@@ -10,8 +10,8 @@ var DatePickerReact = React.createClass({
     return {
       isShow: false,
       label: '',
-      datePicked: new Date(),
-      dateView: new Date(),
+      datePicked: (this.props.datePicked != '' ? new Date(this.props.datePicked): new Date()),
+      dateView: (this.props.datePicked != '' ? new Date(this.props.datePicked): new Date()),
       dateFormat: this.props.dateFormat,
       inputLabel: this.props.inputLabel,
       zIndex: this.props.zIndex
@@ -33,7 +33,9 @@ var DatePickerReact = React.createClass({
     return {
       dateFormat: 'yyyy-MM-dd-',
       zIndex: 4,
-      ctx: ctx
+      ctx: ctx,
+      datePicked: new Date(),
+      dateView: new Date()
     };
   },
   componentWillMount: function() {
@@ -41,6 +43,19 @@ var DatePickerReact = React.createClass({
   componentDidMount: function() {
   },
   componentWillReceiveProps: function(nextProps) {
+    var datePicked = undefined;
+
+    if(nextProps.datePicked != '') {
+      datePicked = new Date(nextProps.datePicked);
+
+    } else {
+      datePicked = new Date();
+    }
+
+    this.setState({
+      datePicked: datePicked,
+      dateView: datePicked
+    });
   },
   shouldComponentUpdate: function() {
     return true;

@@ -38,6 +38,7 @@ var DetalleMedicamentoEditar= React.createClass({
       language: window.language,
       zindex: this.props.zindex,
       datePicked: '',
+      codigo_barras:'',
       presentacion: '',
       cantidad_maxima: '',
       cantidad_minima: '',
@@ -47,9 +48,14 @@ var DetalleMedicamentoEditar= React.createClass({
       via_aministracion: '',
       fecha_alta: '',
       fecha_caducidad: '',
+      condicion_venta:'',
+      precio:0.0,
+      iva:0.0,
+      farmaceutica:'',
+      elaborado_en:'',
       id_med:'',
       id:0,
-      id_almacen:'',
+      id_grupo:'',
       lista_combo: [],
       lista_detalles_med:[],
       lista_detalles: [],
@@ -72,7 +78,7 @@ var DetalleMedicamentoEditar= React.createClass({
         lista_combo : response.payload
       });
     };
-    medicamentoService.llenarComboAlmacen({},onSuccess, self.onError, self.onFail);
+    medicamentoService.llenarComboGrupos({},onSuccess, self.onError, self.onFail);
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -104,6 +110,11 @@ var DetalleMedicamentoEditar= React.createClass({
 
     this.setState({
       fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+    });
+  },
+  onChangeCodigoBarrasUno: function(evt) {
+    this.setState({
+      codigo_barras: evt.target.value
     });
   },
   onChangePresentacionUno: function(evt) {
@@ -149,6 +160,36 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangeFechaCaducidadUno: function(evt) {
     this.setState({
       fecha_caducidad: evt.target.value
+    });
+  },
+
+  onChangeCondicionVentaUno: function(evt) {
+    this.setState({
+      condicion_venta: evt.target.value
+    });
+  },
+
+  onChangePrecioUno: function(evt) {
+    this.setState({
+      precio: evt.target.value
+    });
+  },
+
+  onChangeIvaUno: function(evt) {
+    this.setState({
+      iva: evt.target.value
+    });
+  },
+
+  onChangeFarmaceuticaUno: function(evt) {
+    this.setState({
+      farmaceutica: evt.target.value
+    });
+  },
+
+  onChangeElaboradoEnUno: function(evt) {
+    this.setState({
+      elaborado_en: evt.target.value
     });
   },
 
@@ -241,7 +282,7 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangeCombo: function(evt) {
    this.setState({
      comboValue: evt.target.value,
-     det_ubicacion: evt.target.value
+     gru_nombre: evt.target.value
    });
   },
   show: function(id_med,medicamento) {
@@ -303,7 +344,14 @@ var DetalleMedicamentoEditar= React.createClass({
     this.setState({
       show: false
     });
+   this.onClickLimpiar();
+  },
+
+  //@LLV Método utilizado para limpiar componentes.
+  onClickLimpiar: function(evt) {
+    this.state.codigo_barras='',
     this.state.presentacion='',
+    this.state.descripcion='',
     this.state.cantidad_maxima='',
     this.state.cantidad_minima='',
     this.state.existencia='',
@@ -311,9 +359,14 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.via_aministracion='',
     this.state.fecha_alta='',
     this.state.fecha_caducidad='',
+    this.state.condicion_venta='',
+    this.state.precio=0.0,
+    this.state.iva=0.0,
+    this.state.farmaceutica='',
+    this.state.elaborado_en='',
     this.state.id_med='',
-    this.state.id_almacen='',
-    this.state.comboValue=0,
+    this.state.id_grupo='',
+    this.state.comboValue=1,
     this.state.lista_detalles_med=[]
   },
 
@@ -406,17 +459,23 @@ var DetalleMedicamentoEditar= React.createClass({
     var response = this.validaFormulario();
     if(!response.isError) {
             var params = {
+               'id_grupo':self.state.comboValue,
                'id_med':self.state.id_med,
-               'id_almacen':self.state.comboValue,
+               'codigo_barras':self.state.codigo_barras,
                'presentacion': self.state.presentacion,
+               'descripcion':self.state.descripcion,
                'cantidad_maxima':self.state.cantidad_maxima,
                'cantidad_minima':self.state.cantidad_minima,
                'existencia':self.state.existencia,
-               'descripcion':self.state.descripcion,
                'indicasiones':self.state.indicasiones,
                'via_aministracion':self.state.via_aministracion,
                'fecha_alta': self.state.fecha_alta,
-               'fecha_caducidad':self.state.fecha_caducidad
+               'fecha_caducidad':self.state.fecha_caducidad,
+               'condicion_venta':self.state.condicion_venta,
+               'precio':self.state.precio,
+               'iva':self.state.iva,
+               'farmaceutica':self.state.farmaceutica,
+               'elaborado_en':self.state.elaborado_en
             };
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
@@ -439,6 +498,7 @@ var DetalleMedicamentoEditar= React.createClass({
                             'existencia': self.state.existencia,
                             'fecha_caducidad': self.state.fecha_caducidad
                          };
+                         self.onClickLimpiar();
                      }else {
                         swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
                      }
@@ -460,7 +520,7 @@ var DetalleMedicamentoEditar= React.createClass({
             var params = {
                'dem_id': detalles_med.dem_id,
                'id_med': self.state.id_med,
-               'id_almacen': detalles_med.alm_fk,
+               'id_grupo': detalles_med.alm_fk,
                'presentacion': detalles_med.dem_presentacion,
                'cantidad_maxima': detalles_med.dem_cantidad_maxima,
                'cantidad_minima': detalles_med.dem_cantidad_minima,
@@ -558,12 +618,12 @@ var DetalleMedicamentoEditar= React.createClass({
     var listaAlmacenComboOption = [];
     listaAlmacenComboOption.push(<option value="0">SELECCIONE UNA OPCIÓN</option>);
     if(self.state.lista_combo.length>0){
-      var rows_almacen = self.state.lista_combo.map(function(almacen) {
+      var rows_grupos = self.state.lista_combo.map(function(grupo) {
         return (
-           <option value={almacen.det_id}>{almacen.det_ubicacion}</option>
+           <option value={grupo.gru_id}>{grupo.gru_nombre}</option>
         );
       });
-      listaAlmacenComboOption.push(rows_almacen);
+      listaAlmacenComboOption.push(rows_grupos);
     }
     return (
       <div className={className}>
@@ -575,7 +635,26 @@ var DetalleMedicamentoEditar= React.createClass({
           <div className='panel-body'>
             <div style={{width: '100%'}} className='panelForm'>
 
-             <div style={{width: '80%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3029')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3029')} value={this.state.codigo_barras}
+                    onChange={this.onChangeCodigoBarrasUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3014')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3010')}:
                 </div>
@@ -584,6 +663,7 @@ var DetalleMedicamentoEditar= React.createClass({
                     onChange={this.onChangePresentacionUno}/>
                 </div>
               </div>
+
               <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3011')}:
@@ -616,15 +696,6 @@ var DetalleMedicamentoEditar= React.createClass({
 
               <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3014')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcionUno}/>
-                </div>
-              </div>
-
-              <div style={{width: '80%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3015')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
@@ -650,7 +721,6 @@ var DetalleMedicamentoEditar= React.createClass({
                       {listaAlmacenComboOption}
                    </select>
                 </div>
-
               </div>
 
               <div style={{width: '80%'}} className='row'>
@@ -668,6 +738,56 @@ var DetalleMedicamentoEditar= React.createClass({
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
                   <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedDosUno} />
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3005')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}
+                    onChange={this.onChangeCondicionVentaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3030')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3030')} value={this.state.precio}
+                    onChange={this.onChangePrecioUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3031')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3031')} value={this.state.iva}
+                    onChange={this.onChangeIvaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3003')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
+                    onChange={this.onChangeFarmaceuticaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3004')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
+                    onChange={this.onChangeElaboradoEnUno}/>
                 </div>
               </div>
 

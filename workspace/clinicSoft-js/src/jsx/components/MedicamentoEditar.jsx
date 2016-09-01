@@ -47,9 +47,6 @@ var MedicamentoEditar = React.createClass({
       nombre_aux: '',
       nombre_comercial:'',
       nombre_generico: '',
-      farmaceutica: '',
-      elaborado_en: '',
-      condicion_venta: '',
       estadoUno:true,
       estadoDos:false,
       estado:'',
@@ -131,9 +128,6 @@ var MedicamentoEditar = React.createClass({
       nombre_comercial:medicamento.nombre_comercial,
       nombre_aux:medicamento.nombre_comercial,
       nombre_generico:medicamento.nombre_generico,
-      farmaceutica:medicamento.farmaceutica,
-      elaborado_en:medicamento.elaborado_en,
-      condicion_venta:medicamento.condicion_venta,
       estado:medicamento.estado,
       medicamento:medicamento
     });
@@ -197,9 +191,6 @@ var MedicamentoEditar = React.createClass({
                var params = {
                 'nombre_comercial': self.state.nombre_comercial,
                 'nombre_generico': self.state.nombre_generico,
-                'farmaceutica': self.state.farmaceutica,
-                'elaborado_en': self.state.elaborado_en,
-                'condicion_venta': self.state.condicion_venta,
                 'estado': self.state.estado,
                 'id_med':self.state.id_med
               };
@@ -232,9 +223,6 @@ var MedicamentoEditar = React.createClass({
      var params = {
                 'nombre_comercial': self.state.nombre_comercial,
                 'nombre_generico': self.state.nombre_generico,
-                'farmaceutica': self.state.farmaceutica,
-                'elaborado_en': self.state.elaborado_en,
-                'condicion_venta': self.state.condicion_venta,
                 'estado': self.state.estado,
                 'id_med':self.state.id_med
               };
@@ -297,35 +285,6 @@ var MedicamentoEditar = React.createClass({
                 <div style={{width: '58%'}} className='left_align'>
                   <input type='text' className='form-control' placeholder={this.getText('MSG_3002')} value={this.state.nombre_generico}
                     onChange={this.onChangeNombreGenerico}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3003')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
-                    onChange={this.onChangeFarmaceutica}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3004')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
-                    onChange={this.onChangeElaboradoEn}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3005')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}  onChange={this.onChangeCondicionVenta}/>
                 </div>
               </div>
 

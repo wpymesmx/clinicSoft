@@ -188,9 +188,6 @@ var MedicamentoAlta = React.createClass({
             var params = {
               'nombre_comercial': self.state.nombre_comercial,
               'nombre_generico': self.state.nombre_generico,
-              'farmaceutica': self.state.farmaceutica,
-              'elaborado_en': self.state.elaborado_en,
-              'condicion_venta': self.state.condicion_venta,
               'estado': self.state.estado
             };
             swal({title: 'Confirmar Registro?',
@@ -280,35 +277,6 @@ var MedicamentoAlta = React.createClass({
 
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3003')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
-                    onChange={this.onChangeFarmaceutica}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3004')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
-                    onChange={this.onChangeElaboradoEn}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3005')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}  onChange={this.onChangeCondicionVenta}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3006')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
@@ -318,7 +286,6 @@ var MedicamentoAlta = React.createClass({
               </div>
 
             </div>
-
 
          </div>
         <div className='panel-footer button-align-right'>

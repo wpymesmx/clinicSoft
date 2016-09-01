@@ -30,9 +30,6 @@ var Medicamento = React.createClass({
       id:'',
       nombre_comercial: '',
       nombre_generico: '',
-      farmaceutica: '',
-      elaborado_en: '',
-      condicion_venta: '',
       estado:'A',
       lista_medicamentos: [],
       lista_combo: [],
@@ -56,10 +53,7 @@ var Medicamento = React.createClass({
     };
     var params = {
         'nombre_comercial': this.state.nombre_comercial,
-        'nombre_generico': this.state.nombre_generico,
-        'farmaceutica': this.state.farmaceutica,
-        'elaborado_en': this.state.elaborado_en,
-        'condicion_venta': this.state.condicion_venta
+        'nombre_generico': this.state.nombre_generico
     };
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
@@ -136,10 +130,7 @@ var Medicamento = React.createClass({
 
     var params = {
         'nombre_comercial': this.state.nombre_comercial,
-        'nombre_generico': this.state.nombre_generico,
-        'farmaceutica': this.state.farmaceutica,
-        'elaborado_en': this.state.elaborado_en,
-        'condicion_venta': this.state.condicion_venta
+        'nombre_generico': this.state.nombre_generico
     };
     medicamentoService.buscar(params, onSuccess, this.onError, this.onFail);
   },
@@ -175,9 +166,6 @@ var Medicamento = React.createClass({
           <tr key={medicamento.medicamento_id}>
             <td>{medicamento.nombre_comercial}</td>
             <td>{medicamento.nombre_generico}</td>
-            <td>{medicamento.farmaceutica}</td>
-            <td>{medicamento.elaborado_en}</td>
-            <td>{medicamento.condicion_venta}</td>
             <td>{medicamento.estado}</td>
             <td><button className='editarButton'  title={self.getText('MSG_200')} onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
           </tr>
@@ -192,18 +180,12 @@ var Medicamento = React.createClass({
               <tr className='alert alert-success trHeader' role='alert'>
                   <td>{this.getText('MSG_3001')}</td>
                   <td>{this.getText('MSG_3002')}</td>
-                  <td>{this.getText('MSG_3003')}</td>
-                  <td>{this.getText('MSG_3004')}</td>
-                  <td>{this.getText('MSG_3005')}</td>
                   <td>{this.getText('MSG_3006')}</td>
                 <td></td>
               </tr>
               <tr>
                 <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
                 <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
-                <td><input type='text' className='form-control' placeholder='Farmaceutica' value={this.state.farmaceutica} onChange={this.onChangeFarmaceutica}/></td>
-                <td><input type='text' className='form-control' placeholder='Elaborado En' value={this.state.elaborado_en} onChange={this.onChangeElaboradoEn}/></td>
-                <td><input type='text' className='form-control' placeholder='Condición De Venta' value={this.state.condicion_venta} onChange={this.onChangeCondicionVenta}/></td>
                 <td></td>
                 <td></td>
               </tr>

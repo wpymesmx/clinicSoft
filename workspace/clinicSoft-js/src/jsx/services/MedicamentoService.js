@@ -9,7 +9,7 @@ var paths = {
   llenarCombo: '/admin/medicamento/llenarCombo',
   actualizar:'/admin/medicamento/actualizar',
   insertarDetalleMed:'/admin/medicamento/insertarDetalleMed',
-  llenarComboAlmacen:'/admin/medicamento/llenarComboAlmacen',
+  llenarComboGrupos:'/admin/medicamento/llenarComboGrupos',
   existeMedicamento:'/admin/medicamento/existe',
   eliminarDetalle:'/admin/medicamento/eliminar',
   editarDetalle:'/admin/medicamento/editaDetalle',
@@ -29,8 +29,8 @@ var MedicamentoService = {
   llenarCombo: function(params,onSuccess, onError, onFail) {
     commonService.ajax(paths.llenarCombo,params,onSuccess, onError, onFail);
   },
-  llenarComboAlmacen: function(params,onSuccess, onError, onFail) {
-    commonService.ajax(paths.llenarComboAlmacen,params,onSuccess, onError, onFail);
+  llenarComboGrupos: function(params,onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenarComboGrupos,params,onSuccess, onError, onFail);
   },
   actualizar: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.actualizar, params, onSuccess, onError, onFail);

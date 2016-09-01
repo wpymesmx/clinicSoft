@@ -5,9 +5,8 @@ from src.dao.row.medicamento_row import llenar_combo_row
 from src.dao.row.medicamento_row import row_id_medicamento
 from src.dao.row.medicamento_row import llenar_combo_almacen_row
 from src.dao.row.medicamento_row import row_id_detalle_medicamento
-from src.dao.row.detalle_medicamento_row import consulta_detalles_row
+from src.dao.row.detalle_medicamento_row import llenar_combo_grupos_row
 from src.dao.row.medicamento_row import consulta_detalles_row
-
 from Log4py import log4py
 
 class MedicamentoDao(SQLiteDao):
@@ -18,7 +17,7 @@ class MedicamentoDao(SQLiteDao):
   def __init__(self):
     pass
 
-  def buscar_medicamento(self, nombre_comercial,nombre_generico,farmaceutica, elaborado_en, condicion_venta):
+  def buscar_medicamento(self, nombre_comercial,nombre_generico):
     log4py.info('## consultar_medicamento  ##')
     dao_response = None
     cursor = None
@@ -29,7 +28,7 @@ class MedicamentoDao(SQLiteDao):
       self.set_row_factory(consulta_medicamento_row)
       cursor = self.get_cursor()
       query = ('''
-        SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA, MED_ESTADO
+        SELECT MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_ESTADO
         FROM MEDICAMENTO
         WHERE MED_ESTADO = ?
          ''')
@@ -41,15 +40,6 @@ class MedicamentoDao(SQLiteDao):
 
       if nombre_generico != '':
         query = query + ' AND MED_NOMBRE_GENERICO like \'%' + nombre_generico + '%\''
-
-      if farmaceutica != '':
-        query = query + ' AND MED_FARMACEUTICA like \'%' + farmaceutica + '%\''
-
-      if elaborado_en != '':
-        query = query + ' AND MED_ELABORADO_EN like \'%' + elaborado_en + '%\''
-
-      if condicion_venta != '':
-        query = query + ' AND MED_CONDICION_VENTA like \'%' + condicion_venta + '%\''
 
       log4py.info(query)
       cursor.execute(query, (aux))
@@ -132,9 +122,10 @@ class MedicamentoDao(SQLiteDao):
       self.set_row_factory(consulta_detalles_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT DEM_ID,ALM_ID,DEM_PRESENTACION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_DESCRIPCION, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD
+        SELECT DEM_ID, GRU_FK, MED_FK, CODIGO_BARRAS, DEM_PRESENTACION, DEM_DESCRIPCION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA, DEM_EN_EXISTENCIA, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD,
+        DEM_CONDICION_VENTA,DEM_PRECIO, DEM_IVA DEM_FARMACEUTICA, DEM_ELABORADO_EN
         FROM DETALLE_MEDICAMENTO
-        WHERE MED_ID=? AND DEM_ID>?
+        WHERE MED_FK=? AND DEM_ID>?
       ''', (id_med,aux))
 
       dao_response = cursor.fetchall()
@@ -176,19 +167,19 @@ class MedicamentoDao(SQLiteDao):
       self.close(cursor)
     return dao_response
 
-  def llenar_combo_almacen(self):
-    log4py.info('## llenar_combo_almacen  ##')
+  def llenar_combo_grupos(self):
+    log4py.info('## llenar_combo_grupos  ##')
     dao_response = None
     cursor = None
     aux = 'A'
     try:
       self.open()
-      self.set_row_factory(llenar_combo_almacen_row)
+      self.set_row_factory(llenar_combo_grupos_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT ALM_ID, ALM_UBICACION
-        FROM ALMACEN
-        WHERE ALM_ESTADO = ?
+        SELECT GRU_ID, GRU_NOMBRE
+        FROM GRUPOS
+        WHERE GRU_ESTADO = ?
       ''', (aux))
 
       dao_response = cursor.fetchall()
@@ -203,7 +194,7 @@ class MedicamentoDao(SQLiteDao):
       self.close(cursor)
     return dao_response
 
-  def insertar_medicamento(self, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado):
+  def insertar_medicamento(self, nombre_comercial, nombre_generico, estado):
     """
        Insertar un nuevo medicamento
     """
@@ -219,9 +210,9 @@ class MedicamentoDao(SQLiteDao):
       id_med = cursor.fetchone()[0]
       # insertamos el nuevo medicamento en db
       cursor.execute('''
-        INSERT INTO MEDICAMENTO (MED_ID,MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_FARMACEUTICA, MED_ELABORADO_EN, MED_CONDICION_VENTA,MED_ESTADO)
-        VALUES (?, ?, ?, ?, ?, ?,?);
-      ''', (id_med, nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado))
+        INSERT INTO MEDICAMENTO (MED_ID, MED_NOMBRE_COMERCIAL, MED_NOMBRE_GENERICO, MED_ESTADO)
+        VALUES (?, ?, ? ,?);
+      ''', (id_med, nombre_comercial, nombre_generico,estado))
       self.commit()
 
     except Exception as err:
@@ -235,15 +226,20 @@ class MedicamentoDao(SQLiteDao):
 
 
 
-  def insertar_detalle_medicamento(self,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
+  def insertar_detalle_medicamento(self,id_grupo, id_med, codigo_barras, presentacion,descripcion,
+                                   cantidad_maxima, cantidad_minima, existencia,indicasiones,
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
     """
        Insertar un nuevo detalle medicamento
     """
-    print(id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
+    print(id_grupo, id_med, codigo_barras, presentacion,descripcion,
+                                   cantidad_maxima, cantidad_minima, existencia,indicasiones,
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en)
     log4py.info('##  insertar_detalle_medicamento  ##')
     dao_response = None
     cursor = None
     print(id_med)
+    estado='A'
     try:
       self.open()
       cursor = self.get_cursor()
@@ -252,10 +248,12 @@ class MedicamentoDao(SQLiteDao):
       id_dem = cursor.fetchone()[0]
       # insertamos el nuevo detalle medicamento en db
       cursor.execute('''
-        INSERT INTO DETALLE_MEDICAMENTO (DEM_ID,MED_ID,ALM_ID,DEM_PRESENTACION,DEM_CANTIDAD_MAXIMA,DEM_CANTIDAD_MINIMA,
-        DEM_EN_EXISTENCIA,DEM_DESCRIPCION,DEM_INDICACIONES,DEM_VIA_ADMIN_DOSIS,DEM_FECHA_ALTA,DEM_FECHA_CADUCIDAD)
-        VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?);
-      ''', (id_dem,id_med,id_almacen,presentacion,cantidad_maxima,cantidad_minima,existencia,descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad))
+        INSERT INTO DETALLE_MEDICAMENTO (DEM_ID, GRU_FK, MED_FK, CODIGO_BARRAS, DEM_PRESENTACION, DEM_DESCRIPCION, DEM_CANTIDAD_MAXIMA, DEM_CANTIDAD_MINIMA,
+        DEM_EN_EXISTENCIA, DEM_INDICACIONES, DEM_VIA_ADMIN_DOSIS, DEM_FECHA_ALTA, DEM_FECHA_CADUCIDAD, DEM_CONDICION_VENTA, DEM_PRECIO, DEM_IVA, DEM_FARMACEUTICA,
+        DEM_ELABORADO_EN, DEM_ESTADO)
+        VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?);
+      ''', (id_dem,id_grupo, id_med, codigo_barras, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en,estado))
       self.commit()
 
     except Exception as err:
@@ -316,11 +314,11 @@ class MedicamentoDao(SQLiteDao):
     finally:
       self.close(cursor)
 
-  def actualizar_medicamento(self,nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med):
+  def actualizar_medicamento(self,nombre_comercial, nombre_generico,estado,id_med):
     """
        Insertar un nuevo medicamento
     """
-    print(nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med)
+    print(nombre_comercial, nombre_generico,estado,id_med)
     log4py.info('##  update_medicamento dao ##')
     dao_response = None
     cursor = None
@@ -329,9 +327,9 @@ class MedicamentoDao(SQLiteDao):
       self.open()
       cursor = self.get_cursor()
       cursor.execute('''
-        UPDATE  MEDICAMENTO SET MED_NOMBRE_COMERCIAL=?, MED_NOMBRE_GENERICO=?, MED_FARMACEUTICA=?, MED_ELABORADO_EN=?, MED_CONDICION_VENTA=?, MED_ESTADO=?
+        UPDATE  MEDICAMENTO SET MED_NOMBRE_COMERCIAL=?, MED_NOMBRE_GENERICO=?, MED_ESTADO=?
         WHERE MED_ID=?;
-      ''', (nombre_comercial, nombre_generico, farmaceutica, elaborado_en, condicion_venta,estado,id_med))
+      ''', (nombre_comercial, nombre_generico,estado,id_med))
       self.commit()
 
     except Exception as err:

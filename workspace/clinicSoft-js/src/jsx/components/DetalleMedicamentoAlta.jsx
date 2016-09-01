@@ -71,7 +71,7 @@ var DetalleMedicamentoAlta= React.createClass({
         lista_combo : response.payload
       });
     };
-    medicamentoService.llenarComboAlmacen({},onSuccess, self.onError, self.onFail);
+    medicamentoService.llenarComboGrupos({},onSuccess, self.onError, self.onFail);
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -153,7 +153,7 @@ var DetalleMedicamentoAlta= React.createClass({
   onChangeCombo: function(evt) {
    this.setState({
      comboValue: evt.target.value,
-     det_ubicacion: evt.target.value
+     gru_nombre: evt.target.value
    });
   },
   show: function(id_med) {
@@ -357,12 +357,12 @@ var DetalleMedicamentoAlta= React.createClass({
     var listaAlmacenComboOption = [];
     listaAlmacenComboOption.push(<option value="0">{this.getText('MSG_3017')}</option>);
     if(self.state.lista_combo.length>0){
-      var rows_almacen = self.state.lista_combo.map(function(almacen) {
+      var rows_grupos = self.state.lista_combo.map(function(grupo) {
         return (
-           <option value={almacen.det_id}>{almacen.det_ubicacion}</option>
+           <option value={grupo.gru_id}>{grupo.gru_nombre}</option>
         );
       });
-      listaAlmacenComboOption.push(rows_almacen);
+      listaAlmacenComboOption.push(rows_grupos);
     }
 
 

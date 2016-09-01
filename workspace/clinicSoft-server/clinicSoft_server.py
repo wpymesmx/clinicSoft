@@ -20,7 +20,7 @@ from src.view.medicamento_view import eliminar_detalle_medicamento
 from src.view.medicamento_view import actualizar_medicamento
 from src.view.medicamento_view import llenar_combo_medicamento
 from src.view.medicamento_view import existe_medicamento
-from src.view.medicamento_view import llenar_combo_almacen
+from src.view.medicamento_view import llenar_combo_grupos
 from src.view.medicamento_view import insertar_detalle_medicamento
 from src.view.medicamento_view import  existe_detalle_medicamento
 from src.view.medicamento_view import  buscar_detalles
@@ -124,7 +124,7 @@ if __name__ == '__main__':
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/insertarDetalleMed', view_func=insertar_detalle_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/buscar', view_func=buscar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenarCombo', view_func=llenar_combo_medicamento, methods=['POST'])
-  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenarComboAlmacen', view_func=llenar_combo_almacen, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenarComboGrupos', view_func=llenar_combo_grupos, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/eliminar', view_func=eliminar_detalle_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/actualizar', view_func=actualizar_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existe', view_func=existe_medicamento, methods=['POST'])

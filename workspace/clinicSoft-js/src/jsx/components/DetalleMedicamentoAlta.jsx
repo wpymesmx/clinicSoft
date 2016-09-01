@@ -38,6 +38,7 @@ var DetalleMedicamentoAlta= React.createClass({
       language: window.language,
       zindex: this.props.zindex,
       datePicked: '',
+      codigo_barras:'',
       presentacion: '',
       cantidad_maxima: '',
       cantidad_minima: '',
@@ -47,6 +48,11 @@ var DetalleMedicamentoAlta= React.createClass({
       via_aministracion: '',
       fecha_alta: '',
       fecha_caducidad: '',
+      condicion_venta:'',
+      precio:0.0,
+      iva:0.0,
+      farmaceutica:'',
+      elaborado_en:'',
       id_med:'',
       id:0,
       id_almacen:'',
@@ -105,6 +111,11 @@ var DetalleMedicamentoAlta= React.createClass({
       fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
+  onChangeCodigoBarras: function(evt) {
+    this.setState({
+      codigo_barras: evt.target.value
+    });
+  },
   onChangePresentacion: function(evt) {
     this.setState({
       presentacion: evt.target.value
@@ -150,6 +161,35 @@ var DetalleMedicamentoAlta= React.createClass({
       fecha_caducidad: evt.target.value
     });
   },
+   onChangeCondicionVenta: function(evt) {
+    this.setState({
+      condicion_venta: evt.target.value
+    });
+  },
+
+  onChangePrecio: function(evt) {
+    this.setState({
+      precio: evt.target.value
+    });
+  },
+
+  onChangeIva: function(evt) {
+    this.setState({
+      iva: evt.target.value
+    });
+  },
+
+  onChangeFarmaceutica: function(evt) {
+    this.setState({
+      farmaceutica: evt.target.value
+    });
+  },
+
+  onChangeElaboradoEn: function(evt) {
+    this.setState({
+      elaborado_en: evt.target.value
+    });
+  },
   onChangeCombo: function(evt) {
    this.setState({
      comboValue: evt.target.value,
@@ -177,7 +217,14 @@ var DetalleMedicamentoAlta= React.createClass({
       show: false,
       ban:true
     });
+    this.onClickLimpiar();
+  },
+
+  //@LLV Método utilizado para limpiar componentes.
+  onClickLimpiar: function(evt) {
+    this.state.codigo_barras='',
     this.state.presentacion='',
+    this.state.descripcion='',
     this.state.cantidad_maxima='',
     this.state.cantidad_minima='',
     this.state.existencia='',
@@ -185,9 +232,15 @@ var DetalleMedicamentoAlta= React.createClass({
     this.state.via_aministracion='',
     this.state.fecha_alta='',
     this.state.fecha_caducidad='',
+    this.state.condicion_venta='',
+    this.state.precio=0.0,
+    this.state.iva=0.0,
+    this.state.farmaceutica='',
+    this.state.elaborado_en='',
     this.state.id_med='',
-    this.state.id_almacen='',
-    this.state.comboValue=0
+    this.state.id_grupo='',
+    this.state.comboValue=1,
+    this.state.lista_detalles_med=[]
   },
 
   //@LLV Método que retorna a la ventana anterior.
@@ -272,17 +325,23 @@ var DetalleMedicamentoAlta= React.createClass({
            self.showInfo(res.message, {zindex: 6});
         } else{
             var params = {
+               'id_grupo':self.state.comboValue,
                'id_med':self.state.id_med,
-               'id_almacen':self.state.comboValue,
+               'codigo_barras':self.state.codigo_barras,
                'presentacion': self.state.presentacion,
+               'descripcion':self.state.descripcion,
                'cantidad_maxima':self.state.cantidad_maxima,
                'cantidad_minima':self.state.cantidad_minima,
                'existencia':self.state.existencia,
-               'descripcion':self.state.descripcion,
                'indicasiones':self.state.indicasiones,
                'via_aministracion':self.state.via_aministracion,
                'fecha_alta': self.state.fecha_alta,
-               'fecha_caducidad':self.state.fecha_caducidad
+               'fecha_caducidad':self.state.fecha_caducidad,
+               'condicion_venta':self.state.condicion_venta,
+               'precio':self.state.precio,
+               'iva':self.state.iva,
+               'farmaceutica':self.state.farmaceutica,
+               'elaborado_en':self.state.elaborado_en
             };
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
@@ -311,6 +370,7 @@ var DetalleMedicamentoAlta= React.createClass({
                          self.setState({
                              lista_detalles: lista_detalle_tmp
                          });
+                         self.onClickLimpiar();
                      }else {
                         swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
                      }
@@ -378,7 +438,27 @@ var DetalleMedicamentoAlta= React.createClass({
 
             <div style={{width: '80%'}} className='panelForm'>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3029')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3029')} value={this.state.codigo_barras}
+                    onChange={this.onChangeCodigoBarras}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3014')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}
+                   onChange={this.onChangeDescripcion}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3010')}:
                 </div>
@@ -388,7 +468,7 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3011')}:
                 </div>
@@ -398,7 +478,7 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3012')}:
                 </div>
@@ -408,7 +488,7 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3013')}:
                 </div>
@@ -418,34 +498,27 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
-                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
-                  {this.getText('MSG_3014')}:
-                </div>
-                <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcion}/>
-                </div>
-              </div>
-
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3015')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3015')} value={this.state.indicasiones}  onChange={this.onChangeIndicasiones}/>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3015')} value={this.state.indicasiones}
+                    onChange={this.onChangeIndicasiones}/>
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   {this.getText('MSG_3016')}:
                 </div>
                 <div style={{width: '58%'}} className='left_align'>
-                  <input type='text' className='form-control' placeholder={this.getText('MSG_3016')} value={this.state.via_aministracion}  onChange={this.onChangeViaAdministracion}/>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3016')} value={this.state.via_aministracion}
+                  onChange={this.onChangeViaAdministracion}/>
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3021')}:
                 </div>
@@ -454,10 +527,9 @@ var DetalleMedicamentoAlta= React.createClass({
                       {listaAlmacenComboOption}
                    </select>
                 </div>
-
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3018')}:
                 </div>
@@ -466,7 +538,7 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
-              <div style={{width: '100%'}} className='row'>
+              <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
                   *{this.getText('MSG_3019')}:
                 </div>
@@ -475,6 +547,55 @@ var DetalleMedicamentoAlta= React.createClass({
                 </div>
               </div>
 
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3005')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}
+                    onChange={this.onChangeCondicionVenta}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3030')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3030')} value={this.state.precio}
+                    onChange={this.onChangePrecio}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3031')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3031')} value={this.state.iva}
+                    onChange={this.onChangeIva}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3003')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
+                    onChange={this.onChangeFarmaceutica}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3004')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
+                    onChange={this.onChangeElaboradoEn}/>
+                </div>
+              </div>
             </div>
 
           <div className='panelScroll'>

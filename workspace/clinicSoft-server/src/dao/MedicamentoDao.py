@@ -95,7 +95,7 @@ class MedicamentoDao(SQLiteDao):
       cursor.execute('''
         SELECT DEM_ID
         FROM DETALLE_MEDICAMENTO
-        WHERE DEM_PRESENTACION=? AND MED_ID=?
+        WHERE DEM_PRESENTACION=? AND MED_FK=?
       ''', (presentacion,id_med))
 
       dao_response = cursor.fetchall()

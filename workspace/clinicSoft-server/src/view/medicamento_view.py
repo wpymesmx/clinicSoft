@@ -21,7 +21,7 @@ def insertar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.insertar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'],jsonRequest['condicion_venta'],jsonRequest['estado'])
+    service_response = medicamentService.insertar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'],jsonRequest['estado'])
 
     payload = json.dumps({
      'code': 200,
@@ -52,8 +52,9 @@ def insertar_detalle_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.insertar_detalle_medicamento(jsonRequest['id_med'], jsonRequest['id_almacen'], jsonRequest['presentacion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],
-                                                                      jsonRequest['existencia'], jsonRequest['descripcion'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'])
+    service_response = medicamentService.insertar_detalle_medicamento(jsonRequest['id_grupo'], jsonRequest['id_med'], jsonRequest['codigo_barras'], jsonRequest['presentacion'],jsonRequest['descripcion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],
+                                                                      jsonRequest['existencia'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'], jsonRequest['condicion_venta'],
+                                                                      jsonRequest['precio'], jsonRequest['iva'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'])
     payload = json.dumps({
       'code': 200,
       'message': 'OK',
@@ -83,7 +84,7 @@ def actualizar_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.actualizar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'], jsonRequest['estado'],jsonRequest['id_med'])
+    service_response = medicamentService.actualizar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['estado'],jsonRequest['id_med'])
 
     payload = json.dumps({
       'code': 200,
@@ -146,7 +147,7 @@ def buscar_medicamento():
     #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'], jsonRequest['condicion_venta'])
+    service_response = medicamentService.buscar_medicamento(jsonRequest['nombre_comercial'], jsonRequest['nombre_generico'])
 
     payload = json.dumps({
      'code': 200,
@@ -293,7 +294,7 @@ def llenar_combo_medicamento():
   return response
 
 
-def llenar_combo_almacen():
+def llenar_combo_grupos():
   """
     metodo utilizado para llenar el combo con todos los almacenes activos
   """
@@ -308,7 +309,7 @@ def llenar_combo_almacen():
     #log4py.info('web_token-> {0}'.format(request.args.get('Web_Token')))
     #jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.llenar_combo_almacen()
+    service_response = medicamentService.llenar_combo_grupos()
 
     payload = json.dumps({
      'code': 200,

@@ -1,3 +1,9 @@
+/**
+* __title__ = 'Detalle Medicamento Editar.'
+* __author__ = '@LLV'
+* __date__ = '26/08/2016'
+*/
+
 'use strict';
 var React = require('react');
 //mixins
@@ -15,7 +21,7 @@ var medicamentoService = require('../services/MedicamentoService.js');
 var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var validaService = require('../utils/ValidaService.js');
 
-//components
+//@LLV Inicio de la clase principal.
 var DetalleMedicamentoEditar= React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
   getDefaultProps: function() {
@@ -24,14 +30,15 @@ var DetalleMedicamentoEditar= React.createClass({
       zindex: 4
     };
   },
-
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
       componentKey: 'DetalleMedicamentoEditar',
       mainComponent: undefined,
       language: window.language,
+      zindex: this.props.zindex,
       datePicked: '',
+      codigo_barras:'',
       presentacion: '',
       cantidad_maxima: '',
       cantidad_minima: '',
@@ -41,15 +48,20 @@ var DetalleMedicamentoEditar= React.createClass({
       via_aministracion: '',
       fecha_alta: '',
       fecha_caducidad: '',
+      condicion_venta:'',
+      precio:0.0,
+      iva:0.0,
+      farmaceutica:'',
+      elaborado_en:'',
       id_med:'',
       id:0,
-      id_almacen:'',
+      id_grupo:'',
       lista_combo: [],
       lista_detalles_med:[],
       lista_detalles: [],
       lista_detalle_tmp:[],
-      medicamento:[],
-      comboValue: 0
+      medicamento:undefined,
+      comboValue: 1
     };
   },
   componentWillMount: function() {
@@ -57,7 +69,6 @@ var DetalleMedicamentoEditar= React.createClass({
     //console.log('# App->componentWillMount #');
     self.subscribeLanguage(self.state.componentKey, self.changeSessionLanguage);
   },
-
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
     var self = this;
@@ -67,9 +78,8 @@ var DetalleMedicamentoEditar= React.createClass({
         lista_combo : response.payload
       });
     };
-    medicamentoService.llenarComboAlmacen({},onSuccess, self.onError, self.onFail);
+    medicamentoService.llenarComboGrupos({},onSuccess, self.onError, self.onFail);
   },
-
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
   },
@@ -88,7 +98,6 @@ var DetalleMedicamentoEditar= React.createClass({
     //console.log('# App->componentWillUnmount #');
     self.unSubscribeLanguage(self.state.componentKey);
   },
-
   onDatePickedUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -96,7 +105,6 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_alta: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
   onDatePickedDosUno: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -104,13 +112,16 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
+  onChangeCodigoBarrasUno: function(evt) {
+    this.setState({
+      codigo_barras: evt.target.value
+    });
+  },
   onChangePresentacionUno: function(evt) {
     this.setState({
       presentacion: evt.target.value
     });
   },
-
   onChangeCantidad_maximaUno: function(evt) {
     this.setState({
       cantidad_maxima: evt.target.value
@@ -152,9 +163,35 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
+  onChangeCondicionVentaUno: function(evt) {
+    this.setState({
+      condicion_venta: evt.target.value
+    });
+  },
 
+  onChangePrecioUno: function(evt) {
+    this.setState({
+      precio: evt.target.value
+    });
+  },
 
+  onChangeIvaUno: function(evt) {
+    this.setState({
+      iva: evt.target.value
+    });
+  },
 
+  onChangeFarmaceuticaUno: function(evt) {
+    this.setState({
+      farmaceutica: evt.target.value
+    });
+  },
+
+  onChangeElaboradoEnUno: function(evt) {
+    this.setState({
+      elaborado_en: evt.target.value
+    });
+  },
 
   onDatePicked: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
@@ -245,19 +282,38 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangeCombo: function(evt) {
    this.setState({
      comboValue: evt.target.value,
-     det_ubicacion: evt.target.value
+     gru_nombre: evt.target.value
    });
   },
-
-  show: function(id_med) {
+  show: function(id_med,medicamento) {
     //aqui limpiar componente
     console.log('# id_med que recibe cuando cargo el view detalle_medicamento.#');
     console.log(id_med);
     this.setState({
       show: true,
+      medicamento:medicamento,
       id_med:id_med
     });
+
+    //@LLV Reaiza una consulta de detalles del medicamento
+    console.log('/*Into onClickBuscar*/');
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+      console.log(response.payload);
+      self.setState({
+        lista_detalles_med: response.payload
+      });
+    };
+    var params = {
+        'id_med': id_med
+    };
+    console.log('*Parametro enviado para buscar detalles*');
+    console.log(self.state.id_med);
+    medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
+
   },
+
 
   hide: function() {
     //aqui limpiar componente
@@ -266,7 +322,8 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
   onClickBuscar: function(evt) {
-  var self = this;
+    console.log('/*Into onClickBuscar*/');
+    var self = this;
     var onSuccess = function(response) {
       console.log('# success  #');
       console.log(response.payload);
@@ -277,14 +334,24 @@ var DetalleMedicamentoEditar= React.createClass({
     var params = {
         'id_med': self.state.id_med
     };
+    console.log('*Parametro enviado para buscar detalles*');
+    console.log(self.state.id_med);
     medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
   },
 
+  //@LLV Método utilizado para cerrar popup y limpiar componentes.
   onClickCerrar: function(evt) {
     this.setState({
       show: false
     });
+   this.onClickLimpiar();
+  },
+
+  //@LLV Método utilizado para limpiar componentes.
+  onClickLimpiar: function(evt) {
+    this.state.codigo_barras='',
     this.state.presentacion='',
+    this.state.descripcion='',
     this.state.cantidad_maxima='',
     this.state.cantidad_minima='',
     this.state.existencia='',
@@ -292,31 +359,46 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.via_aministracion='',
     this.state.fecha_alta='',
     this.state.fecha_caducidad='',
+    this.state.condicion_venta='',
+    this.state.precio=0.0,
+    this.state.iva=0.0,
+    this.state.farmaceutica='',
+    this.state.elaborado_en='',
     this.state.id_med='',
-    this.state.id_almacen='',
-    this.state.comboValue=0,
+    this.state.id_grupo='',
+    this.state.comboValue=1,
     this.state.lista_detalles_med=[]
   },
 
-  onClickRegresar: function(medicamento,evt) {
+  //@LLV Método utilizado para regresar a la ventana  anterior.
+  onClickRegresar: function(evt) {
     var onSuccess = function(response) {
       console.log('# success  #');
     };
     //Oculto el popup de DetalleMedicamentoEditar
     this.hide();
     //Muestro el popup de MedicamentoEditar
-    this.props.papa.show(medicamento);
+    this.props.papa.show(this.state.medicamento);
   },
 
+  //@LLV Método utilizado para validar los campos de entrada del formulario.
   validaFormulario: function() {
     var self = this;
     var response = {
       isError: false,
       message: ''
     };
-
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_maxima)) {
+      return {isError: true, message: self.getText('MSG_3025')};
+    }
+    if(validaService.isEmpty(self.state.cantidad_minima)) {
+      return {isError: true, message: self.getText('MSG_3026')};
+    }
+    if(validaService.isEmpty(self.state.existencia)) {
+      return {isError: true, message: self.getText('MSG_3027')};
     }
     return response;
   },
@@ -327,7 +409,6 @@ var DetalleMedicamentoEditar= React.createClass({
       isError: false,
       message: ''
     };
-
     var detalles_med=this.state.lista_detalles_med[index];
     if(validaService.isEmpty(detalles_med.dem_presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
@@ -335,12 +416,7 @@ var DetalleMedicamentoEditar= React.createClass({
     return response;
   },
 
-  validaExiste: function() {
-    var self = this;
-    var res = {isError: true, message: self.getText('MSG_111')};
-    return res;
-  },
-
+  //@LLV Método utilizado para eliminar un detalle del medicamento.
   onClickEliminar:  function(index,evt){
        var onSuccess = function(response) {
           console.log('# success  #');
@@ -374,6 +450,7 @@ var DetalleMedicamentoEditar= React.createClass({
                    });
   },
 
+  //@LLV Método utilizado para agruegar un nuevo detalle a un medicamento.
   onClickGuardar: function(evt) {
     var onSuccess = function(response) {
       console.log('# success  #');
@@ -381,21 +458,25 @@ var DetalleMedicamentoEditar= React.createClass({
     var self = this;
     var response = this.validaFormulario();
     if(!response.isError) {
-
             var params = {
+               'id_grupo':self.state.comboValue,
                'id_med':self.state.id_med,
-               'id_almacen':self.state.comboValue,
+               'codigo_barras':self.state.codigo_barras,
                'presentacion': self.state.presentacion,
+               'descripcion':self.state.descripcion,
                'cantidad_maxima':self.state.cantidad_maxima,
                'cantidad_minima':self.state.cantidad_minima,
                'existencia':self.state.existencia,
-               'descripcion':self.state.descripcion,
                'indicasiones':self.state.indicasiones,
                'via_aministracion':self.state.via_aministracion,
                'fecha_alta': self.state.fecha_alta,
-               'fecha_caducidad':self.state.fecha_caducidad
+               'fecha_caducidad':self.state.fecha_caducidad,
+               'condicion_venta':self.state.condicion_venta,
+               'precio':self.state.precio,
+               'iva':self.state.iva,
+               'farmaceutica':self.state.farmaceutica,
+               'elaborado_en':self.state.elaborado_en
             };
-
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
                   type: 'warning',
@@ -409,9 +490,7 @@ var DetalleMedicamentoEditar= React.createClass({
                   function(isConfirm){
                      if (isConfirm) {
                          medicamentoService.insertarDetalleMed(params, onSuccess, self.onError, self.onFail),
-                         swal('Aceptar!','Presentación Registrada Con Exito.',
-                         'success');
-
+                         swal('Aceptar!','Presentación Registrada Con Exito.', 'success');
                          var auxParams = {
                             'presentacion': self.state.presentacion,
                             'cantidad_maxima': self.state.cantidad_maxima,
@@ -419,17 +498,17 @@ var DetalleMedicamentoEditar= React.createClass({
                             'existencia': self.state.existencia,
                             'fecha_caducidad': self.state.fecha_caducidad
                          };
-
+                         self.onClickLimpiar();
                      }else {
                         swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
                      }
                    });
-
     } else {
-        self.showInfo(response.message, {zindex: 4});
+        self.showInfo(response.message, {zindex: 6});
     }
   },
 
+  //@LLV Método utilizado para editar un detalle del medicamento.
   onClickEditarDetalle: function(index,evt) {
     var onSuccess = function(response) {
         console.log('# success  #');
@@ -441,7 +520,7 @@ var DetalleMedicamentoEditar= React.createClass({
             var params = {
                'dem_id': detalles_med.dem_id,
                'id_med': self.state.id_med,
-               'id_almacen': detalles_med.alm_fk,
+               'id_grupo': detalles_med.alm_fk,
                'presentacion': detalles_med.dem_presentacion,
                'cantidad_maxima': detalles_med.dem_cantidad_maxima,
                'cantidad_minima': detalles_med.dem_cantidad_minima,
@@ -474,11 +553,12 @@ var DetalleMedicamentoEditar= React.createClass({
                    });
 
     } else {
-        self.showInfo(response.message, {zindex: 4});
+        self.showInfo(response.message, {zindex: 6});
     }
 
   },
 
+  //@LLV Función principal para mostrar los componetes.
   render: function() {
     //console.log('# DetalleMedicamentoEditar->render #');
     var listaDetallesDiv = (<div></div>);
@@ -486,11 +566,8 @@ var DetalleMedicamentoEditar= React.createClass({
     var CLASS_HIDDEN = 'componentHide';
     var CLASS_SHOW = 'componentShow';
     var className = '';
-
     className = (self.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
-
     var rows_detalles = [];
-
      console.log('total detalles');
      console.log(self.state.lista_detalles_med.length);
      if(self.state.lista_detalles_med.length > 0) {
@@ -507,30 +584,29 @@ var DetalleMedicamentoEditar= React.createClass({
             <td><input type='text' className='form-control' placeholder='Via de administración' value={detalle.dem_via_admin} onChange={self.onChangeViaAdministracion.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder='Fecha Alta' value={detalle.dem_fecha_alta} onChange={self.onChangeFechaAlta.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder='Fecha De Caducidad' value={detalle.dem_fecha_caducidad} onChange={self.onChangeFechaCaducidad.bind(self,index)}/></td>
-            <td><button className='saveButton' onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
-            <td><button className='detalleButton' onClick={self.onClickEliminar.bind(self,index)}/></td>
+            <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
+            <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
           </tr>
         );
       });
      }
-
       listaDetallesDiv = (
-        <div>
+        <div className='panelScrollDetalle' >
           <table className='table table-bordered table-hover'>
            <tbody>
-             <tr className='alert alert-success trHeader' role='alert'>
-             <td>Número Almacen</td>
-             <td>Presentación</td>
-             <td>Cantidad Máxima</td>
-             <td>Cantidad Mínima</td>
-             <td>Existencia</td>
-             <td>Descripción</td>
-             <td>Indicasiones</td>
-             <td>Dosis</td>
-             <td>Fecha Alta</td>
-             <td>Fecha Caducidad</td>
-             <td></td>
-             <td></td>
+             <tr className='alert alert-success default' role='alert'>
+               <td>{this.getText('MSG_3021')}</td>
+               <td>{this.getText('MSG_3010')}</td>
+               <td>{this.getText('MSG_3011')}</td>
+               <td>{this.getText('MSG_3012')}</td>
+               <td>{this.getText('MSG_3013')}</td>
+               <td>{this.getText('MSG_3014')}</td>
+               <td>{this.getText('MSG_3015')}</td>
+               <td>{this.getText('MSG_3016')}</td>
+               <td>{this.getText('MSG_3018')}</td>
+               <td>{this.getText('MSG_3019')}</td>
+               <td></td>
+               <td></td>
             </tr>
             {rows_detalles}
            </tbody>
@@ -538,81 +614,207 @@ var DetalleMedicamentoEditar= React.createClass({
         </div>
       );
 
-
-    //La variable almacen puede tomar cualquier nombre.
+    //@LLV La variable almacen puede tomar cualquier nombre.
     var listaAlmacenComboOption = [];
     listaAlmacenComboOption.push(<option value="0">SELECCIONE UNA OPCIÓN</option>);
     if(self.state.lista_combo.length>0){
-      var rows_almacen = self.state.lista_combo.map(function(almacen) {
+      var rows_grupos = self.state.lista_combo.map(function(grupo) {
         return (
-           <option value={almacen.det_id}>{almacen.det_ubicacion}</option>
+           <option value={grupo.gru_id}>{grupo.gru_nombre}</option>
         );
       });
-
-      listaAlmacenComboOption.push(rows_almacen);
+      listaAlmacenComboOption.push(rows_grupos);
     }
     return (
       <div className={className}>
-
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClassDetalles'} style={{zIndex: this.state.zindex-1}}>
+        <div className={'panel panel-default popUpClassDetalles'} style={{zIndex: this.state.zindex-1}}>
           <div className='panel-heading'>
-            Editar Detalles Del Medicamento
+            {this.getText('MSG_3023')}
           </div>
           <div className='panel-body'>
+            <div style={{width: '100%'}} className='panelForm'>
 
-           <table>
-           <tbody>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Presentación' value={this.state.presentacion} onChange={this.onChangePresentacionUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Cantidad Maxima' value={this.state.cantidad_maxima} onChange={this.onChangeCantidad_maximaUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Cantidad Minima' value={this.state.cantidad_minima} onChange={this.onChangeCantidad_minimaUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Existencia' value={this.state.existencia} onChange={this.onChangeExistenciaUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Descripción' value={this.state.descripcion} onChange={this.onChangeDescripcionUno}/></td>
-                <td><input type='text' className='form-control' placeholder='Indicasiones' value={this.state.indicasiones} onChange={this.onChangeIndicasionesUno}/></td>
-            </tr>
-            <tr>
-                <td><input type='text' className='form-control' placeholder='Via Aministracion' value={this.state.via_aministracion} onChange={this.onChangeViaAdministracionUno}/></td>
-                <td>
-                   <div>
-                      <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
-                         {listaAlmacenComboOption}
-                      </select>
-                   </div>
-               </td>
-            </tr>
-            <tr>
-                <td><DatePickerReact inputLabel='Fecha Alta:' onDatePicked={this.onDatePickedUno}  /></td>
-                <td><DatePickerReact inputLabel='Fecha Caducidad:' onDatePicked={this.onDatePickedDosUno} /></td>
-                <td><button className='nuevoButton' onClick={this.onClickGuardar} /> </td>
-            </tr>
-          </tbody>
-          </table>
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3029')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3029')} value={this.state.codigo_barras}
+                    onChange={this.onChangeCodigoBarrasUno}/>
+                </div>
+              </div>
 
-          {listaDetallesDiv}
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3014')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3014')} value={this.state.descripcion}  onChange={this.onChangeDescripcionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3010')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3010')} value={this.state.presentacion}
+                    onChange={this.onChangePresentacionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3011')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3011')} value={this.state.cantidad_maxima}
+                    onChange={this.onChangeCantidad_maximaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3012')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3012')} value={this.state.cantidad_minima}
+                    onChange={this.onChangeCantidad_minimaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3013')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3013')} value={this.state.existencia}
+                    onChange={this.onChangeExistenciaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3015')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3015')} value={this.state.indicasiones}  onChange={this.onChangeIndicasiones}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3016')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3016')} value={this.state.via_aministracion}  onChange={this.onChangeViaAdministracionUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3021')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                   <select className='form-control' value={this.state.comboValue} onChange={this.onChangeCombo}>
+                      {listaAlmacenComboOption}
+                   </select>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3018')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedUno} />
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3019')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <DatePickerReact inputLabel='' onDatePicked={this.onDatePickedDosUno} />
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3005')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3005')} value={this.state.condicion_venta}
+                    onChange={this.onChangeCondicionVentaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3030')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3030')} value={this.state.precio}
+                    onChange={this.onChangePrecioUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3031')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3031')} value={this.state.iva}
+                    onChange={this.onChangeIvaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  *{this.getText('MSG_3003')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3003')} value={this.state.farmaceutica}
+                    onChange={this.onChangeFarmaceuticaUno}/>
+                </div>
+              </div>
+
+              <div style={{width: '80%'}} className='row'>
+                <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                  {this.getText('MSG_3004')}:
+                </div>
+                <div style={{width: '58%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3004')} value={this.state.elaborado_en}
+                    onChange={this.onChangeElaboradoEnUno}/>
+                </div>
+              </div>
+
+
+            {listaDetallesDiv}
+            </div>
           </div>
         <div className='panel-footer button-align-right'>
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Cerrar'  onClick={this.onClickCerrar}/>
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Regresar'  onClick={this.onClickRegresar.bind(this,this.state.medicamento)}/>
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_204')}  onClick={this.onClickBuscar} />
                </div>
-                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value='Buscar'  onClick={this.onClickBuscar} />
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
+               </div>
+               <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar}/>
                </div>
              </div>
           </div>
           </div>
         </div>
       </div>
-
     );
   }
 });

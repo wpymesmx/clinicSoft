@@ -619,7 +619,7 @@ var DetalleMedicamentoEditar= React.createClass({
      if(self.state.lista_detalles_med.length > 0) {
       rows_detalles = self.state.lista_detalles_med.map(function(detalle,index) {
         return (
-          <tr key={detalle.dem_id}>
+          <tr key={detalle.med_fk}>
             <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
             <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
 

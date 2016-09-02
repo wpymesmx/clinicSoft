@@ -6,7 +6,7 @@ from src.dao.row.medicamento_row import row_id_medicamento
 from src.dao.row.medicamento_row import llenar_combo_almacen_row
 from src.dao.row.medicamento_row import row_id_detalle_medicamento
 from src.dao.row.detalle_medicamento_row import llenar_combo_grupos_row
-from src.dao.row.medicamento_row import consulta_detalles_row
+from src.dao.row.detalle_medicamento_row import consulta_detalles_row
 from Log4py import log4py
 
 class MedicamentoDao(SQLiteDao):

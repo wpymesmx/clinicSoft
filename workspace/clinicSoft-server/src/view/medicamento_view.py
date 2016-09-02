@@ -115,7 +115,14 @@ def update_detalle_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.update_detalle_medicamento(jsonRequest['dem_id'],jsonRequest['id_med'], jsonRequest['id_almacen'], jsonRequest['presentacion'], jsonRequest['cantidad_maxima'],jsonRequest['cantidad_minima'],jsonRequest['existencia'], jsonRequest['descripcion'], jsonRequest['indicasiones'],jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],jsonRequest['fecha_caducidad'])
+    service_response = medicamentService.update_detalle_medicamento(jsonRequest['dem_id'],jsonRequest['id_grupo'], jsonRequest['id_med'],
+                                                                    jsonRequest['presentacion'],jsonRequest['descripcion'],
+                                                                    jsonRequest['cantidad_maxima'], jsonRequest['cantidad_minima'],
+                                                                    jsonRequest['existencia'], jsonRequest['indicasiones'],
+                                                                    jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],
+                                                                    jsonRequest['fecha_caducidad'],jsonRequest['condicion_venta'],
+                                                                    jsonRequest['precio'], jsonRequest['iva'],
+                                                                    jsonRequest['farmaceutica'],jsonRequest['elaborado_en'])
 
     payload = json.dumps({
       'code': 200,
@@ -340,8 +347,8 @@ def eliminar_detalle_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    print(jsonRequest['presentacion'])
-    service_response = medicamentService.eliminar_detalle_medicamento(jsonRequest['presentacion'],jsonRequest['id_med'])
+    print(jsonRequest['dem_id'])
+    service_response = medicamentService.eliminar_detalle_medicamento(jsonRequest['dem_id'])
     response = Response(service_response, status=200, mimetype='application/json')
 
     payload = json.dumps({

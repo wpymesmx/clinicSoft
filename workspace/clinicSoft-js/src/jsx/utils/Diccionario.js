@@ -6,6 +6,7 @@
 * e 00E9
 * o 00F3
 * u 00FA
+* U 00DA
 * n 00F1
 * No olvidar substituir los caracteres especiales por unicodigo
 **/
@@ -32,6 +33,11 @@ var Diccionario = {
     MSG_205: 'Nuevo',
     MSG_206: 'Guardar',
     MSG_207: 'Seleccione una opci\u00F3n',
+    MSG_208: 'Primero',
+    MSG_209: 'Anterior',
+    MSG_210: 'Siguiente',
+    MSG_211 : '\u00DAltimo',
+    MSG_212 : 'Ordenar',
     //generales de negocio
     MSG_500: 'Nombre',
     MSG_501: 'Apellido paterno',
@@ -91,6 +97,11 @@ var Diccionario = {
     MSG_205: 'New',
     MSG_206: 'Save',
     MSG_207: 'Select an option',
+    MSG_208: 'First',
+    MSG_209: 'Previous',
+    MSG_210: 'Next',
+    MSG_211 : 'Last',
+    MSG_212 : 'Order by',
     //generales de negocio
     MSG_500: 'Name',
     MSG_501: 'First name',

@@ -13,6 +13,7 @@ var personalService = require('../services/PersonalService.js');
 //components
 var PersonalNewEdit = require('./PersonalNewEdit.jsx');
 var PersonalDetalle = require('./PersonalDetalle.jsx');
+var DataGridReact = require('./DataGridReact.jsx');
 
 var Personal = React.createClass({
   mixins: [AlertMixin(), LanguageMixin()],
@@ -32,7 +33,9 @@ var Personal = React.createClass({
       pers_turno: '',
       pers_sexo: '',
       pers_estado: '',
-      personalList: []
+      personalList: [],
+      personaltable: [],
+      filterStatus: ''
     };
   },
   componentWillMount: function() {
@@ -67,7 +70,8 @@ var Personal = React.createClass({
 
     var onSuccess = function(response) {
       self.setState({
-        personalList: response.payload
+        personalList: response.payload,
+        personaltable: response.payload
       });
     };
 
@@ -92,7 +96,8 @@ var Personal = React.createClass({
 
     var onSuccess = function(response) {
       self.setState({
-        personalList: response.payload
+        personalList: response.payload,
+        personaltable: response.payload
       });
     };
 
@@ -117,11 +122,96 @@ var Personal = React.createClass({
   onClickAddPersonal: function(evt) {
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_NEW);
   },
-  onClickDetalle: function(personal, evt) {
+  onClickDetalle: function(personal, index, evt) {
     this.refs.personalDetalle.show(personal);
   },
-  onClickEdital: function(personal, evt) {
+  onClickEdital: function(personal, index, evt) {
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_EDIT, clone.clone(personal));
+  },
+  onChangeFilterName: function(evt) {
+    var personaltable = [];
+
+    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
+      this.state.personalList.every(function(personal) {
+        if(personal.pers_nombre.indexOf(evt.target.value) > -1) {
+          personaltable.push(personal);
+        }
+
+        return true;
+      });
+
+      this.setState({
+        personaltable: personaltable
+      });
+    }
+  },
+  onChangeFilterApellidoPat: function(evt) {
+    var personaltable = [];
+
+    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
+      this.state.personalList.every(function(personal) {
+        if(personal.pers_apellido_pat.indexOf(evt.target.value) > -1) {
+          personaltable.push(personal);
+        }
+
+        return true;
+      });
+
+      this.setState({
+        personaltable: personaltable
+      });
+    }
+  },
+  onChangeFilterApellidoMat: function(evt) {
+    var personaltable = [];
+
+    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
+      this.state.personalList.every(function(personal) {
+        if(personal.pers_apellido_mat.indexOf(evt.target.value) > -1) {
+          personaltable.push(personal);
+        }
+
+        return true;
+      });
+
+      this.setState({
+        personaltable: personaltable
+      });
+    }
+  },
+  onChangeFilterEmail: function(evt) {
+    var personaltable = [];
+
+    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
+      this.state.personalList.every(function(personal) {
+        if(personal.pers_correo.indexOf(evt.target.value) > -1) {
+          personaltable.push(personal);
+        }
+
+        return true;
+      });
+
+      this.setState({
+        personaltable: personaltable
+      });
+    }
+  },
+  onChangeFilterStatus: function(evt) {
+    var personaltable = [];
+
+    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
+      this.state.personalList.every(function(personal) {
+        if(personal.pers_estado == evt.target.value) {
+          personaltable.push(personal);
+        }
+
+        return true;
+      });
+
+      this.setState({
+        personaltable: personaltable
+      });
+    }
   },
   render: function() {
     //console.log('# Personal->render #');
@@ -131,12 +221,13 @@ var Personal = React.createClass({
     var ACTIVO_STR = this.getText('MSG_202');
     var INACTIVO_STR = this.getText('MSG_203');
 
-    if(this.state.personalList.length > 0) {
-      rowsPersonalList = this.state.personalList.map(function(personal, index) {
+    if(this.state.personaltable != undefined && this.state.personaltable.length > 0) {
+      rowsPersonalList = this.state.personaltable.map(function(personal, index) {
         var activoOinactivo = ACTIVO;
 
         if(personal.pers_estado == ACTIVO) {
           activoOinactivo = ACTIVO_STR;
+
         } else {
           activoOinactivo = INACTIVO_STR;
         }
@@ -177,39 +268,36 @@ var Personal = React.createClass({
                     onChange={this.onChangeApellidoMat}/>
                 </div>
                 <div className='group-btn'>
-                  <button className='btn btn-default buscarButton' type='button' title={this.getText('MSG_204')} onClick={this.onClickBuscar} />
+                  <button className='btn btn-default buscarButton' type='button' title={this.getText('MSG_204')}
+                    onClick={this.onClickBuscar} />
                 </div>
               </div>
             </div>
             <div>
-              <div className='btn-group left_left' style={{width: '100%'}}>
+              <div className='btn-group left_align' style={{width: '100%'}}>
                 <button type='button' className='btn btn-default nuevoButton' title={this.getText('MSG_205')} style={{float: 'right'}}
                   onClick={this.onClickAddPersonal}/>
               </div>
-              <div className='overflowXauto left_left' style={{width: '100%'}}>
-                <table className='table table-bordered table-hover'>
-                  <tbody>
-                    <tr className='alert alert-success trHeader'>
-                      <td>{this.getText('MSG_500')}</td>
-                      <td>{this.getText('MSG_501')}</td>
-                      <td>{this.getText('MSG_502')}</td>
-                      <td>{this.getText('MSG_503')}</td>
-                      <td>{this.getText('MSG_504')}</td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_500')} /></td>
-                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_501')} /></td>
-                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_502')} /></td>
-                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_503')} /></td>
-                      <td><input type='text' className='form-control' placeholder={this.getText('MSG_504')} /></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    {rowsPersonalList}
-                  </tbody>
-                </table>
+              <div className='overflowXauto left_align' style={{width: '100%'}}>
+                <DataGridReact dataList={this.state.personalList}
+                  headerOptions={[
+                    {label: this.getText('MSG_500'), width: '18%', orderBy: 'pers_nombre'},
+                    {label: this.getText('MSG_501'), width: '18%', orderBy: 'pers_apellido_pat'},
+                    {label: this.getText('MSG_502'), width: '18%', orderBy: 'pers_apellido_mat'},
+                    {label: this.getText('MSG_503'), width: '18%', orderBy: 'pers_correo'},
+                    {label: this.getText('MSG_504'), width: '14%', orderBy: 'pers_estado'},
+                    {property: '', label: '', width: '7%'},
+                    {property: '', label: '', width: '7%'}
+                  ]}
+                  colOptions={[
+                    {property: 'pers_nombre', width: '18%'},
+                    {property: 'pers_apellido_pat', width: '18%'},
+                    {property: 'pers_apellido_mat', width: '18%'},
+                    {property: 'pers_correo', width: '18%'},
+                    {property: 'pers_estado', width: '14%'},
+                    {property: '', width: '7%', type: 2, buttonStyle: 'detalleButton', onClickButton: this.onClickDetalle, labelButton: self.getText('MSG_201')},
+                    {property: '', width: '7%', type: 2, buttonStyle: 'editarButton', onClickButton: this.onClickEdital, labelButton: self.getText('MSG_200')}
+                  ]}/>
               </div>
             </div>
           </div>

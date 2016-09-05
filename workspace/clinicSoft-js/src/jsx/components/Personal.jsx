@@ -128,91 +128,6 @@ var Personal = React.createClass({
   onClickEdital: function(personal, index, evt) {
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_EDIT, clone.clone(personal));
   },
-  onChangeFilterName: function(evt) {
-    var personaltable = [];
-
-    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
-      this.state.personalList.every(function(personal) {
-        if(personal.pers_nombre.indexOf(evt.target.value) > -1) {
-          personaltable.push(personal);
-        }
-
-        return true;
-      });
-
-      this.setState({
-        personaltable: personaltable
-      });
-    }
-  },
-  onChangeFilterApellidoPat: function(evt) {
-    var personaltable = [];
-
-    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
-      this.state.personalList.every(function(personal) {
-        if(personal.pers_apellido_pat.indexOf(evt.target.value) > -1) {
-          personaltable.push(personal);
-        }
-
-        return true;
-      });
-
-      this.setState({
-        personaltable: personaltable
-      });
-    }
-  },
-  onChangeFilterApellidoMat: function(evt) {
-    var personaltable = [];
-
-    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
-      this.state.personalList.every(function(personal) {
-        if(personal.pers_apellido_mat.indexOf(evt.target.value) > -1) {
-          personaltable.push(personal);
-        }
-
-        return true;
-      });
-
-      this.setState({
-        personaltable: personaltable
-      });
-    }
-  },
-  onChangeFilterEmail: function(evt) {
-    var personaltable = [];
-
-    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
-      this.state.personalList.every(function(personal) {
-        if(personal.pers_correo.indexOf(evt.target.value) > -1) {
-          personaltable.push(personal);
-        }
-
-        return true;
-      });
-
-      this.setState({
-        personaltable: personaltable
-      });
-    }
-  },
-  onChangeFilterStatus: function(evt) {
-    var personaltable = [];
-
-    if(this.state.personalList != undefined && this.state.personalList.length > 0) {
-      this.state.personalList.every(function(personal) {
-        if(personal.pers_estado == evt.target.value) {
-          personaltable.push(personal);
-        }
-
-        return true;
-      });
-
-      this.setState({
-        personaltable: personaltable
-      });
-    }
-  },
   render: function() {
     //console.log('# Personal->render #');
     var self = this;
@@ -268,7 +183,7 @@ var Personal = React.createClass({
                     onChange={this.onChangeApellidoMat}/>
                 </div>
                 <div className='group-btn'>
-                  <button className='btn btn-default buscarButton' type='button' title={this.getText('MSG_204')}
+                  <button className='btn btn-default buscarButton' type='button' title={this.getText('MSG_204')} value=''
                     onClick={this.onClickBuscar} />
                 </div>
               </div>
@@ -281,11 +196,16 @@ var Personal = React.createClass({
               <div className='overflowXauto left_align' style={{width: '100%'}}>
                 <DataGridReact dataList={this.state.personalList}
                   headerOptions={[
-                    {label: this.getText('MSG_500'), width: '18%', orderBy: 'pers_nombre'},
-                    {label: this.getText('MSG_501'), width: '18%', orderBy: 'pers_apellido_pat'},
-                    {label: this.getText('MSG_502'), width: '18%', orderBy: 'pers_apellido_mat'},
-                    {label: this.getText('MSG_503'), width: '18%', orderBy: 'pers_correo'},
-                    {label: this.getText('MSG_504'), width: '14%', orderBy: 'pers_estado'},
+                    {property: 'pers_nombre', label: this.getText('MSG_500'), placeholder: this.getText('MSG_500'), width: '18%',
+                      isOrderBy: true, isFilterText: true},
+                    {property: 'pers_apellido_pat', label: this.getText('MSG_501'), placeholder: this.getText('MSG_501'), width: '18%',
+                      isOrderBy: true, isFilterText: true},
+                    {property: 'pers_apellido_mat', label: this.getText('MSG_502'), placeholder: this.getText('MSG_502'), width: '18%',
+                      isOrderBy: true, isFilterText: true},
+                    {property: 'pers_correo', label: this.getText('MSG_503'), placeholder: this.getText('MSG_503'), width: '18%',
+                      isOrderBy: true, isFilterText: true},
+                    {property: 'pers_estado', label: this.getText('MSG_504'), placeholder: this.getText('MSG_504'), width: '14%',
+                      isOrderBy: true},
                     {property: '', label: '', width: '7%'},
                     {property: '', label: '', width: '7%'}
                   ]}
@@ -294,9 +214,12 @@ var Personal = React.createClass({
                     {property: 'pers_apellido_pat', width: '18%'},
                     {property: 'pers_apellido_mat', width: '18%'},
                     {property: 'pers_correo', width: '18%'},
-                    {property: 'pers_estado', width: '14%'},
-                    {property: '', width: '7%', type: 2, buttonStyle: 'detalleButton', onClickButton: this.onClickDetalle, labelButton: self.getText('MSG_201')},
-                    {property: '', width: '7%', type: 2, buttonStyle: 'editarButton', onClickButton: this.onClickEdital, labelButton: self.getText('MSG_200')}
+                    {property: 'pers_estado', width: '14%', textAlign: 'center',
+                      catalog:[{id: 'A', value: this.getText('MSG_202')}, {id: 'I', value: this.getText('MSG_203')}]},
+                    {property: '', width: '7%', type: 2, style: 'detailButton', onClickButton: this.onClickDetalle,
+                      labelButton: self.getText('MSG_201')},
+                    {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEdital,
+                      labelButton: self.getText('MSG_200')}
                   ]}/>
               </div>
             </div>

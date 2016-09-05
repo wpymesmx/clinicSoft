@@ -21,14 +21,14 @@ var DataGridReact = React.createClass({
     return {
       componentKey: Constants.DATA_GRID_COMPONENT,
       language: window.language,
+      dataListOrg: this.props.dataList,
       dataList: this.props.dataList,
       dataListPage: undefined,
       colOptions: this.props.colOptions,
       headerOptions: this.props.headerOptions,
       rowsPerPage: 10,
       page: 0,
-      bodyRows: (<div></div>),
-      headers: (<div></div>)
+      bodyRows: []
     };
   },
   componentWillMount: function() {
@@ -45,12 +45,13 @@ var DataGridReact = React.createClass({
 
     if(nextProps.dataList != undefined) {
       var pagesNum = Math.ceil((nextProps.dataList.length/this.state.rowsPerPage));
+
       if(this.state.page < pagesNum) {
         page = 0;
       }
     }
-
-    this.createBodyRows(this.state.rowsPerPage, page, nextProps.dataList, nextProps.colOptions, nextProps.headerOptions);
+    //TODO reset filter header option
+    this.createBodyRows(this.state.rowsPerPage, page, nextProps.dataList, nextProps.colOptions, nextProps.headerOptions, nextProps.dataList);
   },
   shouldComponentUpdate: function() {
     //console.log('# App->shouldComponentUpdate #');
@@ -74,12 +75,12 @@ var DataGridReact = React.createClass({
     var dataList = this.state.dataList;
 
     headerOptions[index] = headerOpt;
-    console.log('orderByAscDesc-> ' + headerOpt.orderByAscDesc);
+    //console.log('orderByAscDesc-> ' + headerOpt.orderByAscDesc);
     if(headerOpt.orderByAscDesc != 'asc') {
       headerOpt.orderByAscDesc = 'asc';
       dataList = dataList.sort(function(a, b) {
-        var nameA = a[headerOpt.orderBy].toUpperCase();
-        var nameB = b[headerOpt.orderBy].toUpperCase();
+        var nameA = a[headerOpt.property].toUpperCase();
+        var nameB = b[headerOpt.property].toUpperCase();
 
         if (nameA < nameB) {
           return -1;
@@ -95,8 +96,8 @@ var DataGridReact = React.createClass({
     } else {
       headerOpt.orderByAscDesc = 'desc';
       dataList = dataList.sort(function(a, b) {
-        var nameA = a[headerOpt.orderBy].toUpperCase();
-        var nameB = b[headerOpt.orderBy].toUpperCase();
+        var nameA = a[headerOpt.property].toUpperCase();
+        var nameB = b[headerOpt.property].toUpperCase();
 
         if (nameA < nameB) {
           return 1;
@@ -112,14 +113,53 @@ var DataGridReact = React.createClass({
 
     this.createBodyRows(this.state.rowsPerPage, this.state.page, dataList, this.state.colOptions, headerOptions);
   },
-  createBodyRows: function(rowsPerPage, page, dataList, colOptions, headerOptions) {
+  onChangeFilter: function(headerOpt, index, evt) {
+    var headerOptions = this.state.headerOptions;
+    var dataListOrg = this.state.dataListOrg;
+    var filterDataList = [];
+
+    headerOptions[index].filterText = evt.target.value;
+
+    if(dataListOrg != undefined && dataListOrg.length > 0) {
+      for(var i = 0; i < dataListOrg.length; i++) {
+        var data = dataListOrg[i];
+        var addFilterList = true;
+
+        for(var j = 0; j < headerOptions.length; j++) {
+          var headerOption = headerOptions[j];
+          //console.log('filterText:' + headerOption.filterText + ', isFilterText:' + headerOption.isFilterText);
+          if(headerOption.isFilterText != undefined && headerOption.isFilterText == true) {
+            if(data[headerOption.property].indexOf(headerOption.filterText) > -1) {
+              addFilterList = true;
+
+            } else {
+              addFilterList = false;
+              break;
+            }
+          }
+        }
+
+        if(addFilterList == true) {
+          filterDataList.push(data);
+        }
+      }
+    }
+
+    if(headerOpt.onChangeFilter != undefined) {
+      headerOpt.onChangeFilter(headerOpt, index, evt);
+    }
+
+    this.createBodyRows(this.state.rowsPerPage, 0, filterDataList, this.state.colOptions, headerOptions);
+  },
+  createBodyRows: function(rowsPerPage, page, dataList, colOptions, headerOptions, dataListOrg) {
+    var self = this;
     var bodyRows = undefined;
-    var headers = [];
     var dataListPage = [];
     var LABEL_TYPE = 1;
     var BUTTON_TYPE = 2;
     var rowsPerPageTmp = (rowsPerPage != undefined ? rowsPerPage : this.state.rowsPerPage);
     var dataListTmp = (dataList != undefined ? dataList : this.state.dataList);
+    var dataListOrgTmp = (dataListOrg != undefined ? dataListOrg : this.state.dataListOrg)
     var colOptionsTmp = (colOptions != undefined ? colOptions : this.state.colOptions);
     var headerOptionsTmp = (headerOptions != undefined ? headerOptions : this.state.headerOptions);
     //construccion del renglones para el boy
@@ -144,9 +184,25 @@ var DataGridReact = React.createClass({
                 var type = (colOpt.type == undefined ? 1 : colOpt.type);
                 //TODO construir columanas en base al tipo de columna
                 if(type == LABEL_TYPE) {
+                  var colValue = dataObj[colOpt.property];
+
+                  if(colOpt.catalog != undefined) {
+                    for(var l=0; l < colOpt.catalog.length; l++) {
+                      if(dataObj[colOpt.property] == colOpt.catalog[l].id) {
+                        colValue = colOpt.catalog[l].value;
+                        break;
+                      }
+                    }
+                  }
+
+                  if(colOpt.textAlign == undefined) {
+                    colOpt.textAlign = '';
+                  }
+
                   col = (
-                    <div key={Date.now()+k} style={{width: colOpt.width, height: '100%', float: 'left', overflowX: 'hidden'}}>
-                      {dataObj[colOpt.property]}
+                    <div key={Date.now()+k} className={colOpt.style} style={{width: colOpt.width, height: '100%', float: 'left',
+                                                                              overflowX: 'hidden', textAlign: colOpt.textAlign}}>
+                      {colValue}
                     </div>
                   );
 
@@ -156,7 +212,7 @@ var DataGridReact = React.createClass({
 
                     col = (
                       <div key={Date.now()+k} style={{width: colOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
-                        <button className={colOpt.buttonStyle} title={labelButton}
+                        <button className={colOpt.style} title={labelButton} value=''
                            onClick={this.onClickButton.bind(this, dataObj, dataIndex, colOpt.onClickButton)}>
                           &nbsp;
                         </button>
@@ -206,48 +262,37 @@ var DataGridReact = React.createClass({
       bodyRows = dataListPage[page];
 
     } else {
-      console.log('No hay paginas que mostrar');
+      //console.log('No hay paginas que mostrar');
       bodyRows = (<div></div>);
     }
     //construccion de los headers
     if(headerOptionsTmp != undefined) {
       for(var i=0; i < headerOptionsTmp.length; i++) {
         var headerOpt = headerOptionsTmp[i];
-        var headerStyle = (headerOpt.headerStyle != undefined ? headerOpt.headerStyle : '');
-        var orderByHeader = '';
-        var orderByStyle = '';
 
-        if(headerOpt.orderBy != undefined && headerOpt.orderBy != '') {
+        if(headerOpt.isOrderBy != undefined && headerOpt.isOrderBy == true) {
           if(headerOpt.orderByAscDesc != undefined) {
             if(headerOpt.orderByAscDesc == 'asc') {
               headerOpt.orderByAscDesc = 'asc';
-              orderByStyle = 'orderStyleAsc';
 
             } else {
               headerOpt.orderByAscDesc = 'desc';
-              orderByStyle = 'orderStyleDesc';
             }
 
           } else {
             headerOpt.orderByAscDesc = 'asc';
-            orderByStyle = 'orderStyleAsc';
           }
 
-          orderByHeader = (
-            <div style={{float: 'left', overflowX: 'hidden', width: '20%', paddingLeft: '3%'}}>
-              <button className={orderByStyle} title={this.getText('MSG_212')} onClick={this.onClickOrderBy.bind(this, headerOpt, i)}>&nbsp;</button>
-            </div>
-          );
-        }
+          if(headerOpt.isFilterText == true) {
+            if(headerOpt.filterText == undefined) {
+              headerOpt.filterText = '';
+            }
 
-        headers.push(
-          <div key={Date.now()+i} className={headerOpt.headerStyle} style={{width: headerOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
-            <div style={{float: 'left', overflowX: 'hidden', width: '80%'}}>
-              {headerOpt.label}
-            </div>
-            {orderByHeader}
-          </div>
-        );
+            if(headerOpt.placeholder == undefined) {
+              headerOpt.placeholder = '';
+            }
+          }
+        }
       }
 
     } else {
@@ -255,22 +300,24 @@ var DataGridReact = React.createClass({
     }
 
     this.setState({
+      dataListOrg: dataListOrgTmp,
       dataList: dataListTmp,
       colOptions: colOptionsTmp,
       headerOptions: headerOptionsTmp,
       rowsPerPage: rowsPerPageTmp,
       dataListPage: dataListPage,
       bodyRows: bodyRows,
-      headers: headers,
       page: page
     });
   },
-  onClickGoToPage: function(page, evt) {
+  onClickGoToPage: function(newPage, evt) {
     evt.preventDefault();
-    if(page >= 0 && page <= (this.state.dataListPage.length-1)) {
+    var newBodyRows = this.state.dataListPage[newPage];
+
+    if(newPage >= 0 && newPage <= (this.state.dataListPage.length-1)) {
       this.setState({
-        page: page,
-        bodyRows: this.state.dataListPage[page]
+        page: newPage,
+        bodyRows: newBodyRows
       });
     }
   },
@@ -279,8 +326,9 @@ var DataGridReact = React.createClass({
   },
   render: function() {
     //console.log('# App->render #');
-    var filters = (<div></div>);
-    var paginador = (<div></div>);
+    var filters = '';
+    var paginador = '';
+    var headers = [];
 
     if(this.state.dataListPage != undefined) {
       var pageNum = this.state.dataListPage.length;
@@ -289,7 +337,7 @@ var DataGridReact = React.createClass({
       var pageSugesNext = this.state.page + 5;
       var pagesNext = [];
 
-      for(var i = this.state.page-1; i >= pageSugesLast; i--) {
+      for(var i = this.state.textAlignpage-1; i >= pageSugesLast; i--) {
         if(i >= 0) {
           pagesLast.push(
             <div key={Date.now()+i} style={{float: 'left', marginLeft: '1%', marginRight: '1%'}}>
@@ -326,10 +374,10 @@ var DataGridReact = React.createClass({
           <div style={{float: 'left', width: '90%', paddingLeft: '10%', paddingRight: '10%'}}>
             <div style={{float: 'left', width: '20%'}}>
               <div style={{float: 'left', marginRight: '5%'}}>
-                <button className='firstDataGrid' title={this.getText('MSG_208')} onClick={this.onClickGoToPage.bind(this, 0)}>&nbsp;</button>
+                <button className='firstDataGrid' title={this.getText('MSG_208')} value='' onClick={this.onClickGoToPage.bind(this, 0)}>&nbsp;</button>
               </div>
               <div style={{float: 'left', marginRight: '5%'}}>
-                <button className='previousDataGrid' title={this.getText('MSG_209')} onClick={this.onClickGoToPage.bind(this, (this.state.page-1))}>&nbsp;</button>
+                <button className='previousDataGrid' title={this.getText('MSG_209')} value='' onClick={this.onClickGoToPage.bind(this, (this.state.page-1))}>&nbsp;</button>
               </div>
             </div>
             <div style={{float: 'left', width: '60%', paddingLeft: '5%', paddingRight: '5%'}}>
@@ -346,22 +394,64 @@ var DataGridReact = React.createClass({
             </div>
             <div style={{float: 'left', width: '20%'}}>
               <div style={{float: 'left', marginLeft: '5%'}}>
-                <button className='nextDataGrid' title={this.getText('MSG_210')} onClick={this.onClickGoToPage.bind(this, (this.state.page+1))}>&nbsp;</button>
+                <button className='nextDataGrid' title={this.getText('MSG_210')} value='' onClick={this.onClickGoToPage.bind(this, (this.state.page+1))}>&nbsp;</button>
               </div>
               <div style={{float: 'left', marginLeft: '5%'}}>
-                <button className='lastDataGrid' title={this.getText('MSG_211')} onClick={this.onClickGoToPage.bind(this, (this.state.dataListPage.length-1))}>&nbsp;</button>
+                <button className='lastDataGrid' title={this.getText('MSG_211')} value='' onClick={this.onClickGoToPage.bind(this, (this.state.dataListPage.length-1))}>&nbsp;</button>
               </div>
             </div>
           </div>
         </div>
       );
     }
+    //construccion de los headers
+    if(this.state.headerOptions != undefined) {
+      for(var i=0; i < this.state.headerOptions.length; i++) {
+        var headerOpt = this.state.headerOptions[i];
+        var headerStyle = (headerOpt.style != undefined ? headerOpt.style : '');
+        var orderByHeader = '';
+        var orderByStyle = 'orderStyleAsc';
+        var filterText = '';
+
+        if(headerOpt.isOrderBy != undefined && headerOpt.isOrderBy == true) {
+          if(headerOpt.orderByAscDesc != undefined) {
+            if(headerOpt.orderByAscDesc == 'asc') {
+              orderByStyle = 'orderStyleAsc';
+
+            } else {
+              orderByStyle = 'orderStyleDesc';
+            }
+          }
+
+          if(headerOpt.isFilterText == true) {
+            filterText = (<input type='text' className='form-control' defaultValue='' value={headerOpt.filterText}
+                                  placeholder={headerOpt.placeholder} onChange={this.onChangeFilter.bind(this, headerOpt, i)} />);
+          }
+
+          orderByHeader = (<button className={orderByStyle} title={this.getText('MSG_212')} onClick={this.onClickOrderBy.bind(this, headerOpt, i)}>&nbsp;</button>);
+        }
+
+        headers.push(
+          <div key={i+'f'} className={headerOpt.headerStyle} style={{width: headerOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
+            <div style={{float: 'left', overflowX: 'hidden', width: '80%', padding: '0.4%'}}>
+              {headerOpt.label}
+            </div>
+            <div style={{float: 'left', overflowX: 'hidden', width: '20%', paddingLeft: '3%'}}>
+              {orderByHeader}
+            </div>
+            <div style={{width: '100%', float: 'left'}}>
+              {filterText}
+            </div>
+          </div>
+        );
+      }
+    }
 
     return (
       <div style={{width: '100%', height: '100%'}}>
         {paginador}
         <div className='headerDataGrid' style={{width: '100%', float: 'left'}}>
-          {this.state.headers}
+          {headers}
         </div>
         <div style={{width: '100%', float: 'left'}}>
           {this.state.bodyRows}
@@ -379,7 +469,24 @@ module.exports = DataGridReact;
       {
         property: 'col1', //nombre de la propiedad en el lista de oobjetos
         width: '10%', //ancho de la columna
-        type: 1 //tipo de comportamiento o componente 1-label(default), 2-button
+        type: 1|2, //tipo de comportamiento o componente 1-label(default), 2-button
+        style: '', //estilo a aplicar al componente text o button
+        onClickButton: fun(dataObj, index, evt),  //funsion a ejecutar en el evento onClick (type=2)
+        labelButton: '', //propiedad title a mostrar (type=2)
+        catalog: [{id:valor}] //catalogo que se utilizara para buscar y substituir valores
+      }
+    ]
+  * headerOptions: [
+      {
+        property: '', //nombre de la propiedad en el lista de oobjetos
+        placeholder: '', //utilizado para placeholder en el campo de filtro
+        label: '', //utilizado para ser utilizado como etiqueta del header
+        width: '100%', //ancho del contenedor del header,
+        isOrderBy: true|false(default), //bandera que indica si se aplica ordenamiento a la columna
+        isFilterText: true|false(default), //bandera que indica si se aplica campo de texto para filtro
+        style: '', //nombre del estilo que se aplicara al header
+        onChangeFilter: fun(dataObj, index, evt), //funcion utilizada para invocar cuando el usuario escribe sobre el campo de texto
+        textAlign: '' //propiedad del estilo que indica la alineacion horizontal del texto
       }
     ]
  *

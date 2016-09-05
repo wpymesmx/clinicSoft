@@ -281,7 +281,7 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-   onChangeCondicionVenta: function(evt) {
+   onChangeCondicionVenta: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.condicion_venta = evt.target.value
@@ -290,7 +290,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
-  onChangePrecio: function(evt) {
+  onChangePrecio: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.precio=evt.target.value
@@ -299,7 +299,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
-  onChangeIva: function(evt) {
+  onChangeIva: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.iva=evt.target.value
@@ -308,7 +308,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
-  onChangeFarmaceutica: function(evt) {
+  onChangeFarmaceutica: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.dem_farmaceutica=evt.target.value
@@ -317,7 +317,7 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
 
-  onChangeElaboradoEn: function(evt) {
+  onChangeElaboradoEn: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.dem_elaborado_en=evt.target.value
@@ -411,7 +411,6 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.iva=0.0,
     this.state.farmaceutica='',
     this.state.elaborado_en='',
-    this.state.id_med='',
     this.state.id_grupo='',
     this.state.comboValue=1,
     this.state.lista_detalles_med=[]
@@ -447,6 +446,36 @@ var DetalleMedicamentoEditar= React.createClass({
     if(validaService.isEmpty(self.state.existencia)) {
       return {isError: true, message: self.getText('MSG_3027')};
     }
+    if(validaService.isEmpty(self.state.farmaceutica)) {
+      return {isError: true, message: self.getText('MSG_3035')};
+    }
+    return response;
+  },
+
+  //@LLV Método utilizado para validar los campos de entrada para la edición.
+  validaCamposEdicion: function(index) {
+    var self = this;
+    var response = {
+      isError: false,
+      message: ''
+    };
+    var detalles_med=this.state.lista_detalles_med[index];
+
+    if(validaService.isEmpty(detalles_med.dem_presentacion)) {
+      return {isError: true, message: self.getText('MSG_112')};
+    }
+    if(validaService.isEmpty(detalles_med.dem_cantidad_maxima)) {
+      return {isError: true, message: self.getText('MSG_3025')};
+    }
+    if(validaService.isEmpty(detalles_med.dem_cantidad_minima)) {
+      return {isError: true, message: self.getText('MSG_3026')};
+    }
+    if(validaService.isEmpty(detalles_med.dem_en_existencia)) {
+      return {isError: true, message: self.getText('MSG_3027')};
+    }
+    if(validaService.isEmpty(detalles_med.dem_farmaceutica)) {
+      return {isError: true, message: self.getText('MSG_3035')};
+    }
     return response;
   },
 
@@ -457,9 +486,12 @@ var DetalleMedicamentoEditar= React.createClass({
       message: ''
     };
     var detalles_med=this.state.lista_detalles_med[index];
+
     if(validaService.isEmpty(detalles_med.dem_presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
     }
+
+
     return response;
   },
 
@@ -560,22 +592,26 @@ var DetalleMedicamentoEditar= React.createClass({
         console.log('# success  #');
     };
     var self = this;
-    var response = this.validaRegistros(index);
+    var response = this.validaCamposEdicion(index);
     if(!response.isError) {
         var detalles_med=this.state.lista_detalles_med[index];
             var params = {
                'dem_id': detalles_med.dem_id,
                'id_med': self.state.id_med,
-               'id_grupo': detalles_med.alm_fk,
                'presentacion': detalles_med.dem_presentacion,
+               'descripcion': detalles_med.dem_descripcion,
                'cantidad_maxima': detalles_med.dem_cantidad_maxima,
                'cantidad_minima': detalles_med.dem_cantidad_minima,
                'existencia': detalles_med.dem_en_existencia,
-               'descripcion': detalles_med.dem_descripcion,
                'indicasiones': detalles_med.dem_indicasiones,
                'via_aministracion': detalles_med.dem_via_admin,
                'fecha_alta': detalles_med.dem_fecha_alta,
-               'fecha_caducidad': detalles_med.dem_fecha_caducidad
+               'fecha_caducidad': detalles_med.dem_fecha_caducidad,
+               'condicion_venta': detalles_med.dem_condicion_venta,
+               'precio': detalles_med.dem_precio,
+               'iva': detalles_med.dem_iva,
+               'farmaceutica': detalles_med.dem_farmaceutica,
+               'elaborado_en': detalles_med.dem_elaborado_en
             };
             console.log(params);
             swal({title: 'Confirmar Edición?',
@@ -619,31 +655,21 @@ var DetalleMedicamentoEditar= React.createClass({
      if(self.state.lista_detalles_med.length > 0) {
       rows_detalles = self.state.lista_detalles_med.map(function(detalle,index) {
         return (
-          <tr key={detalle.med_fk}>
+          <tr key={detalle.id_med}>
             <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
             <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
 
-            <td>
-               <div>
-                  <select className='form-control' value={detalle.gru_fk} onChange={self.onChangeCombo}>
-                     {listaAlmacenComboOption}
-                  </select>
-               </div>
-            </td>
-
-             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.med_fk} onChange={self.onChangePresentacion.bind(self,index)}/></td>
-             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.codigo_barras} onChange={self.onChangePresentacion.bind(self,index)}/></td>
-
-
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.dem_presentacion} onChange={self.onChangePresentacion.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3014')}  value={detalle.dem_descripcion} onChange={self.onChangeDescripcion.bind(self,index)}/></td>
+            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.dem_presentacion} onChange={self.onChangePresentacion.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3011')}  value={detalle.dem_cantidad_maxima} onChange={self.onChangeCantidad_maxima.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3012')}  value={detalle.dem_cantidad_minima} onChange={self.onChangeCantidad_minima.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3013')}  value={detalle.dem_en_existencia} onChange={self.onChangeExistencia.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3015')}  value={detalle.dem_indicasiones} onChange={self.onChangeIndicasiones.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3016')}  value={detalle.dem_via_admin} onChange={self.onChangeViaAdministracion.bind(self,index)}/></td>
+
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3018')}  value={detalle.dem_fecha_alta} onChange={self.onChangeFechaAlta.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3019')}  value={detalle.dem_fecha_caducidad} onChange={self.onChangeFechaCaducidad.bind(self,index)}/></td>
+
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3005')}  value={detalle.dem_condicion_venta} onChange={self.onChangeCondicionVenta.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3030')}  value={detalle.dem_precio} onChange={self.onChangePrecioUno.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3031')}  value={detalle.dem_iva} onChange={self.onChangeIva.bind(self,index)}/></td>
@@ -658,24 +684,21 @@ var DetalleMedicamentoEditar= React.createClass({
           <table className='table table-bordered table-hover'>
            <tbody>
              <tr className='alert alert-success default' role='alert'>
-               <td>{this.getText('MSG_206')}</td>
+               <td style={{width: '100%'}} className='left_align'>{this.getText('MSG_206')}</td>
                <td>{this.getText('MSG_3032')}</td>
-               <td style={{width: '100%'}} className='left_align' >{this.getText('MSG_3033')}</td>
-               <td>{this.getText('MSG_3010')}</td>
-               <td>{this.getText('MSG_3010')}</td>
-               <td>{this.getText('MSG_3010')}</td>
-               <td>{this.getText('MSG_3014')}</td>
-               <td>{this.getText('MSG_3011')}</td>
-               <td>{this.getText('MSG_3012')}</td>
-               <td>{this.getText('MSG_3013')}</td>
+               <td>*{this.getText('MSG_3014')}</td>
+               <td>*{this.getText('MSG_3010')}</td>
+               <td>*{this.getText('MSG_3011')}</td>
+               <td>*{this.getText('MSG_3012')}</td>
+               <td>*{this.getText('MSG_3013')}</td>
                <td>{this.getText('MSG_3015')}</td>
                <td>{this.getText('MSG_3016')}</td>
-               <td>{this.getText('MSG_3018')}</td>
-               <td>{this.getText('MSG_3019')}</td>
+               <td>*{this.getText('MSG_3018')}</td>
+               <td>*{this.getText('MSG_3019')}</td>
                <td>{this.getText('MSG_3005')}</td>
                <td>{this.getText('MSG_3030')}</td>
                <td>{this.getText('MSG_3031')}</td>
-               <td>{this.getText('MSG_3003')}</td>
+               <td>*{this.getText('MSG_3003')}</td>
                <td>{this.getText('MSG_3004')}</td>
             </tr>
             {rows_detalles}
@@ -704,6 +727,12 @@ var DetalleMedicamentoEditar= React.createClass({
           </div>
           <div className='panel-body'>
             <div style={{width: '100%'}} className='panelForm'>
+
+              <div style={{width: '90%'}} className='row'>
+                <div style={{width: '50%', textAlign: 'right', paddingRight: '10px', color:'red'}} className='left_align'>
+                  {this.getText('MSG_3034')}
+                </div>
+              </div>
 
               <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>

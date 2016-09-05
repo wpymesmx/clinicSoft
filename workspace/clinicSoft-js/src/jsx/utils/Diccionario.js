@@ -81,8 +81,8 @@ var Diccionario = {
     MSG_3015: 'Indicasiones',
     MSG_3016: 'Via De Administraci\u00F3n',
     MSG_3017: 'Seleccione una opci\u00F3n',
-    MSG_3018: 'Fecha Alta',
-    MSG_3019: 'Fecha Caducidad',
+    MSG_3018: 'Fecha Alta          ',
+    MSG_3019: 'Fecha Caducidad     ',
     MSG_3020: 'Regresar',
     MSG_3021: 'Grupo',
     MSG_3022: 'Editar Medicamento',
@@ -97,6 +97,8 @@ var Diccionario = {
     MSG_3031: 'Iva',
     MSG_3032: 'Inactivo',
     MSG_3033: 'Seleccionar Grupo',
+    MSG_3034: 'Los campos marcados con * son obligatorios.',
+    MSG_3035: 'La farmaceutica es requerida, favor de llenarla.',
     //mensajes para administration de pacientes
     MSG_4000: 'Gesti\u00F3n de pacientes.',
     //mensajes para administration de citas medicas
@@ -189,6 +191,8 @@ var Diccionario = {
     MSG_3031: 'Iva',
     MSG_3032: 'Inactive',
     MSG_3033: 'Select Group',
+    MSG_3034: 'The fields marked with * are mandatory.',
+    MSG_3035 : ' The pharmaceutical is required , please fill it out . ',
     //mensajes para administration de pacientes
     MSG_4000: 'Patient administration',
     //mensajes para administration de citas medicas

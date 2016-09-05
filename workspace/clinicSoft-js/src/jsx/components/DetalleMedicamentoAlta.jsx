@@ -274,6 +274,9 @@ var DetalleMedicamentoAlta= React.createClass({
     if(validaService.isEmpty(self.state.existencia)) {
       return {isError: true, message: self.getText('MSG_3027')};
     }
+    if(validaService.isEmpty(self.state.farmaceutica)) {
+      return {isError: true, message: self.getText('MSG_3035')};
+    }
     return response;
   },
 
@@ -437,6 +440,12 @@ var DetalleMedicamentoAlta= React.createClass({
 
 
             <div style={{width: '80%'}} className='panelForm'>
+
+              <div style={{width: '90%'}} className='row'>
+                <div style={{width: '50%', textAlign: 'right', paddingRight: '10px', color:'red'}} className='left_align'>
+                  {this.getText('MSG_3034')}
+                </div>
+              </div>
 
               <div style={{width: '80%'}} className='row'>
                 <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>

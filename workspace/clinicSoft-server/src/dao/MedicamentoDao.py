@@ -265,13 +265,13 @@ class MedicamentoDao(SQLiteDao):
     finally:
       self.close(cursor)
 
-  def update_detalle_medicamento(self,dem_id, id_grupo, id_med, presentacion,descripcion,
+  def update_detalle_medicamento(self,dem_id, id_med, presentacion,descripcion,
                                    cantidad_maxima, cantidad_minima, existencia,indicasiones,
                                    via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
     """
        Update un detalle medicamento
     """
-    print(dem_id, id_grupo, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
+    print(dem_id, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
                                    via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en)
     log4py.info('##  update_detalle_medicamento  ##')
     dao_response = None
@@ -281,12 +281,12 @@ class MedicamentoDao(SQLiteDao):
       cursor = self.get_cursor()
       # Se actualiza el detalle medicamento en db
       cursor.execute('''
-        UPDATE  DETALLE_MEDICAMENTO SET DEM_ID=?, GRU_FK=?, MED_FK=?, DEM_PRESENTACION=?, MED_DESCRIPCION=?, DEM_CANTIDAD_MAXIMA=?, DEM_CANTIDAD_MINIMA=?,
-        DEM_EN_EXISTENCIA=?, DEM_DESCRIPCION=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_FECHA_ALTA=?, DEM_FECHA_CADUCIDAD=?,
+        UPDATE  DETALLE_MEDICAMENTO SET DEM_ID=?, MED_FK=?, DEM_PRESENTACION=?, DEM_DESCRIPCION=?, DEM_CANTIDAD_MAXIMA=?, DEM_CANTIDAD_MINIMA=?,
+        DEM_EN_EXISTENCIA=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_FECHA_ALTA=?, DEM_FECHA_CADUCIDAD=?,
         DEM_CONDICION_VENTA=?, DEM_PRECIO=?, DEM_IVA=?, DEM_FARMACEUTICA=?, DEM_ELABORADO_EN=?
         WHERE DEM_ID=?
-      ''', (dem_id,id_grupo, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
-            via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en))
+      ''', (dem_id, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
+            via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en, dem_id ))
       self.commit()
 
     except Exception as err:

@@ -174,18 +174,18 @@ var Medicamento = React.createClass({
     }
 
       listaMedicamentosDiv = (
-        <div>
+        <div className='panelScroll'>
           <table className='table table-bordered table-hover'>
             <tbody>
               <tr className='alert alert-success trHeader' role='alert'>
                   <td>{this.getText('MSG_3001')}</td>
                   <td>{this.getText('MSG_3002')}</td>
                   <td>{this.getText('MSG_3006')}</td>
-                <td></td>
+                  <td>{this.getText('MSG_200')}</td>
               </tr>
               <tr>
-                <td><input type='text' className='form-control' placeholder='Nombre Comercial' value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
-                <td><input type='text' className='form-control' placeholder='Nombre Generico' value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
+                <td><input type='text' className='form-control' placeholder={this.getText('MSG_3001')}  value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
+                <td><input type='text' className='form-control' placeholder={this.getText('MSG_3002')}  value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
                 <td></td>
                 <td></td>
               </tr>
@@ -211,35 +211,33 @@ var Medicamento = React.createClass({
        <MedicamentoAlta ref='medicamentoAlta' />
        <MedicamentoEditar ref='medicamentoEditar' />
         <div className='panel panel-default'>
+          <div className='panel-heading'>{this.getText('MSG_3000')}</div>
           <div className='panel-body'>
-            <h1 style={{align: 'center'}}> <span className=''>{this.getText('MSG_3000')}</span></h1>
-            <div className='btn-group btn-group-justified' role='group' aria-label='...'>
-            <div className='btn-group' role='group'>
+
+            <div style={{width: '100%'}} className='panelForm'>
+              <div style={{width: '100%'}} className='row'>
+                <div style={{width: '25%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3001')} value={this.state.nombre_comercial}
+                    onChange={this.onChangeNombreComercial}/>
+                </div>
+                <div style={{width: '25%'}} className='left_align'>
+                  <input type='text' className='form-control' placeholder={this.getText('MSG_3002')} value={this.state.nombre_generico}
+                    onChange={this.onChangeNombreGenerico} />
+                </div>
+                <div className='group-btn'>
+                  <button className='btn btn-default buscarButton' type='button' title={this.getText('MSG_204')} onClick={this.onClickBuscar} />
+                </div>
+              </div>
             </div>
-            <div className='btn-group' role='group'>
+
+            <div>
+              <div className='btn-group left_left' style={{width: '90%'}}>
+                <button type='button' className='informeButton' title={this.getText('MSG_3024')} style={{float: 'right'}} />
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type='button' className='nuevoButton'  title={this.getText('MSG_205')} style={{float: 'right'}} onClick={this.onClickNuevo}/>
+              </div>
             </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            </div>
-            <div className='btn-group' role='group'>
-            <button className='buscarButton'  title={this.getText('MSG_204')} onClick={this.onClickBuscar} />
-            </div>
-            <div className='btn-group' role='group'>
-              <button className='nuevoButton' title={this.getText('MSG_205')} onClick={this.onClickNuevo} />
-            </div>
-            <div className='btn-group' title={this.getText('MSG_3024')} role='group'>
-              <button className='informeButton'/>
-            </div>
-            </div>
+
           </div>
         </div>
         {listaMedicamentosDiv}

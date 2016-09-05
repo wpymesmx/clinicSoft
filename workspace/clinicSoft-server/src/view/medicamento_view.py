@@ -115,14 +115,13 @@ def update_detalle_medicamento():
   try:
     jsonRequest = request.get_json(force=True)
     medicamentService = MedicamentoService()
-    service_response = medicamentService.update_detalle_medicamento(jsonRequest['dem_id'],jsonRequest['id_grupo'], jsonRequest['id_med'],
+    service_response = medicamentService.update_detalle_medicamento(jsonRequest['dem_id'], jsonRequest['id_med'],
                                                                     jsonRequest['presentacion'],jsonRequest['descripcion'],
                                                                     jsonRequest['cantidad_maxima'], jsonRequest['cantidad_minima'],
                                                                     jsonRequest['existencia'], jsonRequest['indicasiones'],
                                                                     jsonRequest['via_aministracion'],jsonRequest['fecha_alta'],
                                                                     jsonRequest['fecha_caducidad'],jsonRequest['condicion_venta'],
-                                                                    jsonRequest['precio'], jsonRequest['iva'],
-                                                                    jsonRequest['farmaceutica'],jsonRequest['elaborado_en'])
+                                                                    jsonRequest['precio'], jsonRequest['iva'], jsonRequest['farmaceutica'], jsonRequest['elaborado_en'])
 
     payload = json.dumps({
       'code': 200,

@@ -122,7 +122,7 @@ class MedicamentoService(object):
 
     return service_response
 
-  def update_detalle_medicamento(self,id_grupo, id_med, codigo_barras, presentacion,descripcion,
+  def update_detalle_medicamento(self,dem_id, id_med, presentacion,descripcion,
                                    cantidad_maxima, cantidad_minima, existencia,indicasiones,
                                    via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
     """
@@ -130,8 +130,7 @@ class MedicamentoService(object):
     """
     log4py.info('## update_detalle_medicamento ##')
     service_response = None
-    service_response = self.medicamDao.update_detalle_medicamento(id_grupo, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
-                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en)
+    service_response = self.medicamDao.update_detalle_medicamento(dem_id, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones, via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio,iva, farmaceutica, elaborado_en)
 
     return service_response
 

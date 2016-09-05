@@ -35,21 +35,21 @@ class DetalleMedicamento(SQLiteDao):
     finally:
       self.close(cursor)
 
-  def update_detalle_medicament(self,dem_id,alm_fk,dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado):
+  def update_detalle_medicament(self,dem_id,dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado):
     """
        Insertar un nuevo medicamento
     """
     log4py.info('##  update_medicamento dao ##')
     dao_response = None
     cursor = None
-    print(dem_id,alm_fk,dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado)
+    print(dem_id,dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado)
     try:
       self.open()
       cursor = self.get_cursor()
       cursor.execute('''
-        UPDATE  DETALLE_MEDICAMENTO  SET  ALM_FK=?,DEM_CANTIDAD_MAXIMA=?,DEM_CANTIDAD_MINIMA=?,DEM_EN_EXISTENCIA=?,DEM_DESCRIPCION=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_ESTADO
+        UPDATE  DETALLE_MEDICAMENTO  SET DEM_CANTIDAD_MAXIMA=?,DEM_CANTIDAD_MINIMA=?,DEM_EN_EXISTENCIA=?,DEM_DESCRIPCION=?, DEM_INDICACIONES=?, DEM_VIA_ADMIN_DOSIS=?, DEM_ESTADO
         WHERE DEM_ID=?;
-      ''', (alm_fk,dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado,dem_id))
+      ''', (dem_cantidad_max,dem_cantidad_min,dem_existencia,dem_descripcion,dem_indicaciones,dem_dosis,dem_estado,dem_id))
       self.commit()
 
     except Exception as err:

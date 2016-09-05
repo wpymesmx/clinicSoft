@@ -102,13 +102,13 @@ class MedicamentoService(object):
 
     return service_response
 
-  def eliminar_detalle_medicamento(self, presentacion,id_med):
+  def eliminar_detalle_medicamento(self, dem_id):
     """
     Función para eliminar un medicamento
     """
     log4py.info('## elimina_medicamento ##')
     service_response = None
-    service_response = self.medicamDao.eliminar_detalle_medicamento(presentacion,id_med)
+    service_response = self.medicamDao.eliminar_detalle_medicamento(dem_id)
     return service_response
 
   def actualizar_medicamento(self, nombre_comercial, nombre_generico, estado, id_med):
@@ -122,13 +122,16 @@ class MedicamentoService(object):
 
     return service_response
 
-  def update_detalle_medicamento(self,dem_id,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad):
+  def update_detalle_medicamento(self,id_grupo, id_med, codigo_barras, presentacion,descripcion,
+                                   cantidad_maxima, cantidad_minima, existencia,indicasiones,
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
     """
     Servicio utilizado para actualizar un detalle medicamento.
     """
     log4py.info('## update_detalle_medicamento ##')
     service_response = None
-    service_response = self.medicamDao.update_detalle_medicamento(dem_id,id_med,id_almacen ,presentacion, cantidad_maxima, cantidad_minima, existencia, descripcion,indicasiones,via_aministracion,fecha_alta,fecha_caducidad)
+    service_response = self.medicamDao.update_detalle_medicamento(id_grupo, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones,
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en)
 
     return service_response
 

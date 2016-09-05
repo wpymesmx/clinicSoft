@@ -29,6 +29,7 @@ var Constants = {
   PERSONAL_VIEW: 'personal',
   PERSONAL_NEW_EDIT_VIEW: 'personal_new_edit',
   HEADER_VIEW: 'header',
+  FOOTER_VIEW: 'footer',
   DATA_GRID_COMPONENT: 'dataGridReact',
   TEST_COMPONENTS_VIEW: 'testComponents'
 };

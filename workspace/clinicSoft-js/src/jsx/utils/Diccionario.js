@@ -101,6 +101,8 @@ var Diccionario = {
     MSG_3029: 'C\u00F3digo Barras',
     MSG_3030: 'Precio',
     MSG_3031: 'Iva',
+    MSG_3032: 'Inactivo',
+    MSG_3033: 'Seleccionar Grupo',
     //mensajes para administration de pacientes
     MSG_4000: 'Gesti\u00F3n de pacientes.',
     //mensajes para administration de citas medicas
@@ -196,6 +198,8 @@ var Diccionario = {
     MSG_3029: 'Barcode',
     MSG_3030: 'Price',
     MSG_3031: 'Iva',
+    MSG_3032: 'Inactive',
+    MSG_3033: 'Select Group',
     //mensajes para administration de pacientes
     MSG_4000: 'Patient administration',
     //mensajes para administration de citas medicas

@@ -13,6 +13,7 @@ build/
 *.db
 *.out*
 *.log*
+*.orig
 
 #sqlite3
 .sqlite3

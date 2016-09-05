@@ -173,7 +173,7 @@ class PersonalDao(SQLiteDao):
       self.set_row_factory(row_personal)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT PERS_ID, USU_ID,PERS_CEDULA, PERS_NOMBRE, PERS_APELLIDO_PAT, PERS_APELLIDO_MAT, PERS_FECHAN, PERS_CELULAR, PERS_CORREO,
+        SELECT PERS_ID, USU_ID, PERS_NOMBRE, PERS_APELLIDO_PAT, PERS_APELLIDO_MAT, PERS_CEDULA, PERS_FECHAN, PERS_CELULAR, PERS_CORREO,
               PERS_TURNO, PERS_SEXO, PERS_ESTADO
         FROM PERSONAL
       ''')

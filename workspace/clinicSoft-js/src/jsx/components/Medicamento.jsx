@@ -229,7 +229,6 @@ var Medicamento = React.createClass({
                 </div>
               </div>
             </div>
-
             <div>
               <div className='btn-group left_left' style={{width: '90%'}}>
                 <button type='button' className='informeButton' title={this.getText('MSG_3024')} style={{float: 'right'}} />

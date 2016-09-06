@@ -19,6 +19,7 @@ var swal=require('sweetalert');
 //componentes de la aplicacion
 var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var MedicamentoAlta = require('./MedicamentoAlta.jsx');
+var DataGridReact = require('./DataGridReact.jsx');
 
 //@LLV Inicia Clase Principal Medicamento.
 var Medicamento = React.createClass({
@@ -50,6 +51,7 @@ var Medicamento = React.createClass({
       self.setState({
         lista_medicamentos: response.payload
       });
+      self.refs.medicDataList.updateDateList(response.payload);
     };
     var params = {
         'nombre_comercial': this.state.nombre_comercial,
@@ -78,12 +80,6 @@ var Medicamento = React.createClass({
   onChangeNombreComercial: function(evt) {
     this.setState({
       nombre_comercial: evt.target.value
-    });
-  },
-  onChangeNombreGenerico: function(evt) {
-    this.setState({
-      nombre_generico: evt.target.value,
-      comboValue: 0
     });
   },
   onChangeNombreGenerico: function(evt) {
@@ -126,6 +122,7 @@ var Medicamento = React.createClass({
       self.setState({
         lista_medicamentos: response.payload
       });
+      self.refs.medicDataList.updateDateList(response.payload);
     };
 
     var params = {
@@ -155,56 +152,8 @@ var Medicamento = React.createClass({
 
   //@LLV Metodo principal que mostrara todos.
   render: function() {
-    var self = this;
     //console.log('# App->render #');
-    var listaMedicamentosDiv = (<div></div>);
-    //console.log(this.state.lista_medicamentos.length);
-    //Evaluar si hay medicamentso registrados. En caso true se recuperan.
-    if(this.state.lista_medicamentos.length > 0) {
-      var rows_medicamento = this.state.lista_medicamentos.map(function(medicamento, index) {
-        return (
-          <tr key={medicamento.medicamento_id}>
-            <td>{medicamento.nombre_comercial}</td>
-            <td>{medicamento.nombre_generico}</td>
-            <td>{medicamento.estado}</td>
-            <td><button className='editarButton'  title={self.getText('MSG_200')} onClick={self.onClickEditar.bind(self, medicamento, index)} /></td>
-          </tr>
-        );
-      });
-    }
-
-      listaMedicamentosDiv = (
-        <div className='panelScroll'>
-          <table className='table table-bordered table-hover'>
-            <tbody>
-              <tr className='alert alert-success trHeader' role='alert'>
-                  <td>{this.getText('MSG_3001')}</td>
-                  <td>{this.getText('MSG_3002')}</td>
-                  <td>{this.getText('MSG_3006')}</td>
-                  <td>{this.getText('MSG_200')}</td>
-              </tr>
-              <tr>
-                <td><input type='text' className='form-control' placeholder={this.getText('MSG_3001')}  value={this.state.nombre_comercial} onChange={this.onChangeNombreComercial}/></td>
-                <td><input type='text' className='form-control' placeholder={this.getText('MSG_3002')}  value={this.state.nombre_generico} onChange={this.onChangeNombreGenerico}/></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {rows_medicamento}
-            </tbody>
-          </table>
-        </div>
-      );
-
-    var listaMedicamentosComboOption = [];
-    listaMedicamentosComboOption.push(<option value='0'>SELECCIONE UNA OPCIÓN</option>);
-    if(this.state.lista_combo.length>0){
-      var rows_medicamento = this.state.lista_combo.map(function(medicamento) {
-        return (
-           <option value={medicamento.nombre_comercial}>{medicamento.nombre_comercial}</option>
-        );
-      });
-      listaMedicamentosComboOption.push(rows_medicamento);
-    }
+    var self = this;
 
     return (
      <div>
@@ -213,7 +162,6 @@ var Medicamento = React.createClass({
         <div className='panel panel-default'>
           <div className='panel-heading'>{this.getText('MSG_3000')}</div>
           <div className='panel-body'>
-
             <div style={{width: '100%'}} className='panelForm'>
               <div style={{width: '100%'}} className='row'>
                 <div style={{width: '25%'}} className='left_align'>
@@ -232,14 +180,27 @@ var Medicamento = React.createClass({
             <div>
               <div className='btn-group left_left' style={{width: '90%'}}>
                 <button type='button' className='informeButton' title={this.getText('MSG_3024')} style={{float: 'right'}} />
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   &nbsp;
                 <button type='button' className='nuevoButton'  title={this.getText('MSG_205')} style={{float: 'right'}} onClick={this.onClickNuevo}/>
               </div>
             </div>
-
           </div>
         </div>
-        {listaMedicamentosDiv}
+        <DataGridReact ref='medicDataList' dataList={this.state.lista_medicamentos}
+          headerOptions={[
+            {property: 'nombre_comercial', label: 'MSG_3001', placeholder: 'MSG_3001', width: '31%',
+              isOrderBy: true, isFilterText: true},
+            {property: 'nombre_generico', label: 'MSG_3002', placeholder: 'MSG_3002', width: '31%',
+              isOrderBy: true, isFilterText: true},
+            {property: 'estado', label: 'MSG_3006', width: '31%', isOrderBy: true},
+            {property: '', label: '', width: '7%'}
+          ]}
+          colOptions={[
+            {property: 'nombre_comercial', width: '31%'},
+            {property: 'nombre_generico', width: '31%'},
+            {property: 'estado', width: '31%', textAlign: 'center', catalog:[{id: 'A', value: 'MSG_202'}, {id: 'I', value: 'MSG_203'}]},
+            {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEditar, labelButton: 'MSG_200'}
+          ]}/>
       </div>
     );
   }

@@ -178,11 +178,9 @@ class MedicamentoDao(SQLiteDao):
       self.set_row_factory(llenar_combo_grupos_row)
       cursor = self.get_cursor()
       cursor.execute('''
-        SELECT GRU_ID, GRU_NOMBRE
-        FROM GRUPOS
-        WHERE GRU_ESTADO = ?
+        SELECT GRU_ID, GRU_NOMBRE FROM GRUPOS
+        WHERE GRU_ESTADO = ? AND GRU_ID>0
       ''', (aux))
-
       dao_response = cursor.fetchall()
       self.commit()
 

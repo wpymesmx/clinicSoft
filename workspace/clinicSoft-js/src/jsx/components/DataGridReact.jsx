@@ -27,8 +27,7 @@ var DataGridReact = React.createClass({
       colOptions: this.props.colOptions,
       headerOptions: this.props.headerOptions,
       rowsPerPage: 10,
-      page: 0,
-      bodyRows: []
+      page: 0
     };
   },
   componentWillMount: function() {
@@ -41,17 +40,6 @@ var DataGridReact = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
-    var page = this.state.page;
-
-    if(nextProps.dataList != undefined) {
-      var pagesNum = Math.ceil((nextProps.dataList.length/this.state.rowsPerPage));
-
-      if(this.state.page < pagesNum) {
-        page = 0;
-      }
-    }
-    //TODO reset filter header option
-    this.createBodyRows(this.state.rowsPerPage, page, nextProps.dataList, nextProps.colOptions, nextProps.headerOptions, nextProps.dataList);
   },
   shouldComponentUpdate: function() {
     //console.log('# App->shouldComponentUpdate #');
@@ -66,6 +54,19 @@ var DataGridReact = React.createClass({
   componentWillUnmount: function() {
     //console.log('# App->componentWillUnmount #');
     this.unSubscribeLanguage(this.state.componentKey);
+  },
+  updateDateList: function(dataList) {
+    var page = this.state.page;
+
+    if(dataList != undefined) {
+      var pagesNum = Math.ceil((dataList.length/this.state.rowsPerPage));
+
+      if(this.state.page < pagesNum) {
+        page = 0;
+      }
+    }
+
+    this.createBodyRows(this.state.rowsPerPage, page, dataList, this.state.colOptions, this.state.headerOptions, dataList);
   },
   onClickButton: function(dataObj, index, onClickFun, evt) {
     onClickFun(dataObj, index, evt);
@@ -153,10 +154,7 @@ var DataGridReact = React.createClass({
   },
   createBodyRows: function(rowsPerPage, page, dataList, colOptions, headerOptions, dataListOrg) {
     var self = this;
-    var bodyRows = undefined;
     var dataListPage = [];
-    var LABEL_TYPE = 1;
-    var BUTTON_TYPE = 2;
     var rowsPerPageTmp = (rowsPerPage != undefined ? rowsPerPage : this.state.rowsPerPage);
     var dataListTmp = (dataList != undefined ? dataList : this.state.dataList);
     var dataListOrgTmp = (dataListOrg != undefined ? dataListOrg : this.state.dataListOrg)
@@ -175,95 +173,16 @@ var DataGridReact = React.createClass({
           for(var j = 0; j < rowsPerPageTmp; j++) {
             if(dataIndex < dataListTmp.length) {
               var dataObj = dataListTmp[dataIndex];
-              var cols = [];
-              var col = (<div></div>);
-              var rowDataGridStyle = '';
-              //construr clolunas por renglon
-              for(var k = 0; k < colOptionsTmp.length; k++) {
-                var colOpt = this.state.colOptions[k];
-                var type = (colOpt.type == undefined ? 1 : colOpt.type);
-                //TODO construir columanas en base al tipo de columna
-                if(type == LABEL_TYPE) {
-                  var colValue = dataObj[colOpt.property];
 
-                  if(colOpt.catalog != undefined) {
-                    for(var l=0; l < colOpt.catalog.length; l++) {
-                      if(dataObj[colOpt.property] == colOpt.catalog[l].id) {
-                        colValue = colOpt.catalog[l].value;
-                        break;
-                      }
-                    }
-                  }
-
-                  if(colOpt.textAlign == undefined) {
-                    colOpt.textAlign = '';
-                  }
-
-                  col = (
-                    <div key={Date.now()+k} className={colOpt.style} style={{width: colOpt.width, height: '100%', float: 'left',
-                                                                              overflowX: 'hidden', textAlign: colOpt.textAlign}}>
-                      {colValue}
-                    </div>
-                  );
-
-                } else if(type == BUTTON_TYPE) {
-                  if(colOpt.onClickButton != undefined) {
-                    var labelButton = (colOpt.labelButton != undefined ? colOpt.labelButton : '');
-
-                    col = (
-                      <div key={Date.now()+k} style={{width: colOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
-                        <button className={colOpt.style} title={labelButton} value=''
-                           onClick={this.onClickButton.bind(this, dataObj, dataIndex, colOpt.onClickButton)}>
-                          &nbsp;
-                        </button>
-                      </div>
-                    );
-                  } else {
-                    console.log('onClick de boton no implementado, property: onClickButton');
-                  }
-
-                } else {
-                  console.log('tipo de columna no identificada, property type: ' + type);
-                }
-
-                cols.push(col);
-              }
-
-              if((j%2) > 0) {
-                rowDataGridStyle = 'rowDataGridOdd';
-
-              } else {
-                rowDataGridStyle = 'rowDataGridEven';
-              }
-
-              rows.push(
-                <div key={Date.now()+j} className={rowDataGridStyle} style={{width: '100%', float: 'left'}}>
-                  {cols}
-                </div>
-              );
+              dataObj.dataIndex = dataIndex;
+              rows.push(dataObj);
               dataIndex++;
-
-            } else {
-              //console.log('1. ya no hay mas elementos');
-              break;
             }
           }
-
-        } else {
-          //console.log('2. ya no hay mas elementos');
-          break
         }
 
         dataListPage[i] = rows;
       }
-    }
-
-    if(dataListPage.length > 0) {
-      bodyRows = dataListPage[page];
-
-    } else {
-      //console.log('No hay paginas que mostrar');
-      bodyRows = (<div></div>);
     }
     //construccion de los headers
     if(headerOptionsTmp != undefined) {
@@ -271,15 +190,7 @@ var DataGridReact = React.createClass({
         var headerOpt = headerOptionsTmp[i];
 
         if(headerOpt.isOrderBy != undefined && headerOpt.isOrderBy == true) {
-          if(headerOpt.orderByAscDesc != undefined) {
-            if(headerOpt.orderByAscDesc == 'asc') {
-              headerOpt.orderByAscDesc = 'asc';
-
-            } else {
-              headerOpt.orderByAscDesc = 'desc';
-            }
-
-          } else {
+          if(headerOpt.orderByAscDesc == undefined) {
             headerOpt.orderByAscDesc = 'asc';
           }
 
@@ -306,7 +217,6 @@ var DataGridReact = React.createClass({
       headerOptions: headerOptionsTmp,
       rowsPerPage: rowsPerPageTmp,
       dataListPage: dataListPage,
-      bodyRows: bodyRows,
       page: page
     });
   },
@@ -316,8 +226,7 @@ var DataGridReact = React.createClass({
 
     if(newPage >= 0 && newPage <= (this.state.dataListPage.length-1)) {
       this.setState({
-        page: newPage,
-        bodyRows: newBodyRows
+        page: newPage
       });
     }
   },
@@ -326,9 +235,14 @@ var DataGridReact = React.createClass({
   },
   render: function() {
     //console.log('# App->render #');
+    var self = this;
     var filters = '';
     var paginador = '';
     var headers = [];
+    var bodyRows = [];
+    var rowDataObjs = [];
+    var LABEL_TYPE = 1;
+    var BUTTON_TYPE = 2;
 
     if(this.state.dataListPage != undefined) {
       var pageNum = this.state.dataListPage.length;
@@ -415,17 +329,17 @@ var DataGridReact = React.createClass({
 
         if(headerOpt.isOrderBy != undefined && headerOpt.isOrderBy == true) {
           if(headerOpt.orderByAscDesc != undefined) {
-            if(headerOpt.orderByAscDesc == 'asc') {
-              orderByStyle = 'orderStyleAsc';
-
-            } else {
-              orderByStyle = 'orderStyleDesc';
-            }
+            orderByStyle = (headerOpt.orderByAscDesc == 'asc' ? 'orderStyleAsc' : 'orderStyleDesc');
           }
 
           if(headerOpt.isFilterText == true) {
-            filterText = (<input type='text' className='form-control' defaultValue='' value={headerOpt.filterText}
-                                  placeholder={headerOpt.placeholder} onChange={this.onChangeFilter.bind(this, headerOpt, i)} />);
+            var inputValue = (headerOpt.filterText == undefined ? '' : headerOpt.filterText);
+
+            filterText = (
+              <div style={{width: '100%', float: 'left'}}>
+                <input type='text' className='form-control' value={inputValue} placeholder={this.getText(headerOpt.placeholder)}
+                  onChange={this.onChangeFilter.bind(this, headerOpt, i)}/>
+              </div>);
           }
 
           orderByHeader = (<button className={orderByStyle} title={this.getText('MSG_212')} onClick={this.onClickOrderBy.bind(this, headerOpt, i)}>&nbsp;</button>);
@@ -434,17 +348,79 @@ var DataGridReact = React.createClass({
         headers.push(
           <div key={i+'f'} className={headerOpt.headerStyle} style={{width: headerOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
             <div style={{float: 'left', overflowX: 'hidden', width: '80%', padding: '0.4%'}}>
-              {headerOpt.label}
+              {this.getText(headerOpt.label)}
             </div>
             <div style={{float: 'left', overflowX: 'hidden', width: '20%', paddingLeft: '3%'}}>
               {orderByHeader}
             </div>
-            <div style={{width: '100%', float: 'left'}}>
-              {filterText}
-            </div>
+            {filterText}
           </div>
         );
       }
+    }
+    //construir renglones del data grid
+    if(this.state.dataListPage != undefined && this.state.dataListPage.length > 0) {
+      bodyRows = this.state.dataListPage[this.state.page].map(function(dataObj, index) {
+        var cols = [];
+        var rowDataGridStyle = '';
+        //construr clolunas por renglon
+        for(var k = 0; k < self.state.colOptions.length; k++) {
+          var col = '';
+          var colOpt = self.state.colOptions[k];
+          var type = (colOpt.type == undefined ? 1 : colOpt.type);
+          //TODO construir columanas en base al tipo de columna
+          if(type == LABEL_TYPE) {
+            var colValue = dataObj[colOpt.property];
+
+            if(colOpt.catalog != undefined) {
+              for(var l=0; l < colOpt.catalog.length; l++) {
+                if(dataObj[colOpt.property] == colOpt.catalog[l].id) {
+                  colValue = self.getText(colOpt.catalog[l].value);
+                  break;
+                }
+              }
+            }
+
+            if(colOpt.textAlign == undefined) {
+              colOpt.textAlign = '';
+            }
+
+            col = (
+              <div key={Date.now()+k} className={colOpt.style} style={{width: colOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: colOpt.textAlign}}>
+                {colValue}
+              </div>
+            );
+
+          } else if(type == BUTTON_TYPE) {
+            if(colOpt.onClickButton != undefined) {
+              var labelButton = (colOpt.labelButton != undefined ? self.getText(colOpt.labelButton) : '');
+
+              col = (
+                <div key={Date.now()+k} style={{width: colOpt.width, height: '100%', float: 'left', overflowX: 'hidden', textAlign: 'center'}}>
+                  <button className={colOpt.style} title={labelButton} value='' onClick={self.onClickButton.bind(self, dataObj, dataObj.dataIndex, colOpt.onClickButton)}>
+                    &nbsp;
+                  </button>
+                </div>
+              );
+
+            } else {
+              console.log('onClick de boton no implementado, property: onClickButton');
+            }
+
+          } else {
+            console.log('tipo de columna no identificada, property type: ' + type);
+          }
+
+          cols.push(col);
+        }
+
+        rowDataGridStyle = ((index%2) > 0 ? 'rowDataGridOdd' : 'rowDataGridEven');
+        return (
+          <div key={Date.now()+index} className={rowDataGridStyle} style={{width: '100%', float: 'left'}}>
+            {cols}
+          </div>
+        );
+      });
     }
 
     return (
@@ -454,7 +430,7 @@ var DataGridReact = React.createClass({
           {headers}
         </div>
         <div style={{width: '100%', float: 'left'}}>
-          {this.state.bodyRows}
+          {bodyRows}
         </div>
         {paginador}
       </div>
@@ -465,22 +441,22 @@ var DataGridReact = React.createClass({
 module.exports = DataGridReact;
 
 /* Documentacion para implementar componente DataGridReact
- *  colOptions: [
+  *  colOptions: [
       {
         property: 'col1', //nombre de la propiedad en el lista de oobjetos
         width: '10%', //ancho de la columna
         type: 1|2, //tipo de comportamiento o componente 1-label(default), 2-button
         style: '', //estilo a aplicar al componente text o button
         onClickButton: fun(dataObj, index, evt),  //funsion a ejecutar en el evento onClick (type=2)
-        labelButton: '', //propiedad title a mostrar (type=2)
-        catalog: [{id:valor}] //catalogo que se utilizara para buscar y substituir valores
+        labelButton: '', //Codigo del diccionario propiedad title a mostrar (type=2)
+        catalog: [{id:valor(Codigo del diccionario)}] //catalogo que se utilizara para buscar y substituir valores
       }
     ]
   * headerOptions: [
       {
         property: '', //nombre de la propiedad en el lista de oobjetos
-        placeholder: '', //utilizado para placeholder en el campo de filtro
-        label: '', //utilizado para ser utilizado como etiqueta del header
+        placeholder: '', //Codigo del diccionario utilizado para placeholder en el campo de filtro
+        label: '', //Codigo del diccionario utilizado para ser utilizado como etiqueta del header
         width: '100%', //ancho del contenedor del header,
         isOrderBy: true|false(default), //bandera que indica si se aplica ordenamiento a la columna
         isFilterText: true|false(default), //bandera que indica si se aplica campo de texto para filtro
@@ -489,6 +465,5 @@ module.exports = DataGridReact;
         textAlign: '' //propiedad del estilo que indica la alineacion horizontal del texto
       }
     ]
- *
- *
+  *
 */

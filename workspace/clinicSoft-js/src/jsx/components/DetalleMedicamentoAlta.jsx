@@ -240,7 +240,8 @@ var DetalleMedicamentoAlta= React.createClass({
     this.state.id_med='',
     this.state.id_grupo='',
     this.state.comboValue=1,
-    this.state.lista_detalles_med=[]
+    this.state.lista_detalles_med=[],
+    this.state.lista_detalles=[]
   },
 
   //@LLV Método que retorna a la ventana anterior.
@@ -252,6 +253,8 @@ var DetalleMedicamentoAlta= React.createClass({
     this.hide();
     //Muestro el popup de MedicamentoAlta
     this.props.papa.show();
+    //Limpia componentes.
+     this.onClickLimpiar();
   },
 
   //@LLV Método que valida los campos del formulario.
@@ -371,9 +374,26 @@ var DetalleMedicamentoAlta= React.createClass({
                          var lista_detalle_tmp = self.state.lista_detalles;
                          lista_detalle_tmp.push(auxParams);
                          self.setState({
-                             lista_detalles: lista_detalle_tmp
+                            lista_detalles: lista_detalle_tmp,
+                            codigo_barras:'',
+                            presentacion:'',
+                            descripcion:'',
+                            cantidad_maxima:'',
+                            cantidad_minima:'',
+                            existencia:'',
+                            indicasiones:'',
+                            via_aministracion:'',
+                            fecha_alta:'',
+                            fecha_caducidad:'',
+                            condicion_venta:'',
+                            precio:0.0,
+                            iva:0.0,
+                            farmaceutica:'',
+                            elaborado_en:'',
+                            id_grupo:'',
+                            comboValue:1,
+                            lista_detalles_med:[]
                          });
-                         self.onClickLimpiar();
                      }else {
                         swal('Cancelar', 'El Registro De La Presentación Fue Cancelado.', 'error');
                      }
@@ -631,13 +651,13 @@ var DetalleMedicamentoAlta= React.createClass({
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
-               </div>
-               <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
                </div>
                <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar} />
+               </div>
+               <div className="btn-group" role="group">
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
              </div>
            </div>

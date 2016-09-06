@@ -34,7 +34,6 @@ var Personal = React.createClass({
       pers_sexo: '',
       pers_estado: '',
       personalList: [],
-      personaltable: [],
       filterStatus: ''
     };
   },
@@ -70,9 +69,9 @@ var Personal = React.createClass({
 
     var onSuccess = function(response) {
       self.setState({
-        personalList: response.payload,
-        personaltable: response.payload
+        personalList: response.payload
       });
+      self.refs.personalGrid.updateDateList(response.payload);
     };
 
     var params = {
@@ -96,9 +95,9 @@ var Personal = React.createClass({
 
     var onSuccess = function(response) {
       self.setState({
-        personalList: response.payload,
-        personaltable: response.payload
+        personalList: response.payload
       });
+      self.refs.personalGrid.updateDateList(response.payload);
     };
 
     var params = {};
@@ -125,41 +124,12 @@ var Personal = React.createClass({
   onClickDetalle: function(personal, index, evt) {
     this.refs.personalDetalle.show(personal);
   },
-  onClickEdital: function(personal, index, evt) {
+  onClickEditar: function(personal, index, evt) {
     this.refs.personalNewEdit.show(Constants.COMPONENT_MODE_EDIT, clone.clone(personal));
   },
   render: function() {
     //console.log('# Personal->render #');
     var self = this;
-    var rowsPersonalList = [];
-    var ACTIVO = 'A';
-    var ACTIVO_STR = this.getText('MSG_202');
-    var INACTIVO_STR = this.getText('MSG_203');
-
-    if(this.state.personaltable != undefined && this.state.personaltable.length > 0) {
-      rowsPersonalList = this.state.personaltable.map(function(personal, index) {
-        var activoOinactivo = ACTIVO;
-
-        if(personal.pers_estado == ACTIVO) {
-          activoOinactivo = ACTIVO_STR;
-
-        } else {
-          activoOinactivo = INACTIVO_STR;
-        }
-
-        return (
-          <tr key={personal.pers_id}>
-            <td>{personal.pers_nombre}</td>
-            <td>{personal.pers_apellido_pat}</td>
-            <td>{personal.pers_apellido_mat}</td>
-            <td>{personal.pers_correo}</td>
-            <td>{activoOinactivo}</td>
-            <td><button className='detalleButton' title={self.getText('MSG_201')} onClick={self.onClickDetalle.bind(self, personal)}/></td>
-            <td><button className='editarButton' title={self.getText('MSG_200')} onClick={self.onClickEdital.bind(self, personal)}/></td>
-          </tr>
-        );
-      });
-    }
 
     return (
       <div>
@@ -194,18 +164,13 @@ var Personal = React.createClass({
                   onClick={this.onClickAddPersonal}/>
               </div>
               <div className='overflowXauto left_align' style={{width: '100%'}}>
-                <DataGridReact dataList={this.state.personalList}
+                <DataGridReact ref='personalGrid' dataList={this.state.personalList}
                   headerOptions={[
-                    {property: 'pers_nombre', label: this.getText('MSG_500'), placeholder: this.getText('MSG_500'), width: '18%',
-                      isOrderBy: true, isFilterText: true},
-                    {property: 'pers_apellido_pat', label: this.getText('MSG_501'), placeholder: this.getText('MSG_501'), width: '18%',
-                      isOrderBy: true, isFilterText: true},
-                    {property: 'pers_apellido_mat', label: this.getText('MSG_502'), placeholder: this.getText('MSG_502'), width: '18%',
-                      isOrderBy: true, isFilterText: true},
-                    {property: 'pers_correo', label: this.getText('MSG_503'), placeholder: this.getText('MSG_503'), width: '18%',
-                      isOrderBy: true, isFilterText: true},
-                    {property: 'pers_estado', label: this.getText('MSG_504'), placeholder: this.getText('MSG_504'), width: '14%',
-                      isOrderBy: true},
+                    {property: 'pers_nombre', label: 'MSG_500', placeholder: 'MSG_500', width: '18%', isOrderBy: true, isFilterText: true},
+                    {property: 'pers_apellido_pat', label: 'MSG_501', placeholder: 'MSG_501', width: '18%', isOrderBy: true, isFilterText: true},
+                    {property: 'pers_apellido_mat', label: 'MSG_502', placeholder: 'MSG_502', width: '18%', isOrderBy: true, isFilterText: true},
+                    {property: 'pers_correo', label: 'MSG_503', placeholder: 'MSG_503', width: '18%', isOrderBy: true, isFilterText: true},
+                    {property: 'pers_estado', label: 'MSG_504', placeholder: 'MSG_504', width: '14%', isOrderBy: true},
                     {property: '', label: '', width: '7%'},
                     {property: '', label: '', width: '7%'}
                   ]}
@@ -214,12 +179,9 @@ var Personal = React.createClass({
                     {property: 'pers_apellido_pat', width: '18%'},
                     {property: 'pers_apellido_mat', width: '18%'},
                     {property: 'pers_correo', width: '18%'},
-                    {property: 'pers_estado', width: '14%', textAlign: 'center',
-                      catalog:[{id: 'A', value: this.getText('MSG_202')}, {id: 'I', value: this.getText('MSG_203')}]},
-                    {property: '', width: '7%', type: 2, style: 'detailButton', onClickButton: this.onClickDetalle,
-                      labelButton: self.getText('MSG_201')},
-                    {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEdital,
-                      labelButton: self.getText('MSG_200')}
+                    {property: 'pers_estado', width: '14%', textAlign: 'center', catalog:[{id: 'A', value: 'MSG_202'}, {id: 'I', value: 'MSG_203'}]},
+                    {property: '', width: '7%', type: 2, style: 'detailButton', onClickButton: this.onClickDetalle, labelButton: 'MSG_201'},
+                    {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEditar, labelButton: 'MSG_200'}
                   ]}/>
               </div>
             </div>

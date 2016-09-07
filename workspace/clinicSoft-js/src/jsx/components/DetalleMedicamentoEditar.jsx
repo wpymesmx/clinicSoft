@@ -123,25 +123,33 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
   onChangeCantidad_maximaUno: function(evt) {
-    this.setState({
-      cantidad_maxima: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbersTwo(evt.target.value)) {
+        this.setState({
+          cantidad_maxima: evt.target.value
+        });
+    }
   },
   onChangeCantidad_minimaUno: function(evt) {
-    this.setState({
-      cantidad_minima: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        this.setState({
+          cantidad_minima: evt.target.value
+        });
+    }
   },
   onChangeExistenciaUno: function(evt) {
-    this.setState({
-      existencia: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        this.setState({
+          existencia: evt.target.value
+        });
+    }
   },
+
   onChangeDescripcionUno: function(evt) {
     this.setState({
       descripcion: evt.target.value
     });
   },
+
   onChangeIndicasionesUno: function(evt) {
     this.setState({
       indicasiones: evt.target.value
@@ -170,15 +178,19 @@ var DetalleMedicamentoEditar= React.createClass({
   },
 
   onChangePrecioUno: function(evt) {
-    this.setState({
-      precio: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        this.setState({
+          precio: evt.target.value
+        });
+    }
   },
 
   onChangeIvaUno: function(evt) {
-    this.setState({
-      iva: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        this.setState({
+          iva: evt.target.value
+        });
+    }
   },
 
   onChangeFarmaceuticaUno: function(evt) {
@@ -218,28 +230,34 @@ var DetalleMedicamentoEditar= React.createClass({
     });
   },
   onChangeCantidad_maxima: function(index,evt) {
-    var lista_detalles_med=this.state.lista_detalles_med;
-    var detalle= lista_detalles_med[index];
-    detalle.dem_cantidad_maxima=evt.target.value
-    this.setState({
-      lista_detalles_med: lista_detalles_med
-    });
+        var lista_detalles_med=this.state.lista_detalles_med;
+        var detalle= lista_detalles_med[index];
+        if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+            detalle.dem_cantidad_maxima=evt.target.value;
+            this.setState({
+              lista_detalles_med: lista_detalles_med
+            });
+       }
   },
   onChangeCantidad_minima: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.dem_cantidad_minima=evt.target.value
-    this.setState({
-      lista_detalles_med: lista_detalles_med
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        detalle.dem_cantidad_minima=evt.target.value;
+        this.setState({
+          lista_detalles_med: lista_detalles_med
+        });
+    }
   },
   onChangeExistencia: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.dem_en_existencia=evt.target.value
-    this.setState({
-      lista_detalles_med: lista_detalles_med
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        detalle.dem_en_existencia=evt.target.value;
+        this.setState({
+          lista_detalles_med: lista_detalles_med
+        });
+    }
   },
   onChangeDescripcion: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
@@ -293,19 +311,23 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangePrecio: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.dem_precio=evt.target.value
-    this.setState({
-      lista_detalles_med: lista_detalles_med
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        detalle.dem_precio=evt.target.value;
+        this.setState({
+          lista_detalles_med: lista_detalles_med
+        });
+    }
   },
 
   onChangeIva: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.dem_iva=evt.target.value
-    this.setState({
-      lista_detalles_med: lista_detalles_med
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        detalle.dem_iva=evt.target.value;
+        this.setState({
+          lista_detalles_med: lista_detalles_med
+        });
+    }
   },
 
   onChangeFarmaceutica: function(index, evt) {
@@ -360,8 +382,6 @@ var DetalleMedicamentoEditar= React.createClass({
     medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
 
   },
-
-
   hide: function() {
     //aqui limpiar componente
     this.setState({
@@ -437,13 +457,13 @@ var DetalleMedicamentoEditar= React.createClass({
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
     }
-    if(validaService.isEmpty(self.state.cantidad_maxima)) {
+    if(validaService.isEmpty(self.state.cantidad_maxima) || !validaService.isOnlyNumbers(self.state.cantidad_maxima)) {
       return {isError: true, message: self.getText('MSG_3025')};
     }
-    if(validaService.isEmpty(self.state.cantidad_minima)) {
+    if(validaService.isEmpty(self.state.cantidad_minima) || !validaService.isOnlyNumbers(self.state.cantidad_minima)) {
       return {isError: true, message: self.getText('MSG_3026')};
     }
-    if(validaService.isEmpty(self.state.existencia)) {
+    if(validaService.isEmpty(self.state.existencia) || !validaService.isOnlyNumbers(self.state.existencia)) {
       return {isError: true, message: self.getText('MSG_3027')};
     }
     if(validaService.isEmpty(self.state.farmaceutica)) {

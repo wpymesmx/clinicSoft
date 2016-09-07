@@ -122,19 +122,25 @@ var DetalleMedicamentoAlta= React.createClass({
     });
   },
   onChangeCantidad_maxima: function(evt) {
-    this.setState({
-      cantidad_maxima: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        this.setState({
+          cantidad_maxima: evt.target.value
+        });
+    }
   },
   onChangeCantidad_minima: function(evt) {
-    this.setState({
-      cantidad_minima: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        this.setState({
+          cantidad_minima: evt.target.value
+        });
+    }
   },
   onChangeExistencia: function(evt) {
-    this.setState({
-      existencia: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isOnlyNumbers(evt.target.value)) {
+        this.setState({
+          existencia: evt.target.value
+        });
+    }
   },
   onChangeDescripcion: function(evt) {
     this.setState({
@@ -168,15 +174,19 @@ var DetalleMedicamentoAlta= React.createClass({
   },
 
   onChangePrecio: function(evt) {
-    this.setState({
-      precio: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        this.setState({
+          precio: evt.target.value
+        });
+    }
   },
 
   onChangeIva: function(evt) {
-    this.setState({
-      iva: evt.target.value
-    });
+    if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
+        this.setState({
+          iva: evt.target.value
+        });
+    }
   },
 
   onChangeFarmaceutica: function(evt) {
@@ -268,7 +278,7 @@ var DetalleMedicamentoAlta= React.createClass({
     if(validaService.isEmpty(self.state.presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
     }
-    if(validaService.isEmpty(self.state.cantidad_maxima)) {
+    if(validaService.isEmpty(self.state.cantidad_maxima) || !validaService.isOnlyNumbers(self.state.cantidad_maxima)) {
       return {isError: true, message: self.getText('MSG_3025')};
     }
     if(validaService.isEmpty(self.state.cantidad_minima)) {
@@ -640,8 +650,6 @@ var DetalleMedicamentoAlta= React.createClass({
                 <td></td>
              </tr>
              {rows_detalles}
-
-
             </tbody>
            </table>
           </div>

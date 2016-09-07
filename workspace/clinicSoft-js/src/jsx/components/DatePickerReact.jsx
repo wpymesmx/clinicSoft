@@ -10,8 +10,8 @@ var DatePickerReact = React.createClass({
     return {
       isShow: false,
       label: '',
-      datePicked: (this.props.datePicked != '' ? new Date(this.props.datePicked): new Date()),
-      dateView: (this.props.datePicked != '' ? new Date(this.props.datePicked): new Date()),
+      datePicked: ((this.props.datePicked != undefined && this.props.datePicked != '') ? new Date(this.props.datePicked): new Date()),
+      dateView: ((this.props.datePicked != undefined && this.props.datePicked != '') ? new Date(this.props.datePicked): new Date()),
       dateFormat: this.props.dateFormat,
       inputLabel: this.props.inputLabel,
       zIndex: this.props.zIndex
@@ -33,9 +33,7 @@ var DatePickerReact = React.createClass({
     return {
       dateFormat: 'yyyy-MM-dd-',
       zIndex: 4,
-      ctx: ctx,
-      datePicked: new Date(),
-      dateView: new Date()
+      ctx: ctx
     };
   },
   componentWillMount: function() {
@@ -45,17 +43,15 @@ var DatePickerReact = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     var datePicked = undefined;
 
-    if(nextProps.datePicked != '') {
+    if(nextProps.datePicked != undefined && nextProps.datePicked != '') {
+      console.log('nextProps.datePicked:' + nextProps.datePicked);
       datePicked = new Date(nextProps.datePicked);
 
-    } else {
-      datePicked = new Date();
+      this.setState({
+        datePicked: datePicked,
+        dateView: datePicked
+      });
     }
-
-    this.setState({
-      datePicked: datePicked,
-      dateView: datePicked
-    });
   },
   shouldComponentUpdate: function() {
     return true;
@@ -136,6 +132,7 @@ var DatePickerReact = React.createClass({
     datePicked.setDate(dayCount);
     this.setState({
       datePicked: datePicked,
+      dateView: datePicked,
       isShow: false
     });
 

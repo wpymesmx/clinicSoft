@@ -326,6 +326,7 @@ var DataGridReact = React.createClass({
         var orderByHeader = '';
         var orderByStyle = 'orderStyleAsc';
         var filterText = '';
+        var inputValue = undefined;
 
         if(headerOpt.isOrderBy != undefined && headerOpt.isOrderBy == true) {
           if(headerOpt.orderByAscDesc != undefined) {
@@ -333,7 +334,7 @@ var DataGridReact = React.createClass({
           }
 
           if(headerOpt.isFilterText == true) {
-            var inputValue = (headerOpt.filterText == undefined ? '' : headerOpt.filterText);
+            inputValue = (headerOpt.filterText == undefined ? '' : headerOpt.filterText);
 
             filterText = (
               <div style={{width: '100%', float: 'left'}}>
@@ -465,5 +466,28 @@ module.exports = DataGridReact;
         textAlign: '' //propiedad del estilo que indica la alineacion horizontal del texto
       }
     ]
+
+    ejemplo:
+    <DataGridReact ref='personalGrid' dataList={this.state.personalList}
+      headerOptions={[
+        {property: 'pers_nombre', label: 'MSG_500', placeholder: 'MSG_500', width: '18%', isOrderBy: true, isFilterText: true},
+        {property: 'pers_apellido_pat', label: 'MSG_501', placeholder: 'MSG_501', width: '18%', isOrderBy: true, isFilterText: true},
+        {property: 'pers_apellido_mat', label: 'MSG_502', placeholder: 'MSG_502', width: '18%', isOrderBy: true, isFilterText: true},
+        {property: 'pers_correo', label: 'MSG_503', placeholder: 'MSG_503', width: '18%', isOrderBy: true, isFilterText: true},
+        {property: 'pers_estado', label: 'MSG_504', placeholder: 'MSG_504', width: '14%', isOrderBy: true},
+        {property: '', label: '', width: '7%'},
+        {property: '', label: '', width: '7%'}
+      ]}
+      colOptions={[
+        {property: 'pers_nombre', width: '18%'},
+        {property: 'pers_apellido_pat', width: '18%'},
+        {property: 'pers_apellido_mat', width: '18%'},
+        {property: 'pers_correo', width: '18%'},
+        {property: 'pers_estado', width: '14%', textAlign: 'center', catalog:[{id: 'A', value: 'MSG_202'}, {id: 'I', value: 'MSG_203'}]},
+        {property: '', width: '7%', type: 2, style: 'detailButton', onClickButton: this.onClickDetalle, labelButton: 'MSG_201'},
+        {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEditar, labelButton: 'MSG_200'}
+      ]}/>
+      //para actualizar la lista se debe ejecutar la funcion updateDateList
+      this.refs.personalGrid.updateDateList(newDataList);
   *
 */

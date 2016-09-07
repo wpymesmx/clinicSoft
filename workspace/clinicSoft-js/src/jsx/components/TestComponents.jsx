@@ -8,6 +8,7 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
 var DataGridReact = require('./DataGridReact.jsx');
+var InputFileReact = require('./InputFileReact.jsx');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
@@ -21,7 +22,7 @@ var TestComponents = React.createClass({
     return {
       componentKey: Constants.TEST_COMPONENTS_VIEW,
       language: window.language,
-      dataList: []
+      image64: ''
     };
   },
   componentWillMount: function() {
@@ -50,47 +51,21 @@ var TestComponents = React.createClass({
     this.unSubscribe(this.state.componentKey);
     this.unSubscribeAlert(this.state.componentKey);
   },
-  addDataList: function(evt) {
-    var index = this.state.dataList.length+1;
-    var data = {
-      col1: ('col'+index),
-      col2: ('col'+index),
-      col3: ('col'+index),
-      col4: ('col'+index),
-      col5: ('col'+index)
-    };
-    var dataList = this.state.dataList;
-
-    dataList.push(data);
+  onFileSelected: function(fileName, fileBase64) {
+    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
     this.setState({
-      dataList: dataList
+      image64: fileBase64
     });
-  },
-  onClickButton: function(dataObj, index, evt) {
-    console.log('index->' + index);
-    console.log('data->' + JSON.stringify(dataObj));
   },
   render: function() {
     //console.log('# App->render #');
     return (
       <div style={{width: '100%', height: '100%'}}>
-        <button onClick={this.addDataList}>add data list</button>
-        <DataGridReact dataList={this.state.dataList}
-          headerOptions={[
-            {label:'Columna1', width: '20%', headerStyle:''},
-            {label:'Columna2', width: '20%', headerStyle:''},
-            {label:'Columna3', width: '20%', headerStyle:''},
-            {label:'Columna4', width: '20%', headerStyle:''},
-            {label:'Columna5', width: '20%', headerStyle:''}
-          ]}
-          colOptions={[
-            {property: 'col1', width: '20%', type: 1},
-            {property: 'col2', width: '20%', type: 1},
-            {property: 'col3', width: '20%', type: 1},
-            {property: 'col4', width: '20%', type: 1},
-            {property: 'col5', width: '20%',
-              type: 2, buttonStyle: 'detalleButton', onClickButton: this.onClickButton, labelButton: 'Ver detalle'}
-          ]}/>
+        <InputFileReact ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={this.onFileSelected}/>
+        <div>
+          <img style={{width: '300px', height: '300px'}} src={this.state.image64} />
+        </div>
+        <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
       </div>
     );
   }

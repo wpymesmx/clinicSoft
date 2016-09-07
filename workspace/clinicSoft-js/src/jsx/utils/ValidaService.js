@@ -20,6 +20,16 @@ var ValidaService = {
 
     return resp;
   },
+  isOnlyNumbersTwo: function(obj, opt) {
+    var resp = false;
+    var regx = /^\d*$/g;
+
+    if(!this.isEmpty(obj) && regx.test(obj)) {
+        resp = true;
+    }
+
+    return resp;
+  },
   isMaxLength: function(obj, opt) {
     var resp = false;
 

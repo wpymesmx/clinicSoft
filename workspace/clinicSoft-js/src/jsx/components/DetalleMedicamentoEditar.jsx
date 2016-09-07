@@ -284,7 +284,7 @@ var DetalleMedicamentoEditar= React.createClass({
    onChangeCondicionVenta: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.condicion_venta = evt.target.value
+    detalle.dem_condicion_venta= evt.target.value
     this.setState({
       lista_detalles_med: lista_detalles_med
     });
@@ -293,7 +293,7 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangePrecio: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.precio=evt.target.value
+    detalle.dem_precio=evt.target.value
     this.setState({
       lista_detalles_med: lista_detalles_med
     });
@@ -302,7 +302,7 @@ var DetalleMedicamentoEditar= React.createClass({
   onChangeIva: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
-    detalle.iva=evt.target.value
+    detalle.dem_iva=evt.target.value
     this.setState({
       lista_detalles_med: lista_detalles_med
     });
@@ -659,22 +659,22 @@ var DetalleMedicamentoEditar= React.createClass({
             <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
             <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
 
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3014')}  value={detalle.dem_descripcion} onChange={self.onChangeDescripcion.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.dem_presentacion} onChange={self.onChangePresentacion.bind(self,index)}/></td>
+            <td><input style={{width: '315px'}} type='text' className='form-control' placeholder={self.getText('MSG_3014')}  value={detalle.dem_descripcion} onChange={self.onChangeDescripcion.bind(self,index)}/></td>
+            <td><input style={{width: '315px'}} type='text' className='form-control' placeholder={self.getText('MSG_3010')}  value={detalle.dem_presentacion} onChange={self.onChangePresentacion.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3011')}  value={detalle.dem_cantidad_maxima} onChange={self.onChangeCantidad_maxima.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3012')}  value={detalle.dem_cantidad_minima} onChange={self.onChangeCantidad_minima.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3013')}  value={detalle.dem_en_existencia} onChange={self.onChangeExistencia.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3015')}  value={detalle.dem_indicasiones} onChange={self.onChangeIndicasiones.bind(self,index)}/></td>
+            <td><input style={{width: '315px'}} type='text' className='form-control' placeholder={self.getText('MSG_3015')}  value={detalle.dem_indicasiones} onChange={self.onChangeIndicasiones.bind(self,index)}/></td>
             <td><input type='text' className='form-control' placeholder={self.getText('MSG_3016')}  value={detalle.dem_via_admin} onChange={self.onChangeViaAdministracion.bind(self,index)}/></td>
 
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3018')}  value={detalle.dem_fecha_alta} onChange={self.onChangeFechaAlta.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3019')}  value={detalle.dem_fecha_caducidad} onChange={self.onChangeFechaCaducidad.bind(self,index)}/></td>
+            <td><input style={{width: '120px'}} type='text' className='form-control' placeholder={self.getText('MSG_3018')}  value={detalle.dem_fecha_alta} onChange={self.onChangeFechaAlta.bind(self,index)}/></td>
+            <td><input style={{width: '120px'}} type='text' className='form-control' placeholder={self.getText('MSG_3019')}  value={detalle.dem_fecha_caducidad} onChange={self.onChangeFechaCaducidad.bind(self,index)}/></td>
 
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3005')}  value={detalle.dem_condicion_venta} onChange={self.onChangeCondicionVenta.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3030')}  value={detalle.dem_precio} onChange={self.onChangePrecioUno.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3031')}  value={detalle.dem_iva} onChange={self.onChangeIva.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3003')}  value={detalle.dem_farmaceutica} onChange={self.onChangeFarmaceutica.bind(self,index)}/></td>
-            <td><input type='text' className='form-control' placeholder={self.getText('MSG_3004')}  value={detalle.dem_elaborado_en} onChange={self.onChangeElaboradoEn.bind(self,index)}/></td>
+            <td><input style={{width: '120px'}} type='text' className='form-control' placeholder={self.getText('MSG_3005')}  value={detalle.dem_condicion_venta} onChange={self.onChangeCondicionVenta.bind(self,index)}/></td>
+            <td><input style={{width: '120px'}} type='text' className='form-control' placeholder={self.getText('MSG_3030')}  value={detalle.dem_precio} onChange={self.onChangePrecio.bind(self,index)}/></td>
+            <td><input style={{width: '80px'}} type='text' className='form-control' placeholder={self.getText('MSG_3031')}  value={detalle.dem_iva} onChange={self.onChangeIva.bind(self,index)}/></td>
+            <td><input style={{width: '200px'}} type='text' className='form-control' placeholder={self.getText('MSG_3003')}  value={detalle.dem_farmaceutica} onChange={self.onChangeFarmaceutica.bind(self,index)}/></td>
+            <td><input style={{width: '200px'}} type='text' className='form-control' placeholder={self.getText('MSG_3004')}  value={detalle.dem_elaborado_en} onChange={self.onChangeElaboradoEn.bind(self,index)}/></td>
           </tr>
         );
       });
@@ -901,13 +901,13 @@ var DetalleMedicamentoEditar= React.createClass({
                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar}/>
+               </div>
+               <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_204')}  onClick={this.onClickBuscar} />
                </div>
                <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
-               </div>
-               <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar}/>
                </div>
              </div>
           </div>

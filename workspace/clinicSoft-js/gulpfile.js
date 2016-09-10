@@ -42,13 +42,13 @@ gulp.task('copy-fonts', function () {
 });
 
 gulp.task('concat-dev', ['build'], function() {
-  return gulp.src(['libs/jquery-1.12.4.js', 'libs/bootstrap.js', 'build/tmp/app.js'])
+  return gulp.src(['libs/jquery-1.12.4.js', 'libs/bootstrap.js', 'libs/highcharts.js', 'libs/highcharts-more.js', 'build/tmp/app.js'])
     .pipe(concatenate('app.js'))
     .pipe(gulp.dest('build/js'));
 });
 
 gulp.task('concat-prod', ['compress'], function() {
-  return gulp.src(['libs/jquery-1.12.4.min.js', 'libs/bootstrap.min.js', 'build/min/app.js'])
+  return gulp.src(['libs/jquery-1.12.4.min.js', 'libs/bootstrap.min.js', 'libs/highcharts.min.js', 'libs/highcharts-more.min.js', 'build/min/app.js'])
     .pipe(concatenate('app.js'))
     .pipe(gulp.dest('build/js'));
 });

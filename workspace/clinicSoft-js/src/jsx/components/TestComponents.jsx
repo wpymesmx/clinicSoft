@@ -9,6 +9,7 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 var Constants = require('../utils/Constants.js');
 var DataGridReact = require('./DataGridReact.jsx');
 var InputFileReact = require('./InputFileReact.jsx');
+var Highcharts = require('../utils/Highcharts.js');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
@@ -32,6 +33,7 @@ var TestComponents = React.createClass({
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
+    Highcharts.gauge({});
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -66,6 +68,7 @@ var TestComponents = React.createClass({
           <img style={{width: '300px', height: '300px'}} src={this.state.image64} />
         </div>
         <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
+        <div id='container'>&nbsp;</div>
       </div>
     );
   }

@@ -25,6 +25,15 @@ from src.view.medicamento_view import insertar_detalle_medicamento
 from src.view.medicamento_view import  existe_detalle_medicamento
 from src.view.medicamento_view import  buscar_detalles
 from src.view.medicamento_view import  update_detalle_medicamento
+from src.view.medicamento_view import  reporte_medicamentos
+from src.view.medicamento_view import dashbord_medicamento
+from src.view.medicamento_view import llenar_combo_presentacion
+from src.view.medicamento_view import llenar_combo_descripcion
+from src.view.medicamento_view import llenar_combo_farmaceutica
+from src.view.medicamento_view import llenar_combo_nombre_comercial
+from src.view.medicamento_view import llenar_combo_nombre_generico
+from src.view.medicamento_view import llenar_combo_nombre_grupo
+
 #personal
 from src.view.personal_view import insert_personal
 from src.view.personal_view import update_personal
@@ -131,6 +140,14 @@ if __name__ == '__main__':
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/existeDetalle', view_func=existe_detalle_medicamento, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/buscarDetalles', view_func=buscar_detalles, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/medicamento/editaDetalle', view_func=update_detalle_medicamento, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/reporteMedicamentos', view_func=reporte_medicamentos, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/dashbordMedicamento', view_func=dashbord_medicamento, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboPresentacion', view_func=llenar_combo_presentacion, methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboDescripcion', view_func=llenar_combo_descripcion,methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboFarmaceutica', view_func=llenar_combo_farmaceutica,methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboNombreComercial', view_func=llenar_combo_nombre_comercial,methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboNombreGenerico', view_func=llenar_combo_nombre_generico,methods=['POST'])
+  app.add_url_rule(rule='/clinicSoft/admin/medicamento/llenaComboNombreGrupo', view_func=llenar_combo_nombre_grupo,methods=['POST'])
   #Administracion de personal
   app.add_url_rule(rule='/clinicSoft/admin/personal/insert_personal', view_func=insert_personal, methods=['POST'])
   app.add_url_rule(rule='/clinicSoft/admin/personal/update_personal', view_func=update_personal, methods=['POST'])

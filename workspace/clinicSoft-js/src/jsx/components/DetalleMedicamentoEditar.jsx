@@ -20,6 +20,8 @@ var DatePickerReact = require('./DatePickerReact.jsx');
 var medicamentoService = require('../services/MedicamentoService.js');
 var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var validaService = require('../utils/ValidaService.js');
+//Se importa la libreria que carga la imagen.
+var InputFileReact = require('./InputFileReact.jsx');
 
 //@LLV Inicio de la clase principal.
 var DetalleMedicamentoEditar= React.createClass({
@@ -61,7 +63,9 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles: [],
       lista_detalle_tmp:[],
       medicamento:undefined,
-      comboValue: 1
+      comboValue: 1,
+      image64: '',
+      imagen:''
     };
   },
   componentWillMount: function() {
@@ -143,13 +147,11 @@ var DetalleMedicamentoEditar= React.createClass({
         });
     }
   },
-
   onChangeDescripcionUno: function(evt) {
     this.setState({
       descripcion: evt.target.value
     });
   },
-
   onChangeIndicasionesUno: function(evt) {
     this.setState({
       indicasiones: evt.target.value
@@ -170,13 +172,11 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_caducidad: evt.target.value
     });
   },
-
   onChangeCondicionVentaUno: function(evt) {
     this.setState({
       condicion_venta: evt.target.value
     });
   },
-
   onChangePrecioUno: function(evt) {
     if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
         this.setState({
@@ -184,7 +184,6 @@ var DetalleMedicamentoEditar= React.createClass({
         });
     }
   },
-
   onChangeIvaUno: function(evt) {
     if(validaService.isEmpty(evt.target.value) || validaService.isDecimal(evt.target.value)) {
         this.setState({
@@ -192,19 +191,16 @@ var DetalleMedicamentoEditar= React.createClass({
         });
     }
   },
-
   onChangeFarmaceuticaUno: function(evt) {
     this.setState({
       farmaceutica: evt.target.value
     });
   },
-
   onChangeElaboradoEnUno: function(evt) {
     this.setState({
       elaborado_en: evt.target.value
     });
   },
-
   onDatePicked: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -212,7 +208,6 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_alta: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
   onDatePickedDos: function(datePicked, evt) {
     console.log('datePicked->' + datePicked);
 
@@ -220,7 +215,6 @@ var DetalleMedicamentoEditar= React.createClass({
       fecha_caducidad: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
     });
   },
-
   onChangePresentacion: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -299,7 +293,7 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-   onChangeCondicionVenta: function(index,evt) {
+  onChangeCondicionVenta: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
     detalle.dem_condicion_venta= evt.target.value
@@ -307,7 +301,6 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-
   onChangePrecio: function(index,evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -318,7 +311,6 @@ var DetalleMedicamentoEditar= React.createClass({
         });
     }
   },
-
   onChangeIva: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -329,7 +321,6 @@ var DetalleMedicamentoEditar= React.createClass({
         });
     }
   },
-
   onChangeFarmaceutica: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -338,7 +329,6 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-
   onChangeElaboradoEn: function(index, evt) {
     var lista_detalles_med=this.state.lista_detalles_med;
     var detalle= lista_detalles_med[index];
@@ -347,7 +337,6 @@ var DetalleMedicamentoEditar= React.createClass({
       lista_detalles_med: lista_detalles_med
     });
   },
-
   onChangeCombo: function(evt) {
    this.setState({
      comboValue: evt.target.value,
@@ -405,7 +394,6 @@ var DetalleMedicamentoEditar= React.createClass({
     console.log(self.state.id_med);
     medicamentoService.buscarDetalles(params, onSuccess, self.onError, self.onFail);
   },
-
   //@LLV Método utilizado para cerrar popup y limpiar componentes.
   onClickCerrar: function(evt) {
     this.setState({
@@ -413,7 +401,6 @@ var DetalleMedicamentoEditar= React.createClass({
     });
    this.onClickLimpiar();
   },
-
   //@LLV Método utilizado para limpiar componentes.
   onClickLimpiar: function(evt) {
     this.state.codigo_barras='',
@@ -435,7 +422,6 @@ var DetalleMedicamentoEditar= React.createClass({
     this.state.comboValue=1,
     this.state.lista_detalles_med=[]
   },
-
   //@LLV Método utilizado para regresar a la ventana  anterior.
   onClickRegresar: function(evt) {
     var onSuccess = function(response) {
@@ -446,7 +432,6 @@ var DetalleMedicamentoEditar= React.createClass({
     //Muestro el popup de MedicamentoEditar
     this.props.papa.show(this.state.medicamento);
   },
-
   //@LLV Método utilizado para validar los campos de entrada del formulario.
   validaFormulario: function() {
     var self = this;
@@ -506,12 +491,9 @@ var DetalleMedicamentoEditar= React.createClass({
       message: ''
     };
     var detalles_med=this.state.lista_detalles_med[index];
-
     if(validaService.isEmpty(detalles_med.dem_presentacion)) {
       return {isError: true, message: self.getText('MSG_112')};
     }
-
-
     return response;
   },
 
@@ -573,7 +555,8 @@ var DetalleMedicamentoEditar= React.createClass({
                'precio':self.state.precio,
                'iva':self.state.iva,
                'farmaceutica':self.state.farmaceutica,
-               'elaborado_en':self.state.elaborado_en
+               'elaborado_en':self.state.elaborado_en,
+               'image64':self.state.image64
             };
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
@@ -631,7 +614,8 @@ var DetalleMedicamentoEditar= React.createClass({
                'precio': detalles_med.dem_precio,
                'iva': detalles_med.dem_iva,
                'farmaceutica': detalles_med.dem_farmaceutica,
-               'elaborado_en': detalles_med.dem_elaborado_en
+               'elaborado_en': detalles_med.dem_elaborado_en,
+               'imagen': self.state.imagen
             };
             console.log(params);
             swal({title: 'Confirmar Edición?',
@@ -660,6 +644,35 @@ var DetalleMedicamentoEditar= React.createClass({
 
   },
 
+  onFileSelected: function(fileName, fileBase64) {
+    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
+    this.setState({
+      image64: fileBase64
+    });
+  },
+
+  onFileSelectedDos: function(fileName, fileBase64) {
+    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
+    this.setState({
+      imagen: fileBase64
+    });
+  },
+
+  //@LLV  Metodo que obtiene el total de medicamentos.
+  obtenerImagen: function(){
+    var self = this;
+    var imagen='';
+
+    if(self.state.lista_detalles_med.length > 0) {
+      var rows_detalles = self.state.lista_detalles_med.map(function(auxDetalle,index) {
+        imagen=auxDetalle.dem_imagen;
+      });
+    }
+    self.setState({
+      image64: imagen
+    });
+  },
+
   //@LLV Función principal para mostrar los componetes.
   render: function() {
     //console.log('# DetalleMedicamentoEditar->render #');
@@ -670,12 +683,15 @@ var DetalleMedicamentoEditar= React.createClass({
     var className = '';
     className = (self.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
     var rows_detalles = [];
+    var imagen='';
+    var image64='';
      console.log('total detalles');
      console.log(self.state.lista_detalles_med.length);
      if(self.state.lista_detalles_med.length > 0) {
       rows_detalles = self.state.lista_detalles_med.map(function(detalle,index) {
         return (
           <tr key={detalle.id_med}>
+
             <td><button className='saveButton' title={self.getText('MSG_206')}  onClick={self.onClickEditarDetalle.bind(self,index)}/></td>
             <td><button className='detalleButton' title={self.getText('MSG_203')} onClick={self.onClickEliminar.bind(self,index)}/></td>
 
@@ -695,37 +711,50 @@ var DetalleMedicamentoEditar= React.createClass({
             <td><input style={{width: '80px'}} type='text' className='form-control' placeholder={self.getText('MSG_3031')}  value={detalle.dem_iva} onChange={self.onChangeIva.bind(self,index)}/></td>
             <td><input style={{width: '200px'}} type='text' className='form-control' placeholder={self.getText('MSG_3003')}  value={detalle.dem_farmaceutica} onChange={self.onChangeFarmaceutica.bind(self,index)}/></td>
             <td><input style={{width: '200px'}} type='text' className='form-control' placeholder={self.getText('MSG_3004')}  value={detalle.dem_elaborado_en} onChange={self.onChangeElaboradoEn.bind(self,index)}/></td>
+
+            <td><div  style={{width: '200px'}}>
+                 <InputFileReact  className='form-control' ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={self.onFileSelectedDos}/>
+            </div></td>
+            <td>
+                <img style={{width: '42px', height: '42px'}} src={self.state.imagen} />
+            </td>
+
           </tr>
         );
       });
      }
-      listaDetallesDiv = (
-        <div className='panelScrollDetalle' >
-          <table className='table table-bordered table-hover'>
-           <tbody>
-             <tr className='alert alert-success default' role='alert'>
-               <td style={{width: '100%'}} className='left_align'>{this.getText('MSG_206')}</td>
-               <td>{this.getText('MSG_3032')}</td>
-               <td>*{this.getText('MSG_3014')}</td>
-               <td>*{this.getText('MSG_3010')}</td>
-               <td>*{this.getText('MSG_3011')}</td>
-               <td>*{this.getText('MSG_3012')}</td>
-               <td>*{this.getText('MSG_3013')}</td>
-               <td>{this.getText('MSG_3015')}</td>
-               <td>{this.getText('MSG_3016')}</td>
-               <td>*{this.getText('MSG_3018')}</td>
-               <td>*{this.getText('MSG_3019')}</td>
-               <td>{this.getText('MSG_3005')}</td>
-               <td>{this.getText('MSG_3030')}</td>
-               <td>{this.getText('MSG_3031')}</td>
-               <td>*{this.getText('MSG_3003')}</td>
-               <td>{this.getText('MSG_3004')}</td>
-            </tr>
-            {rows_detalles}
-           </tbody>
-          </table>
-        </div>
-      );
+
+      if(self.state.lista_detalles_med.length > 0){
+          listaDetallesDiv = (
+            <div className='panelScrollDetalle' >
+              <table className='table table-bordered table-hover'>
+               <tbody>
+                 <tr className='alert alert-success default' role='alert'>
+                   <td>{this.getText('MSG_206')}</td>
+                   <td>{this.getText('MSG_3032')}</td>
+                   <td>*{this.getText('MSG_3014')}</td>
+                   <td>*{this.getText('MSG_3010')}</td>
+                   <td>*{this.getText('MSG_3011')}</td>
+                   <td>*{this.getText('MSG_3012')}</td>
+                   <td>*{this.getText('MSG_3013')}</td>
+                   <td>{this.getText('MSG_3015')}</td>
+                   <td>{this.getText('MSG_3016')}</td>
+                   <td>*{this.getText('MSG_3018')}</td>
+                   <td>*{this.getText('MSG_3019')}</td>
+                   <td>{this.getText('MSG_3005')}</td>
+                   <td>{this.getText('MSG_3030')}</td>
+                   <td>{this.getText('MSG_3031')}</td>
+                   <td>*{this.getText('MSG_3003')}</td>
+                   <td>{this.getText('MSG_3004')}</td>
+                   <td>{this.getText('MSG_3037')}</td>
+                   <td>Imagen</td>
+                </tr>
+                {rows_detalles}
+               </tbody>
+              </table>
+            </div>
+          );
+      }
 
     //@LLV La variable almacen puede tomar cualquier nombre.
     var listaAlmacenComboOption = [];
@@ -738,6 +767,7 @@ var DetalleMedicamentoEditar= React.createClass({
       });
       listaAlmacenComboOption.push(rows_grupos);
     }
+
     return (
       <div className={className}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
@@ -909,8 +939,22 @@ var DetalleMedicamentoEditar= React.createClass({
                     onChange={this.onChangeElaboradoEnUno}/>
                 </div>
               </div>
+              <br></br>
+              <div style={{width: '80%'}} className='row'>
+                    <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                      {this.getText('MSG_3037')}:
+                    </div>
+                    <div style={{width: '58%'}} className='left_align'>
+                        <InputFileReact className='form-control' ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={this.onFileSelected}/>
+                    </div>
 
-
+                    <div style={{width: '72%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                        <div>
+                          <img style={{width: '150px', height: '150px'}} src={this.state.image64} />
+                        </div>
+                    </div>
+              </div>
+              <br></br>
             {listaDetallesDiv}
             </div>
           </div>

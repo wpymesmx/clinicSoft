@@ -21,7 +21,7 @@ class MedicamentoService(object):
 
   def insertar_detalle_medicamento(self,id_grupo, id_med, codigo_barras, presentacion,descripcion,
                                    cantidad_maxima, cantidad_minima, existencia,indicasiones,
-                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en,image64):
     """
     Servicio utilizado para la gestion de medicamento
     """
@@ -29,7 +29,7 @@ class MedicamentoService(object):
     service_response = None
 
     service_response = self.medicamDao.insertar_detalle_medicamento(id_grupo, id_med, codigo_barras, presentacion,descripcion,
-                                   cantidad_maxima, cantidad_minima, existencia,indicasiones, via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en)
+                                   cantidad_maxima, cantidad_minima, existencia,indicasiones, via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en,image64)
 
     return service_response
 
@@ -124,13 +124,105 @@ class MedicamentoService(object):
 
   def update_detalle_medicamento(self,dem_id, id_med, presentacion,descripcion,
                                    cantidad_maxima, cantidad_minima, existencia,indicasiones,
-                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio, iva, farmaceutica, elaborado_en):
+                                   via_aministracion,fecha_alta,fecha_caducidad, condicion_venta,
+                                   precio, iva, farmaceutica, elaborado_en, imagen):
     """
     Servicio utilizado para actualizar un detalle medicamento.
     """
     log4py.info('## update_detalle_medicamento ##')
     service_response = None
-    service_response = self.medicamDao.update_detalle_medicamento(dem_id, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones, via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio,iva, farmaceutica, elaborado_en)
+    service_response = self.medicamDao.update_detalle_medicamento(dem_id, id_med, presentacion,descripcion, cantidad_maxima, cantidad_minima, existencia,indicasiones, via_aministracion,fecha_alta,fecha_caducidad, condicion_venta, precio,iva, farmaceutica, elaborado_en, imagen)
 
     return service_response
+
+  def reporte_medicamentos(self, codigo_barras ,nombre_comercial, nombre_generico, fecha_alta, fecha_caducidad, presentacion, descripcion, farmaceutica, grupo):
+    """
+    Función para buscar un medicamento
+    """
+    log4py.info('## reporte_medicamentos ##')
+    service_response = None
+
+    service_response = self.medicamDao.reporte_medicamentos(codigo_barras ,nombre_comercial, nombre_generico, fecha_alta, fecha_caducidad, presentacion, descripcion, farmaceutica, grupo)
+
+    return service_response
+
+  def dashbord_medicamento(self, dem_id):
+    """
+    Función para buscar un medicamento
+    """
+    log4py.info('## reporte_medicamentos ##')
+    service_response = None
+
+    service_response = self.medicamDao.dashbord_medicamento(dem_id)
+
+    return service_response
+
+  def llenar_combo_presentacion(self):
+    """
+    Función para buscar presentaciones.
+    """
+    log4py.info('## llenar_combo_presentacion ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_presentacion()
+
+    return service_response
+
+  def llenar_combo_descripcion(self):
+    """
+    Función para buscar formas farmaceuticas.
+    """
+    log4py.info('## llenar_combo_descripcion ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_descripcion()
+
+    return service_response
+
+  def llenar_combo_farmaceutica(self):
+    """
+    Función para buscar farmaceutica.
+    """
+    log4py.info('## llenar_combo_farmaceutica ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_farmaceutica()
+
+    return service_response
+
+  def llenar_combo_nombre_comercial(self):
+    """
+    Función para buscar nombre comercial.
+    """
+    log4py.info('## llenar_combo_nombre_comercial ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_nombre_comercial()
+
+    return service_response
+
+  def llenar_combo_nombre_generico(self):
+    """
+    Función para buscar nombre generico.
+    """
+    log4py.info('## llenar_combo_nombre_generico ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_nombre_generico()
+
+    return service_response
+
+  def llenar_combo_nombre_grupo(self):
+    """
+    Función para buscar grupos.
+    """
+    log4py.info('## llenar_combo_nombre_grupo ##')
+    service_response = None
+
+    service_response = self.medicamDao.llenar_combo_nombre_grupo()
+
+    return service_response
+
+
+
 

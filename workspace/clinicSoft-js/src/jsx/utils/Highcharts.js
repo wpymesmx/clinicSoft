@@ -1,7 +1,11 @@
 'use strict';
 
 var Highcharts = {
-  gauge: function(options) {
+
+  gauge: function({dias,banEstadoCaducidad,aux_day,aux_restan}) {
+     var day=dias;
+     console.log('valores entran grafica:');
+     console.log(aux_day,aux_restan);
     $('#container').highcharts({
         chart: {
             type: 'gauge',
@@ -11,7 +15,7 @@ var Highcharts = {
             plotShadow: false
         },
         title: {
-            text: 'Speedometer'
+            text: banEstadoCaducidad+', '+day
         },
         pane: {
             startAngle: -150,
@@ -49,6 +53,7 @@ var Highcharts = {
         yAxis: {
             min: 0,
             max: 200,
+            reversed: true,
 
             minorTickInterval: 'auto',
             minorTickWidth: 1,
@@ -70,27 +75,23 @@ var Highcharts = {
             },
             plotBands: [{
                 from: 0,
-                to: 120,
-                color: '#55BF3B' // green
+                to: 66,
+                color: '#DF5353' // green
             }, {
-                from: 120,
-                to: 160,
+                from: 66,
+                to: 132,
                 color: '#DDDF0D' // yellow
             }, {
-                from: 160,
-                to: 170,
-                color: '#DF5353' // red
-            }, {
-                from: 170,
+                from: 132,
                 to: 200,
-                color: '#0873F7' // red
+                color: '#55BF3B' // red
             }]
         },
         series: [{
-            name: 'Speed',
-            data: [80],
+            name: aux_restan,
+            data: [day],
             tooltip: {
-                valueSuffix: ' km/h'
+                valueSuffix: '  '+aux_day
             }
         }]
     });

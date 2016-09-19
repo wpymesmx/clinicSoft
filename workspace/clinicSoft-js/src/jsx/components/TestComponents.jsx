@@ -9,7 +9,7 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 var Constants = require('../utils/Constants.js');
 var DataGridReact = require('./DataGridReact.jsx');
 var InputFileReact = require('./InputFileReact.jsx');
-var Highcharts = require('../utils/Highcharts.js');
+var HighchartsPie = require('../utils/HighchartsPie.js');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
@@ -33,7 +33,7 @@ var TestComponents = React.createClass({
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
-    Highcharts.gauge({});
+    HighchartsPie.gauge({});
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');

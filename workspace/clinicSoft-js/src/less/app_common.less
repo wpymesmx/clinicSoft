@@ -49,6 +49,10 @@
   visibility: hidden;
 }
 
+.fondoShow {
+  filter: blur(5px);
+}
+
 .editarButton {
   width: 32px;
   height: 32px;
@@ -228,6 +232,7 @@
   width: 32px;
   height: 32px;
   border: none;
+  cursor: pointer;
   background: data-uri('../images/home.png') no-repeat center center;
 }
 
@@ -283,15 +288,74 @@
   background: data-uri('../images/ok.png') no-repeat center center;
 }
 
+.cornerUpLeft {
+  cursor: nw-resize;
+  background-color: #FF0000;
+}
+
+.cornerUp {
+  cursor: n-resize;
+  background-color: #0000FF;
+}
+
+.cornerUpRight {
+  cursor: ne-resize;
+  background-color: #FF0000;
+}
+
+.cornerBottomLeft {
+  cursor: sw-resize;
+  background-color: #FF0000;
+}
+
+.cornerBottom {
+  cursor: s-resize;
+  background-color: #0000FF;
+}
+
 .cornerBottomRight {
-  width: 16px;
-  height: 16px;
-  border: none;
   cursor: se-resize;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: data-uri('../images/corner_bottom_right.png') no-repeat center center;
+  background-color: #FF0000;
+}
+
+.cornerLeft {
+  cursor: e-resize;
+  background-color: #0000FF;
+}
+
+.cornerRight {
+  cursor: w-resize;
+  background-color: #0000FF;
+}
+
+.panelReactClose {
+  border: none;
+  background: data-uri('../images/close.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactResize {
+  border: none;
+  background: data-uri('../images/layer_resize.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactResizeActual {
+  border: none;
+  background: data-uri('../images/layer-resize-actual.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactHeader {
+    background: #807C81; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #807C81 , #12FFF7); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #807C81 , #12FFF7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+.panelReactBody {
 }
 
 .graficPie {

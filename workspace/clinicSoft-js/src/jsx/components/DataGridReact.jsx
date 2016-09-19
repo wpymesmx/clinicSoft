@@ -243,7 +243,7 @@ var DataGridReact = React.createClass({
     var rowDataObjs = [];
     var LABEL_TYPE = 1;
     var BUTTON_TYPE = 2;
-
+    //recorrer la lista de paginas para contruir el paginador
     if(this.state.dataListPage != undefined) {
       var pageNum = this.state.dataListPage.length;
       var pageSugesLast = this.state.page - 5;
@@ -251,7 +251,7 @@ var DataGridReact = React.createClass({
       var pageSugesNext = this.state.page + 5;
       var pagesNext = [];
 
-      for(var i = this.state.textAlignpage-1; i >= pageSugesLast; i--) {
+      for(var i = this.state.page-1; i >= pageSugesLast; i--) {
         if(i >= 0) {
           pagesLast.push(
             <div key={Date.now()+i} style={{float: 'left', marginLeft: '1%', marginRight: '1%'}}>

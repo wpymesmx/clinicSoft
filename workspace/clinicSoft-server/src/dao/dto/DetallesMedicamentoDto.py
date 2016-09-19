@@ -20,5 +20,8 @@ class DetallesMedicamentoDto(object):
     self.dem_farmaceutica=''
     self.dem_elaborado_en=''
     self.dem_estado=''
+    self.med_nombre_comercial=''
+    self.med_nombre_generico=''
+    self.med_imagen=''
 
 

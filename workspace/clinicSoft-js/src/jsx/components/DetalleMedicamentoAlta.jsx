@@ -20,6 +20,9 @@ var medicamentoService = require('../services/MedicamentoService.js');
 var MedicamentoAlta = require('./MedicamentoAlta.jsx');
 var validaService = require('../utils/ValidaService.js');
 
+//Se importa la libreria que carga la grafica.
+var InputFileReact = require('./InputFileReact.jsx');
+
 //components
 var DetalleMedicamentoAlta= React.createClass({
   mixins: [LanguageMixin(),AlertMixin()],
@@ -60,7 +63,8 @@ var DetalleMedicamentoAlta= React.createClass({
       lista_detalles: [],
       lista_detalle_tmp:[],
       comboValue: 1,
-      ban:true
+      ban:true,
+      image64: ''
     };
   },
   componentWillMount: function() {
@@ -298,7 +302,12 @@ var DetalleMedicamentoAlta= React.createClass({
     var res = {isError: true, message: self.getText('MSG_111')};
     return res;
   },
-
+  onFileSelected: function(fileName, fileBase64) {
+    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
+    this.setState({
+      image64: fileBase64
+    });
+  },
   //@LLV Método que elimina un detalle del medicamento.
   onClickEliminar:  function(evt){
        var onSuccess = function(response) {
@@ -357,7 +366,8 @@ var DetalleMedicamentoAlta= React.createClass({
                'precio':self.state.precio,
                'iva':self.state.iva,
                'farmaceutica':self.state.farmaceutica,
-               'elaborado_en':self.state.elaborado_en
+               'elaborado_en':self.state.elaborado_en,
+               'image64':self.state.image64
             };
             swal({title: 'Confirmar Registro?',
                text: 'Desea Continuar Con El Registro De La Presentación!',
@@ -431,6 +441,8 @@ var DetalleMedicamentoAlta= React.createClass({
     var CLASS_SHOW = 'componentShow';
     var className = '';
     className = (self.state.show == true ? CLASS_SHOW : CLASS_HIDDEN);
+
+
      if(self.state.lista_detalles.length > 0) {
       var rows_detalles = self.state.lista_detalles.map(function(auxDetalle) {
         return (
@@ -446,6 +458,8 @@ var DetalleMedicamentoAlta= React.createClass({
         );
       });
     }
+
+
     //La variable almacen puede tomar cualquier nombre.
     var listaAlmacenComboOption = [];
     listaAlmacenComboOption.push(<option value="0">{this.getText('MSG_3017')}</option>);
@@ -469,7 +483,7 @@ var DetalleMedicamentoAlta= React.createClass({
           <div className='panel-body'>
 
 
-            <div style={{width: '80%'}} className='panelForm'>
+            <div style={{width: '100%'}} className='panelForm'>
 
               <div style={{width: '90%'}} className='row'>
                 <div style={{width: '50%', textAlign: 'right', paddingRight: '10px', color:'red'}} className='left_align'>
@@ -635,7 +649,25 @@ var DetalleMedicamentoAlta= React.createClass({
                     onChange={this.onChangeElaboradoEn}/>
                 </div>
               </div>
+
+              <br></br>
+              <div style={{width: '80%'}} className='row'>
+                    <div style={{width: '42%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                      {this.getText('MSG_3037')}:
+                    </div>
+                    <div style={{width: '58%'}} className='left_align'>
+                        <InputFileReact className='form-control' ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={this.onFileSelected}/>
+                    </div>
+
+                    <div style={{width: '72%', textAlign: 'right', paddingRight: '10px'}} className='left_align'>
+                        <div>
+                          <img style={{width: '150px', height: '150px'}} src={this.state.image64} />
+                        </div>
+                    </div>
+              </div>
             </div>
+
+            <br></br>
 
           <div className='panelScroll'>
            <table className='table table-bordered table-hover'>
@@ -659,13 +691,13 @@ var DetalleMedicamentoAlta= React.createClass({
           <div className='input-group' style={{align: 'center'}}>
              <div className="btn-group btn-group-justified" role="group" aria-label="...">
                <div className="btn-group" role="group">
-                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
+                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
                </div>
                <div className="btn-group" role="group">
                    <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_3020')}  onClick={this.onClickRegresar} />
                </div>
                <div className="btn-group" role="group">
-                  <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_102')}  onClick={this.onClickCerrar}/>
+                   <input className='btn btn-lg btn-primary btn-block btn-signin' type='button' value={this.getText('MSG_206')}  onClick={this.onClickGuardar} />
                </div>
              </div>
            </div>

@@ -19,6 +19,7 @@ var swal=require('sweetalert');
 //componentes de la aplicacion
 var MedicamentoEditar = require('./MedicamentoEditar.jsx');
 var MedicamentoAlta = require('./MedicamentoAlta.jsx');
+var ReporteMedicamentos = require('./ReporteMedicamentos.jsx');
 var DataGridReact = require('./DataGridReact.jsx');
 
 //@LLV Inicia Clase Principal Medicamento.
@@ -138,6 +139,15 @@ var Medicamento = React.createClass({
     var onSuccess = function(response) {
       console.log('# success  #');
     };
+    this.refs.reporteMedicamentos.show();
+  },
+
+  //@LLV Método muestra el popup para reportes.
+  onClickReportes: function(evt) {
+    var self = this;
+    var onSuccess = function(response) {
+      console.log('# success  #');
+    };
     this.refs.medicamentoAlta.show();
   },
 
@@ -159,6 +169,7 @@ var Medicamento = React.createClass({
      <div>
        <MedicamentoAlta ref='medicamentoAlta' />
        <MedicamentoEditar ref='medicamentoEditar' />
+       <ReporteMedicamentos ref='reporteMedicamentos' />
         <div className='panel panel-default'>
           <div className='panel-heading'>{this.getText('MSG_3000')}</div>
           <div className='panel-body'>
@@ -179,9 +190,9 @@ var Medicamento = React.createClass({
             </div>
             <div>
               <div className='btn-group left_left' style={{width: '90%'}}>
-                <button type='button' className='informeButton' title={this.getText('MSG_3024')} style={{float: 'right'}} />
+                <button type='button' className='grafic3d' title={this.getText('MSG_3024')} style={{float: 'right'}} onClick={this.onClickNuevo}/>
                    &nbsp;
-                <button type='button' className='nuevoButton'  title={this.getText('MSG_205')} style={{float: 'right'}} onClick={this.onClickNuevo}/>
+                <button type='button' className='nuevoButton'  title={this.getText('MSG_205')} style={{float: 'right'}} onClick={this.onClickReportes}/>
               </div>
             </div>
           </div>
@@ -199,7 +210,7 @@ var Medicamento = React.createClass({
             {property: 'nombre_comercial', width: '31%'},
             {property: 'nombre_generico', width: '31%'},
             {property: 'estado', width: '31%', textAlign: 'center', catalog:[{id: 'A', value: 'MSG_202'}, {id: 'I', value: 'MSG_203'}]},
-            {property: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEditar, labelButton: 'MSG_200'}
+            {prortype: '', width: '7%', type: 2, style: 'editarButton', onClickButton: this.onClickEditar, labelButton: 'MSG_200'}
           ]}/>
       </div>
     );

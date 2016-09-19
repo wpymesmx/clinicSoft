@@ -13,7 +13,15 @@ var paths = {
   existeMedicamento:'/admin/medicamento/existe',
   eliminarDetalle:'/admin/medicamento/eliminar',
   editarDetalle:'/admin/medicamento/editaDetalle',
-  buscarDetalles:'/admin/medicamento/buscarDetalles'
+  buscarDetalles:'/admin/medicamento/buscarDetalles',
+  reporteMedicamentos:'/admin/medicamento/reporteMedicamentos',
+  dashbordMedicamento:'/admin/medicamento/dashbordMedicamento',
+  llenaComboPresentacion:'/admin/medicamento/llenaComboPresentacion',
+  llenaComboDescripcion:'/admin/medicamento/llenaComboDescripcion',
+  llenaComboFarmaceutica:'/admin/medicamento/llenaComboFarmaceutica',
+  llenaComboNombreComercial:'/admin/medicamento/llenaComboNombreComercial',
+  llenaComboNombreGenerico:'/admin/medicamento/llenaComboNombreGenerico',
+  llenaComboNombreGrupo:'/admin/medicamento/llenaComboNombreGrupo',
 };
 
 var MedicamentoService = {
@@ -49,7 +57,31 @@ var MedicamentoService = {
   },
   editarDetalle: function(params, onSuccess, onError, onFail) {
     commonService.ajax(paths.editarDetalle, params, onSuccess, onError, onFail);
-  }
+  },
+  reporteMedicamentos: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.reporteMedicamentos, params, onSuccess, onError, onFail);
+  },
+  dashbordMedicamento: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.dashbordMedicamento, params, onSuccess, onError, onFail);
+  },
+  llenaComboPresentacion: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboPresentacion, params, onSuccess, onError, onFail);
+  },
+  llenaComboDescripcion: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboDescripcion, params, onSuccess, onError, onFail);
+  },
+  llenaComboFarmaceutica: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboFarmaceutica, params, onSuccess, onError, onFail);
+  },
+  llenaComboNombreComercial: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboNombreComercial, params, onSuccess, onError, onFail);
+  },
+  llenaComboNombreGenerico: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboNombreGenerico, params, onSuccess, onError, onFail);
+  },
+  llenaComboNombreGrupo: function(params, onSuccess, onError, onFail) {
+    commonService.ajax(paths.llenaComboNombreGrupo, params, onSuccess, onError, onFail);
+  },
 };
 
 module.exports = MedicamentoService;

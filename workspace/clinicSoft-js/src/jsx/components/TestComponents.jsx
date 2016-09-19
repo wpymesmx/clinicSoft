@@ -10,6 +10,7 @@ var Constants = require('../utils/Constants.js');
 var DataGridReact = require('./DataGridReact.jsx');
 var InputFileReact = require('./InputFileReact.jsx');
 var Highcharts = require('../utils/Highcharts.js');
+var PanelReact = require('./PanelReact.jsx');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
@@ -59,6 +60,10 @@ var TestComponents = React.createClass({
       image64: fileBase64
     });
   },
+  onClickShowPanel: function(evt) {
+    debugger;
+    this.refs.miPanel.show();
+  },
   render: function() {
     //console.log('# App->render #');
     return (
@@ -69,6 +74,27 @@ var TestComponents = React.createClass({
         </div>
         <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
         <div id='container'>&nbsp;</div>
+        <PanelReact ref='miPanel' title='Componente Panel de prueba'>
+          <div style={{width: '100%', height: '100%'}}>
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+            <input type='text' value='sdadsa' />
+          </div>
+        </PanelReact>
+        <button onClick={this.onClickShowPanel}>show panel</button>
       </div>
     );
   }

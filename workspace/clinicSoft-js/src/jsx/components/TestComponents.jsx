@@ -8,6 +8,7 @@ var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
 var DataGridReact = require('./DataGridReact.jsx');
+var PanelReact = require('./PanelReact.jsx');
 var InputFileReact = require('./InputFileReact.jsx');
 var HighchartsPie = require('../utils/HighchartsPie.js');
 
@@ -59,6 +60,9 @@ var TestComponents = React.createClass({
       image64: fileBase64
     });
   },
+  onClickShowPanel: function(evt) {
+    this.refs.miPanel.show();
+  },
   render: function() {
     //console.log('# App->render #');
     return (
@@ -69,6 +73,27 @@ var TestComponents = React.createClass({
         </div>
         <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
         <div id='container'>&nbsp;</div>
+        <PanelReact ref='miPanel' title='Componente Panel de prueba'>
+          <div style={{width: '100%', height: '100%'}}>
+            <input type='text' value='1' />
+            <input type='text' value='2' />
+            <input type='text' value='3' />
+            <input type='text' value='4' />
+            <input type='text' value='5' />
+            <input type='text' value='6' />
+            <input type='text' value='7' />
+            <input type='text' value='8' />
+            <input type='text' value='9' />
+            <input type='text' value='10' />
+            <input type='text' value='11' />
+            <input type='text' value='12' />
+            <input type='text' value='13' />
+            <input type='text' value='14' />
+            <input type='text' value='15' />
+            <input type='text' value='16' />
+          </div>
+        </PanelReact>
+        <button onClick={this.onClickShowPanel}>show panel</button>
       </div>
     );
   }

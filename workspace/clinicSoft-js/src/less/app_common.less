@@ -1,9 +1,3 @@
-.body {
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .app {
   width: 100%;
   height: 100%;
@@ -49,15 +43,10 @@
   visibility: hidden;
 }
 
-.fondoShow {
-  filter: blur(5px);
-}
-
 .editarButton {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border: none;
-  cursor: pointer;
   background: data-uri('../images/edit.png') no-repeat center center;
 }
 
@@ -65,7 +54,6 @@
   width: 32px;
   height: 32px;
   border: none;
-  cursor: pointer;
   background: data-uri('../images/search.png') no-repeat center center;
 }
 
@@ -73,55 +61,14 @@
   width: 32px;
   height: 32px;
   border: none;
-  cursor: pointer;
   background: data-uri('../images/plus.png') no-repeat center center;
-}
-
-.newButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/new.jpg') no-repeat center center;
-}
-
-.informeButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: data-uri('../images/informe.jpg') no-repeat center center;
 }
 
 .detalleButton {
   width: 32px;
   height: 32px;
   border: none;
-  cursor: pointer;
-  background: data-uri('../images/trash.png') no-repeat center center;
-}
-
-.detailButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/details.png') no-repeat center center;
-}
-
-.closeButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/close.png') no-repeat center center;
-}
-
-.saveButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/save.png') no-repeat center center;
+  background: data-uri('../images/detalle.png') no-repeat center center;
 }
 
 .trHeader {
@@ -160,33 +107,27 @@
 }
 
 .clinicLogo {
-  width: 33.33%;
-  height: 50%;
-  background: data-uri('../images/logoClinicSoft.png') no-repeat left center;
-  background-size: contain;
+  width: 29%;
+  height: 56%;
+  background: data-uri('../images/logoClinicSoft.png') no-repeat center center;
+  background-size: cover;
 }
 
 .salirButton {
   width: 32px;
   height: 32px;
   border: none;
-  cursor: pointer;
   background: data-uri('../images/exit_blue.png') no-repeat center center;
 }
 
 .headerCenter {
-  width: 66.66%;
-  height: 50%;
-}
-
-.menuHeader {
-  width: 100%;
-  height: 50%;
+  width: 65%;
+  height: 56%;
 }
 
 .headerSalir {
-  width: 33.33%;
-  height: 50%;
+  width: 3%;
+  height: 56%;
 }
 
 .menuItem {
@@ -222,7 +163,7 @@
 
 .menuItemGestionCitas {
   border: none;
-  background: data-uri('../images/icon_citas.jpg') no-repeat center center;
+  background: data-uri('../images/iconoCitaMedica.jpg') no-repeat center center;
   background-size: contain;
   width: 100%;
   height: 100%;
@@ -232,168 +173,6 @@
   width: 32px;
   height: 32px;
   border: none;
-  cursor: pointer;
   background: data-uri('../images/home.png') no-repeat center center;
 }
 
-.groupTop {
-  padding-top: 5px;
-}
-
-.inputLabelRight {
-  width: '50%';
-  text-align: 'right';
-  padding-right: '10px';
-}
-
-.panelScroll {
-  overflow-y: scroll;
-  height: 233px;
-}
-
-.panelScrollDashboard {
-  overflow-y: scroll;
-}
-
-.panelScrollDetalle {
-  overflow-y: scroll;
-  height: 233px;
-}
-
-.overflowXauto {
-  overflow-x: auto;
-}
-
-.mexico_flag {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/mexico_flag.png') no-repeat center center;
-}
-
-.united_states_flag {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/united_states_flag.png') no-repeat center center;
-}
-
-.okButton {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/ok.png') no-repeat center center;
-}
-
-.cornerUpLeft {
-  cursor: nw-resize;
-  background-color: #FF0000;
-}
-
-.cornerUp {
-  cursor: n-resize;
-  background-color: #0000FF;
-}
-
-.cornerUpRight {
-  cursor: ne-resize;
-  background-color: #FF0000;
-}
-
-.cornerBottomLeft {
-  cursor: sw-resize;
-  background-color: #FF0000;
-}
-
-.cornerBottom {
-  cursor: s-resize;
-  background-color: #0000FF;
-}
-
-.cornerBottomRight {
-  cursor: se-resize;
-  background-color: #FF0000;
-}
-
-.cornerLeft {
-  cursor: e-resize;
-  background-color: #0000FF;
-}
-
-.cornerRight {
-  cursor: w-resize;
-  background-color: #0000FF;
-}
-
-.panelReactClose {
-  border: none;
-  background: data-uri('../images/close.png') no-repeat center center;
-  background-size: contain;
-  cursor: pointer;
-}
-
-.panelReactResize {
-  border: none;
-  background: data-uri('../images/layer_resize.png') no-repeat center center;
-  background-size: contain;
-  cursor: pointer;
-}
-
-.panelReactResizeActual {
-  border: none;
-  background: data-uri('../images/layer-resize-actual.png') no-repeat center center;
-  background-size: contain;
-  cursor: pointer;
-}
-
-.panelReactHeader {
-    background: #807C81; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #807C81 , #12FFF7); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #807C81 , #12FFF7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  }
-
-.panelReactBody {
-}
-
-.graficPie {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/chart_pie.png') no-repeat center center;
-}
-
-.grafic3d {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/chart_3d_bar.png') no-repeat center center;
-}
-.grafic2d {
-  width: 32px;
-  height: 32px;
-  border: none;
-  cursor: pointer;
-  background: data-uri('../images/icon_indicator_v3.png') no-repeat center center;
-}
-
-.table-bordered-aux th,
-  .table-bordered td {
-    border: 1px solid #ddd !important;
-}
-
-.table-hover-aux > tbody > tr:hover {
-  background-color: #f5f5f5;
-}
-
-.table-bordered-dash {
-  background-color: #7FB3D5;
-}
-
-.table-bordered-dashDos {
-  background-color: #A9CCE3;
-}

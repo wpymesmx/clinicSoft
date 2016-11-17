@@ -2,29 +2,21 @@
 
 var React = require('react');
 //mixins
-var LanguageMixin = require('../mixins/LanguageMixin.js');
 var NavigatorMixin = require('../mixins/NavigatorMixin.js');
 var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
-var DataGridReact = require('./DataGridReact.jsx');
-var PanelReact = require('./PanelReact.jsx');
-var InputFileReact = require('./InputFileReact.jsx');
-var HighchartsPie = require('../utils/HighchartsPie.js');
+//components
+var DatePickerReact = require('./DatePickerReact.jsx');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
-    getDefaultProps: function() {
-    //console.log('# MedicamentoAlta->getDefaultProps #');
-    return {
-    };
-  },
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
-      componentKey: Constants.TEST_COMPONENTS_VIEW,
-      language: window.language,
-      image64: ''
+      componentKey: 'Test',
+      mainComponent: undefined,
+      datePicked: ''
     };
   },
   componentWillMount: function() {
@@ -34,7 +26,6 @@ var TestComponents = React.createClass({
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
-    HighchartsPie.gauge({});
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -54,46 +45,28 @@ var TestComponents = React.createClass({
     this.unSubscribe(this.state.componentKey);
     this.unSubscribeAlert(this.state.componentKey);
   },
-  onFileSelected: function(fileName, fileBase64) {
-    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
-    this.setState({
-      image64: fileBase64
-    });
+  onClickSalir: function(evt) {
+    this.goToComponent(Constants.LOGIN_VIEW);
   },
-  onClickShowPanel: function(evt) {
-    this.refs.miPanel.show();
+  onClickIrWelcome: function(evt) {
+    this.goToComponent(Constants.WELCOME_VIEW);
+  },
+  onDatePicked: function(datePicked, evt) {
+    console.log('datePicked->' + datePicked);
+
+    this.setState({
+      datePicked: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+    });
   },
   render: function() {
     //console.log('# App->render #');
+
     return (
       <div style={{width: '100%', height: '100%'}}>
-        <InputFileReact ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={this.onFileSelected}/>
+        <DatePickerReact inputLabel='Fecha de cosulta:' onDatePicked={this.onDatePicked}/>
         <div>
-          <img style={{width: '300px', height: '300px'}} src={this.state.image64} />
+          Fecha seleccionada: {this.state.datePicked}
         </div>
-        <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
-        <div id='container'>&nbsp;</div>
-        <PanelReact ref='miPanel' title='Componente Panel de prueba'>
-          <div style={{width: '100%', height: '100%'}}>
-            <input type='text' value='1' />
-            <input type='text' value='2' />
-            <input type='text' value='3' />
-            <input type='text' value='4' />
-            <input type='text' value='5' />
-            <input type='text' value='6' />
-            <input type='text' value='7' />
-            <input type='text' value='8' />
-            <input type='text' value='9' />
-            <input type='text' value='10' />
-            <input type='text' value='11' />
-            <input type='text' value='12' />
-            <input type='text' value='13' />
-            <input type='text' value='14' />
-            <input type='text' value='15' />
-            <input type='text' value='16' />
-          </div>
-        </PanelReact>
-        <button onClick={this.onClickShowPanel}>show panel</button>
       </div>
     );
   }

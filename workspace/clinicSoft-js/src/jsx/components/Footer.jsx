@@ -13,7 +13,7 @@ var Footer = React.createClass({
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
-      componentKey: Constants.FOOTER_VIEW,
+      componentKey: 'Footer',
       mainComponent: undefined
     };
   },

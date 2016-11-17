@@ -2,21 +2,28 @@
 
 var React = require('react');
 //mixins
+var LanguageMixin = require('../mixins/LanguageMixin.js');
 var NavigatorMixin = require('../mixins/NavigatorMixin.js');
 var AlertMixin = require('../mixins/AlertMixin.js');
 //utils
 var Constants = require('../utils/Constants.js');
-//components
-var DatePickerReact = require('./DatePickerReact.jsx');
+var DataGridReact = require('./DataGridReact.jsx');
+var InputFileReact = require('./InputFileReact.jsx');
+var HighchartsPie = require('../utils/HighchartsPie.js');
 
 var TestComponents = React.createClass({
   mixins: [NavigatorMixin(), AlertMixin()],
+    getDefaultProps: function() {
+    //console.log('# MedicamentoAlta->getDefaultProps #');
+    return {
+    };
+  },
   getInitialState: function() {
     //console.log('# App->getInitialState #');
     return {
-      componentKey: 'Test',
-      mainComponent: undefined,
-      datePicked: ''
+      componentKey: Constants.TEST_COMPONENTS_VIEW,
+      language: window.language,
+      image64: ''
     };
   },
   componentWillMount: function() {
@@ -26,6 +33,7 @@ var TestComponents = React.createClass({
   },
   componentDidMount: function() {
     //console.log('# App->componentDidMount #');
+    HighchartsPie.gauge({});
   },
   componentWillReceiveProps: function(nextProps) {
     //console.log('# App->componentWillReceiveProps #');
@@ -45,28 +53,22 @@ var TestComponents = React.createClass({
     this.unSubscribe(this.state.componentKey);
     this.unSubscribeAlert(this.state.componentKey);
   },
-  onClickSalir: function(evt) {
-    this.goToComponent(Constants.LOGIN_VIEW);
-  },
-  onClickIrWelcome: function(evt) {
-    this.goToComponent(Constants.WELCOME_VIEW);
-  },
-  onDatePicked: function(datePicked, evt) {
-    console.log('datePicked->' + datePicked);
-
+  onFileSelected: function(fileName, fileBase64) {
+    //console.log('fileName:' + fileName + ', fileBase64:' + fileBase64);
     this.setState({
-      datePicked: (datePicked.getDate() + '/' + (datePicked.getMonth()+1) + '/' + datePicked.getFullYear())
+      image64: fileBase64
     });
   },
   render: function() {
     //console.log('# App->render #');
-
     return (
       <div style={{width: '100%', height: '100%'}}>
-        <DatePickerReact inputLabel='Fecha de cosulta:' onDatePicked={this.onDatePicked}/>
+        <InputFileReact ref='inputFile' extensions={['.png', '.gif', '.jpg']} onFileSelected={this.onFileSelected}/>
         <div>
-          Fecha seleccionada: {this.state.datePicked}
+          <img style={{width: '300px', height: '300px'}} src={this.state.image64} />
         </div>
+        <div style={{width: '300px', height: '300px', backgroundImage: 'url(' + this.state.image64 + ')'}} >&nbsp;</div>
+        <div id='container'>&nbsp;</div>
       </div>
     );
   }

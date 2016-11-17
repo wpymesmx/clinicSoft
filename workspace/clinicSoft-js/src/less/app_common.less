@@ -1,3 +1,9 @@
+.body {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .app {
   width: 100%;
   height: 100%;
@@ -43,10 +49,15 @@
   visibility: hidden;
 }
 
+.fondoShow {
+  filter: blur(5px);
+}
+
 .editarButton {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: none;
+  cursor: pointer;
   background: data-uri('../images/edit.png') no-repeat center center;
 }
 
@@ -54,6 +65,7 @@
   width: 32px;
   height: 32px;
   border: none;
+  cursor: pointer;
   background: data-uri('../images/search.png') no-repeat center center;
 }
 
@@ -61,14 +73,55 @@
   width: 32px;
   height: 32px;
   border: none;
+  cursor: pointer;
   background: data-uri('../images/plus.png') no-repeat center center;
+}
+
+.newButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/new.jpg') no-repeat center center;
+}
+
+.informeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: data-uri('../images/informe.jpg') no-repeat center center;
 }
 
 .detalleButton {
   width: 32px;
   height: 32px;
   border: none;
-  background: data-uri('../images/detalle.png') no-repeat center center;
+  cursor: pointer;
+  background: data-uri('../images/trash.png') no-repeat center center;
+}
+
+.detailButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/details.png') no-repeat center center;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/close.png') no-repeat center center;
+}
+
+.saveButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/save.png') no-repeat center center;
 }
 
 .trHeader {
@@ -107,27 +160,33 @@
 }
 
 .clinicLogo {
-  width: 29%;
-  height: 56%;
-  background: data-uri('../images/logoClinicSoft.png') no-repeat center center;
-  background-size: cover;
+  width: 33.33%;
+  height: 50%;
+  background: data-uri('../images/logoClinicSoft.png') no-repeat left center;
+  background-size: contain;
 }
 
 .salirButton {
   width: 32px;
   height: 32px;
   border: none;
-  background: data-uri('../images/exit_blue.png') no-repeat center center;
+  cursor: pointer;
+  background: data-uri('../images/imgAdmin/closesesion.png') no-repeat center center;
 }
 
 .headerCenter {
-  width: 65%;
-  height: 56%;
+  width: 66.66%;
+  height: 50%;
+}
+
+.menuHeader {
+  width: 100%;
+  height: 50%;
 }
 
 .headerSalir {
-  width: 3%;
-  height: 56%;
+  width: 33.33%;
+  height: 50%;
 }
 
 .menuItem {
@@ -163,7 +222,7 @@
 
 .menuItemGestionCitas {
   border: none;
-  background: data-uri('../images/iconoCitaMedica.jpg') no-repeat center center;
+  background: data-uri('../images/icon_citas.jpg') no-repeat center center;
   background-size: contain;
   width: 100%;
   height: 100%;
@@ -173,6 +232,346 @@
   width: 32px;
   height: 32px;
   border: none;
-  background: data-uri('../images/home.png') no-repeat center center;
+  cursor: pointer;
+  background: data-uri('../images/imgAdmin/home.png') no-repeat center center;
 }
 
+.guiaButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/imgAdmin/guide.png') no-repeat center center;
+}
+
+.groupTop {
+  padding-top: 5px;
+}
+
+.inputLabelRight {
+  width: '50%';
+  text-align: 'right';
+  padding-right: '10px';
+}
+
+.panelScroll {
+  overflow-y: scroll;
+  height: 233px;
+}
+
+.panelScrollDashboard {
+  overflow-y: scroll;
+}
+
+.panelScrollDetalle {
+  overflow-y: scroll;
+  height: 233px;
+}
+
+.overflowXauto {
+  overflow-x: auto;
+}
+
+.mexico_flag {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/mexico_flag.png') no-repeat center center;
+}
+
+.united_states_flag {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/united_states_flag.png') no-repeat center center;
+}
+
+.okButton {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/ok.png') no-repeat center center;
+}
+
+.cornerUpLeft {
+  cursor: nw-resize;
+  background-color: #FF0000;
+}
+
+.cornerUp {
+  cursor: n-resize;
+  background-color: #0000FF;
+}
+
+.cornerUpRight {
+  cursor: ne-resize;
+  background-color: #FF0000;
+}
+
+.cornerBottomLeft {
+  cursor: sw-resize;
+  background-color: #FF0000;
+}
+
+.cornerBottom {
+  cursor: s-resize;
+  background-color: #0000FF;
+}
+
+.cornerBottomRight {
+  cursor: se-resize;
+  background-color: #FF0000;
+}
+
+.cornerLeft {
+  cursor: e-resize;
+  background-color: #0000FF;
+}
+
+.cornerRight {
+  cursor: w-resize;
+  background-color: #0000FF;
+}
+
+.panelReactClose {
+  border: none;
+  background: data-uri('../images/close.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactResize {
+  border: none;
+  background: data-uri('../images/layer_resize.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactResizeActual {
+  border: none;
+  background: data-uri('../images/layer-resize-actual.png') no-repeat center center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.panelReactHeader {
+    background: #807C81; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #807C81 , #12FFF7); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #807C81 , #12FFF7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+.panelReactBody {
+}
+
+.graficPie {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/chart_pie.png') no-repeat center center;
+}
+
+.grafic3d {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/chart_3d_bar.png') no-repeat center center;
+}
+.grafic2d {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/icon_indicator_v3.png') no-repeat center center;
+}
+
+.detallePaciente {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/file_search.png') no-repeat center center;
+}
+
+.historialPaciente {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/folder-search.png') no-repeat center center;
+}
+
+.citasPaciente {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/medic.png') no-repeat center center;
+}
+
+.adjuntarDocumento {
+  width: 32px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/document.png') no-repeat center center;
+}
+
+.fotoPaciente {
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/camera.png') no-repeat center center;
+}
+
+.telefonoPaciente {
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/phone.png') no-repeat center center;
+}
+
+.correoPaciente {
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/mail.png') no-repeat center center;
+}
+
+.homePaciente {
+  width: 24px;
+  height: 24px;
+  border: none;
+  cursor: pointer;
+  background: data-uri('../images/img_pacientes/home.png') no-repeat center center;
+}
+
+.table-bordered-aux th,
+  .table-bordered td {
+    border: 1px solid #ddd !important;
+}
+
+.table-hover-aux > tbody > tr:hover {
+  background-color: #f5f5f5;
+}
+
+.table-bordered-dash {
+  background-color: #7FB3D5;
+}
+
+.table-bordered-dashDos {
+  background-color: #A9CCE3;
+}
+
+.btn-file{position:relative;overflow:hidden}
+.btn-file input[type=file]{position:absolute;top:0;right:0;min-width:100%;min-height:100%;font-size:999px;text-align:right;filter:alpha(opacity=0);opacity:0;background:red;cursor:inherit;display:block}
+.file-caption-disabled{background-color:#eee;cursor:not-allowed;opacity:1}
+.file-input .btn[disabled],.file-input .btn .disabled{cursor:not-allowed}
+.file-preview{border-radius:5px;border:1px solid #ddd;padding:5px;width:100%;margin-bottom:5px}
+.file-preview-frame{display:table;margin:8px;height:160px;border:1px solid #ddd;box-shadow:1px 1px 5px 0 #a2958a;padding:6px;float:left;text-align:center}
+.file-preview-frame:hover{background-color:#eee;box-shadow:2px 2px 5px 0 #333}.file-preview-image{height:150px;vertical-align:text-center}
+.file-preview-text{display:table-cell;width:150px;height:150px;color:#428bca;font-size:11px;vertical-align:middle;text-align:center}
+.file-preview-other{display:table-cell;width:150px;height:150px;font-family:Monaco,Consolas,monospace;font-size:11px;vertical-align:middle;text-align:center}
+.file-input-new .file-preview,.file-input-new .close,.file-input-new .glyphicon-file,.file-input-new .fileinput-remove-button,.file-input-new .fileinput-upload-button{display:none}
+.loading{background:transparent url('../img/loading.gif') no-repeat scroll center center content-box!important}
+.wrap-indicator{font-weight:bold;color:#245269;cursor:pointer}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 999px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: red;
+    cursor: inherit;
+    display: block;
+}
+
+.file-caption-disabled {
+    background-color: #EEEEEE;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.file-input .btn[disabled], .file-input .btn .disabled {
+    cursor: not-allowed;
+}
+
+.file-preview {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.file-preview-frame {
+    display: table;
+    margin: 8px;
+    height: 160px;
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0px #a2958a;
+    padding: 6px;
+    float: left;
+    text-align: center;
+}
+
+.file-preview-frame:hover {
+    background-color: #eee;
+    box-shadow: 2px 2px 5px 0px #333;
+}
+
+.file-preview-image {
+    height: 150px;
+    vertical-align: text-center;
+}
+
+.file-preview-text {
+    display: table-cell;
+    width: 150px;
+    height: 150px;
+    color: #428bca;
+    font-size: 11px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.file-preview-other {
+    display: table-cell;
+    width: 150px;
+    height: 150px;
+    font-family: Monaco, Consolas, monospace;
+    font-size: 11px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.file-input-new .file-preview, .file-input-new .close, .file-input-new .glyphicon-file, .file-input-new .fileinput-remove-button, .file-input-new .fileinput-upload-button {
+    display: none;
+}
+
+.loading {
+    background: transparent url('../img/loading.gif') no-repeat scroll center center content-box !important;
+}
+
+.wrap-indicator {
+    font-weight: bold;
+    color: #245269;
+    cursor: pointer;
+}

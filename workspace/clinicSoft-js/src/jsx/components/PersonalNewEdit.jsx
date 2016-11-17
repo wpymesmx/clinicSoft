@@ -527,6 +527,7 @@ var PersonalNewEdit = React.createClass({
                   </div>
                 </div>
               </div>
+
             </div>
             <div className='groupTop btn-group' style={{width: '100%'}}>
               <button type='button' className='btn btn-lg btn-primary btn-signin closeButton' style={{width: '50%'}} title={this.getText('MSG_102')} onClick={this.hide} />

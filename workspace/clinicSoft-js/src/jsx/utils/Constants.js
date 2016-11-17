@@ -31,7 +31,8 @@ var Constants = {
   HEADER_VIEW: 'header',
   FOOTER_VIEW: 'footer',
   DATA_GRID_COMPONENT: 'dataGridReact',
-  TEST_COMPONENTS_VIEW: 'testComponents'
+  TEST_COMPONENTS_VIEW: 'testComponents',
+  GUIA_VIEW:'guia'
 };
 
 module.exports = Constants;

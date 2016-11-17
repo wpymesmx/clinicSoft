@@ -8,6 +8,9 @@ var Constants = require('./utils/Constants.js');
 //jsx components
 var Welcome = require('./Welcome.jsx');
 var Medicamento = require('./components/Medicamento.jsx');
+var Personal = require('./components/Personal.jsx');
+var Paciente = require('./components/Paciente.jsx');
+var GraficGuide = require('./components/GraficGuide.jsx');
 var Header = require('./components/Header.jsx');
 var Footer = require('./components/Footer.jsx');
 var TestComponents = require('./components/TestComponents.jsx');
@@ -54,6 +57,18 @@ var Home = React.createClass({
 
       case Constants.MEDICAMENTO_VIEW:
         this.setState({ mainComponent: (<Medicamento/>) });
+        break;
+
+      case Constants.PERSONAL_VIEW:
+        this.setState({ mainComponent: (<Personal/>) });
+        break;
+
+      case Constants.PACIENTE_VIEW:
+        this.setState({ mainComponent: (<Paciente/>) });
+        break;
+
+      case Constants.GUIA_VIEW:
+        this.setState({ mainComponent: (<GraficGuide/>) });
         break;
 
       case Constants.TEST_COMPONENTS_VIEW:

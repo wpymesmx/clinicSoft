@@ -541,7 +541,7 @@ var PanelReact = React.createClass({
                     onClick={this.onClickClosePanel}> &nbsp; </div>
                 </div>
               </div>
-              <div className='panelReactBody' style={{width: '100%', height: '96.4%', overflowY: 'auto', padding: '0.2%'}}>
+              <div className='panelReactBody' style={{width: '100%', overflowY: 'auto', padding: '0.2%'}}>
                 {this.props.children}
               </div>
             </div>

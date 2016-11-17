@@ -15,7 +15,7 @@ var AlertComponent = React.createClass({
   getDefaultProps: function() {
     //console.log('# Alert->getDefaultProps #');
     return {
-      zindex: 2
+      zindex: 99
     };
   },
   getInitialState: function() {
@@ -32,7 +32,15 @@ var AlertComponent = React.createClass({
         button_no: false,
         onClickYes: undefined,
         onClickNo: undefined
-      }
+      },
+      mouseDown: false,
+      mouseDownCornerBottomRight: false,
+      top: 15,
+      left: 20,
+      bottom: 50,
+      right: 20,
+      mouseX: 0,
+      mouseY: 0
     };
   },
   componentWillMount: function() {
@@ -111,7 +119,15 @@ var AlertComponent = React.createClass({
         button_no: false,
         onClickYes: undefined,
         onClickNo: undefined
-      }
+      },
+      mouseDown: false,
+      mouseDownCornerBottomRight: false,
+      top: 10,
+      left: 26,
+      bottom: 38,
+      right: 23,
+      mouseX: 0,
+      mouseY: 0
     });
   },
   onClickYes: function(evt){
@@ -126,6 +142,96 @@ var AlertComponent = React.createClass({
 
     if(this.state.alertConfig.button_no == true && this.state.alertConfig.onClickNo != undefined) {
       this.state.alertConfig.onClickNo();
+    }
+  },
+  onMouseDown: function(evt) {
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
+    this.setState({
+      mouseDown: true,
+      mouseX: evt.pageX,
+      mouseY: evt.pageY,
+    });
+  },
+  onMouseUp: function(evt) {
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
+    this.setState({
+      mouseDown: false,
+      mouseDownCornerBottomRight: false
+    });
+  },
+  onMouseMove: function(evt) {
+    var top = this.state.top;
+    var left = this.state.left;
+    var bottom = this.state.bottom;
+    var right = this.state.right;
+    var smoothX = 0.14;
+    var smoothY = 0.19;
+
+    if(this.state.mouseDown) {
+      if(evt.pageX > this.state.mouseX) {
+        left = this.state.left + ((evt.pageX - this.state.mouseX)/100) + smoothX;
+        right = this.state.right - ((evt.pageX - this.state.mouseX)/100) - smoothX;
+
+      } else if(evt.pageX < this.state.mouseX) {
+        left = this.state.left - ((this.state.mouseX - evt.pageX)/100) - smoothX;
+        right = this.state.right + ((this.state.mouseX - evt.pageX)/100) + smoothX;
+      }
+
+      if(evt.pageY > this.state.mouseY) {
+        top = this.state.top + ((evt.pageY - this.state.mouseY)/100) + smoothY;
+        bottom = this.state.bottom - ((evt.pageY - this.state.mouseY)/100) - smoothY;
+
+      } else if(evt.pageY < this.state.mouseY) {
+        top = this.state.top - ((this.state.mouseY - evt.pageY)/100) - smoothY;
+        bottom = this.state.bottom + ((this.state.mouseY - evt.pageY)/100) + smoothY;
+      }
+
+      this.setState({
+        top: top,
+        left: left,
+        bottom: bottom,
+        right: right,
+        mouseX: evt.pageX,
+        mouseY: evt.pageY
+      });
+    }
+  },
+  onMouseDownCornerBottomRight: function(evt) {
+    this.setState({
+      mouseDownCornerBottomRight: true,
+      mouseX: evt.pageX,
+      mouseY: evt.pageY,
+    });
+  },
+  onResizeCornerBottomRight: function(evt) {
+    var bottom = this.state.bottom;
+    var right = this.state.right;
+    var smoothX = 0.25;
+    var smoothY = 0.17;
+
+    if(this.state.mouseDownCornerBottomRight) {
+      if(evt.pageX > this.state.mouseX) {
+        right = this.state.right - ((evt.pageX - this.state.mouseX)/100) - smoothX;
+
+      } else if(evt.pageX < this.state.mouseX) {
+        right = this.state.right + ((this.state.mouseX - evt.pageX)/100) + smoothX;
+      }
+
+      if(evt.pageY > this.state.mouseY) {
+        bottom = this.state.bottom - ((evt.pageY - this.state.mouseY)/100) - smoothY;
+
+      } else if(evt.pageY < this.state.mouseY) {
+        bottom = this.state.bottom + ((this.state.mouseY - evt.pageY)/100) + smoothY;
+      }
+
+      this.setState({
+        bottom: bottom,
+        right: right,
+        mouseX: evt.pageX,
+        mouseY: evt.pageY
+      });
     }
   },
   render: function() {
@@ -154,11 +260,13 @@ var AlertComponent = React.createClass({
     return (
       <div className={classNameAlert}>
         <div className='fondoShow' style={{zIndex: this.state.zindex-1}}>&nbsp;</div>
-        <div className={'panel panel-primary popUpClass'} style={{zIndex: this.state.zindex-1}}>
-          <div className='panel-heading'>
+        <div ref='miAlert' className={'panel panel-primary popUpClass'}
+          style={{zIndex: this.state.zindex-1, top: (this.state.top + '%'), left: (this.state.left + '%'),
+                  bottom: (this.state.bottom + '%'), right: (this.state.right + '%')}}>
+          <div className='panel-heading' onMouseDown={this.onMouseDown}>
             {this.state.alertConfig.title}
           </div>
-          <div className='panel-body'>
+          <div className='panel-body' style={{height: '73%', backgroundColor: '#FFFFFF'}}>
             <p>{this.state.alertConfig.message}</p>
           </div>
           <div className='panel-footer button-align-right'>

@@ -2,7 +2,6 @@ __author__ = 'drunenkenturtle'
 
 from Log4py import log4py
 from src.dao.SQLiteDao import SQLiteDao
-from src.dao.row.usuario_row import usuario_row
 
 class UsuarioDao(SQLiteDao):
   """
@@ -12,25 +11,25 @@ class UsuarioDao(SQLiteDao):
   def __init__(self):
    pass
 
-  def getAllUsers(self):
+  def insertar_usuario(self, newUsuario):
     """
-      Metodo utilizado para obtener todos los usuarios activos en el sistema
+      Metodo utilizado para agregar un nuevo usuario al sistema
     """
-    log4py.info('## UsuarioDao-> getAllUsers ##')
+    log4py.info('## UsuarioDa-> add_usuario ##')
     cursor = None
-    response = None
-    ACTIVO = 'A'
+    id_usuario = 0
 
     try:
       self.open()
-      self.set_row_factory(usuario_row)
       cursor = self.get_cursor()
+      #se obtiene o calcula el siguiente pk de la tabla USUARIO
+      cursor.execute(''' SELECT IFNULL(MAX(ID_USUARIO), 0)+1 NEXT_ID_USUARIO FROM USUARIO ''')
+      id_usuario = cursor.fetchone()[0]
+      #insertamos el nuevo usuario en db
       cursor.execute('''
-        SELECT USU_ID, TIU_ID, USU_LOGIN, USU_ESTADO, USU_FECHA_ALTA, USU_FECHA_VENCIMIENTO, USU_CORREO
-        FROM USUARIO
-        WHERE USU_ESTADO = ?
-      ''', (ACTIVO))
-      response = cursor.fetchall()
+        INSERT INTO USUARIO(ID_USUARIO, USUARIO, PASSWD) VALUES(?, ?, ?)
+      ''', (id_usuario, newUsuario.user, newUsuario.passwd))
+
       self.commit()
 
     except Exception as err:
@@ -41,4 +40,4 @@ class UsuarioDao(SQLiteDao):
     finally:
       self.close(cursor)
 
-    return response
+    return id_usuario

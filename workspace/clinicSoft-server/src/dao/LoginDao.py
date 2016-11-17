@@ -12,7 +12,7 @@ class LoginDao(SQLiteDao):
   def __init__(self):
     pass
 
-  def valida_usuario(self, user, passwd) -> Exception:
+  def valida_usuario(self, user, passwd):
     """
       metodo utilizado para validar el usuario y el password del usuario en el sistema
 
@@ -34,7 +34,7 @@ class LoginDao(SQLiteDao):
       cursor.execute('''
         SELECT USU_LOGIN
         FROM USUARIO
-        WHERE USU_CORREO = ? AND USU_CONTRASENA = ?
+        WHERE USU_LOGIN = ? AND USU_CONTRASENA = ?
       ''', (user, passwd))
 
       dao_response = cursor.fetchone()
@@ -49,6 +49,3 @@ class LoginDao(SQLiteDao):
       self.close(cursor)
 
     return dao_response
-
-
-

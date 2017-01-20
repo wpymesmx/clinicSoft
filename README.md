@@ -1,2 +1,2 @@
 # clinicSoft
-sistema de administración de centros de salud
+sistema de administración de centros de salud.
